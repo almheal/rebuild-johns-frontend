@@ -13,6 +13,9 @@ export default {
   components: {
     DefaultLayout,
   },
+  data: () => ({
+    isShow: false,
+  }),
   computed: {
     ...mapState({
       locales: (state) => state.locale.locales,
