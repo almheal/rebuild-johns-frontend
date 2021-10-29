@@ -3,7 +3,7 @@
     <ul class="menu__list">
       <li class="menu__item" v-for="menuItem in menu" :key="menuItem.title">
         <router-link class="menu__link" :to="menuItem.link" data-test="link">
-          {{ menuItem.title }}
+          {{ $t(menuItem.title) }}
         </router-link>
       </li>
     </ul>

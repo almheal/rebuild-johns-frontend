@@ -1,0 +1,22 @@
+--all
+1) speed 92-94
+2) not prefetch preload
+
+--remove friendly-errors > Убирает ошибки
+1) 92-94
+2) not prefetch preload
+3) size not changed
+
+-- remove progress
+1) 94
+2) not prefetch preload
+3) size not changed
+
+-- remove prefetch
+1) 86 - 89
+2) added prefetch for async components and css
+3)
+
+-- remove preload and add prefetch
+1) 94
+2) added preload for chunks vendors and app

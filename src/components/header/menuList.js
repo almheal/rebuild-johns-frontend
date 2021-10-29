@@ -1,18 +1,18 @@
 export const menuList = [
   {
-    title: 'Меню',
+    title: 'app.header.menu',
     link: '/',
   },
   {
-    title: 'Акции',
+    title: 'app.header.stock',
     link: '/stock',
   },
   {
-    title: 'Папа бонус',
+    title: 'app.header.papaBonus',
     link: '/papa-bonus',
   },
   {
-    title: 'Контакты',
+    title: 'app.header.contacts',
     link: '/contacts',
   },
 ]
