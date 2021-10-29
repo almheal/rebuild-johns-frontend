@@ -10,6 +10,7 @@ module.exports = {
         '@elements': path.resolve(__dirname, 'src/components/elements'),
         '@icons': path.resolve(__dirname, 'src/components/icons'),
         '@types': path.resolve(__dirname, 'src/types'),
+        '@const': path.resolve(__dirname, 'src/const'),
       },
     },
   },

@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
+import locale from './modules/locale'
 
 export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+  modules: {
+    locale,
+  },
 })

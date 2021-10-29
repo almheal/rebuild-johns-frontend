@@ -13,14 +13,14 @@
               font="gotham"
               view="transparent"
               textTransform="uppercase"
-              >Вход</AppButton
+              >{{ $t('app.utils.login') }}</AppButton
             >
           </template>
           <AppLanguage
             v-if="!menuIsOpen"
-            :languages="languages"
-            :selectedLanguageTitle="selectedLanguage.title"
-            @selectLanguage="selectedLanguage = $event"
+            :languages="locales"
+            :selectedLanguageTitle="currentLocale.title"
+            @selectLanguage="selectLanguageHandler"
           />
           <AppBurgerButton
             :isCross="menuIsOpen"
@@ -38,6 +38,7 @@ import { menuList } from './menuList'
 import AppLanguage from '@elements/AppLanguage'
 import AppBurgerButton from '@elements/AppBurgerButton'
 import AppButton from '@elements/AppButton'
+import { mapState, mapActions } from 'vuex'
 const AppMenu = defineAsyncComponent(() =>
   import(/*webpackChunkName: "appMenu"*/ '@elements/AppMenu')
 )
@@ -52,27 +53,23 @@ export default {
   },
   data() {
     return {
-      languages: [
-        {
-          title: 'en',
-          messages: '123',
-        },
-        {
-          title: 'ru',
-          messages: '123',
-        },
-        {
-          title: 'es',
-          messages: '123',
-        },
-      ],
-      selectedLanguage: {
-        title: 'en',
-        messages: '123',
-      },
       menuIsOpen: false,
       menuList,
     }
+  },
+  computed: {
+    ...mapState({
+      currentLocale: (state) => state.locale.currentLocale,
+      locales: (state) => state.locale.locales,
+    }),
+  },
+  methods: {
+    ...mapActions({
+      changeLocale: 'locale/changeLocale',
+    }),
+    selectLanguageHandler(language) {
+      this.changeLocale({ locale: language.title, languages: this.locales })
+    },
   },
 }
 </script>
