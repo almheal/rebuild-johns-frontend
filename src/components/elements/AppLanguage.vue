@@ -1,0 +1,100 @@
+<template>
+  <div class="language">
+    <div
+      class="language__list"
+      data-test="languages"
+      :class="{ 'is-active': isActive }"
+    >
+      <div
+        class="language__item"
+        data-test="language"
+        v-for="language in languages"
+        :class="{
+          'is-active': language.title === selectedLanguageTitle,
+          'is-show': isActive,
+        }"
+        :key="language.title"
+        @click="languageHandler(language)"
+      >
+        {{ language.title }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AppLanguage',
+  emits: ['selectLanguage'],
+  props: {
+    languages: {
+      type: Array,
+      default: () => [],
+    },
+    selectedLanguageTitle: {
+      type: String,
+      default: '',
+    },
+  },
+  data: () => ({
+    isActive: false,
+  }),
+  methods: {
+    languageHandler(language) {
+      if (!this.isActive) {
+        this.isActive = true
+        return
+      }
+
+      if (language.title !== this.selectedLanguageTitle) {
+        this.$emit('selectLanguage', language)
+      }
+
+      this.isActive = false
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.language {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  font-family: $gotham-font;
+
+  &__list {
+    @include absolute-default;
+    @include flex;
+    flex-direction: column;
+    border-radius: 5px;
+
+    &.is-active {
+      background-color: $white-color;
+      box-shadow: 0 2px 12px 0 rgba(41, 44, 51, 0.2);
+    }
+  }
+
+  &__item {
+    display: none;
+    width: 50px;
+    height: 50px;
+    text-transform: capitalize;
+    user-select: none;
+    cursor: pointer;
+
+    &.is-active,
+    &.is-show {
+      @include flex-center;
+    }
+
+    &.is-show {
+      @include green-color-hover;
+    }
+
+    &.is-active {
+      order: -1;
+    }
+  }
+}
+</style>

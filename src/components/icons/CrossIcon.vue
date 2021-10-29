@@ -1,10 +1,10 @@
 <template>
-  <div class="home"></div>
+  <div class="cross"></div>
 </template>
 
 <script>
 export default {
-  name: 'Home',
+  name: 'CrossIcon',
 }
 </script>
 

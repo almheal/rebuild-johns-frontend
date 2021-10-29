@@ -1,0 +1,53 @@
+@mixin flex{
+  display: flex;
+}
+
+@mixin flex-justify($justify){
+  @include flex;
+  justify-content: $justify;
+}
+
+@mixin flex-align($align){
+  @include flex;
+  align-items: $align;
+}
+
+@mixin flex-justify-align($justify, $align){
+  @include flex-justify($justify);
+  align-items: $align;
+}
+
+@mixin flex-justify-space{
+  @include flex-justify(space-between);
+}
+
+@mixin flex-center{
+  @include flex-justify-align(center, center);
+}
+
+@mixin absolute-default($left: 0, $top: 0){
+  position: absolute;
+  left: $left;
+  top: $top;
+}
+
+@mixin absolute-top-center{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin absolute-bottom-default($left: 0, $bottom: 0){
+  position: absolute;
+  left: $left;
+  bottom: $bottom;
+}
+
+@mixin green-color-hover{
+  transition: color .3s;
+  
+  &:hover{
+    color: $green-color;
+  }
+}

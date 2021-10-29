@@ -1,6 +1,12 @@
 module.exports = {
-  preset: "@vue/cli-plugin-unit-jest",
+  preset: '@vue/cli-plugin-unit-jest',
   transform: {
-    "^.+\\.vue$": "vue-jest",
+    '^.+\\.vue$': 'vue-jest',
   },
-};
+  setupFilesAfterEnv: ['<rootDir>/tests/unit/jest.init.js'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@icons/(.*)$': '<rootDir>/src/components/icons/$1',
+    '^@elements/(.*)$': '<rootDir>/src/components/elements/$1',
+  },
+}
