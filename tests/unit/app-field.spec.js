@@ -7,6 +7,7 @@ describe('App field', () => {
   const DATA_LABEL = '[data-test=label]'
   const DATA_INPUT = '[data-test=input]'
   const DATA_ERROR = '[data-test=error]'
+  const DATA_FLAG = '[data-test=flag]'
 
   const createComponent = (props) => {
     wrapper = shallowMount(AppField, { props })
@@ -179,9 +180,110 @@ describe('App field', () => {
     expect(input.element.value).toEqual(MODEL_VALUE)
   })
 
-  it.todo('maxLength')
-  it.todo('prefix')
-  it.todo('integer')
-  it.todo('phone flag')
-  it.todo('is-flag class')
+  it('the length of the value is not more than maxLength', async () => {
+    const MAX_LENGTH = 12
+    const valueIsMoreMaxLength = 'this length value is more than maxLength'
+    createComponent({
+      maxLength: MAX_LENGTH,
+    })
+
+    const input = wrapper.find(DATA_INPUT)
+    await input.setValue(valueIsMoreMaxLength)
+
+    expect(input.element.value).toHaveLength(MAX_LENGTH)
+  })
+
+  it('the initial length modelValue is not more than maxLength', () => {
+    const MAX_LENGTH = 12
+    const valueIsMoreMaxLength = 'this length value is more than maxLength'
+    createComponent({
+      maxLength: MAX_LENGTH,
+      modelValue: valueIsMoreMaxLength,
+    })
+
+    expect(wrapper.emitted('update:modelValue')[0][0]).toHaveLength(MAX_LENGTH)
+  })
+
+  it('initial modelValue without prefix emitted value with prefix', () => {
+    const PREFIX = '+7'
+    createComponent({
+      prefix: PREFIX,
+    })
+
+    expect(wrapper.emitted('update:modelValue')).toEqual(
+      expect.arrayContaining([[PREFIX]])
+    )
+  })
+
+  it('after zeroing there is a prefix', async () => {
+    const PREFIX = '+7'
+    createComponent({
+      prefix: PREFIX,
+      modelValue: 'testValue',
+    })
+
+    const input = wrapper.find(DATA_INPUT)
+    await input.setValue('')
+
+    expect(input.element.value).toBe(PREFIX)
+  })
+
+  it('typeValue is integer not removed prefix', async () => {
+    const PREFIX = '+prefix-'
+    const NEW_VALUE = '123'
+    createComponent({
+      prefix: PREFIX,
+      typeValue: 'integer',
+    })
+
+    const input = wrapper.find(DATA_INPUT)
+    await input.setValue(NEW_VALUE)
+
+    expect(input.element.value).toBe(`${PREFIX}${NEW_VALUE}`)
+  })
+
+  it.each`
+    value         | expectedResult
+    ${'42q'}      | ${'42'}
+    ${'q42'}      | ${'42'}
+    ${'42e'}      | ${'42'}
+    ${'42.2'}     | ${'422'}
+    ${'42.2q.42'} | ${'42242'}
+  `(
+    'typeValue is integer, value $value toBe $expectedResult',
+    async ({ value, expectedResult }) => {
+      createComponent({
+        typeValue: 'integer',
+      })
+
+      const input = wrapper.find(DATA_INPUT)
+      await input.setValue(value)
+
+      expect(input.element.value).toBe(expectedResult)
+    }
+  )
+
+  it.each`
+    countryFlag | name               | expectedResult
+    ${'ru'}     | ${'is showed'}     | ${true}
+    ${''}       | ${'is not showed'} | ${false}
+  `('country flag $name', ({ countryFlag, expectedResult }) => {
+    createComponent({
+      countryFlag,
+    })
+
+    const flag = wrapper.find(DATA_FLAG)
+
+    expect(flag.exists()).toBe(expectedResult)
+  })
+
+  it('input has is-flag class', () => {
+    createComponent({
+      countryFlag: 'ru',
+    })
+
+    const input = wrapper.find(DATA_INPUT)
+
+    expect(input.classes()).toContain('is-flag')
+  })
 })

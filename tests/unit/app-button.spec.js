@@ -81,4 +81,9 @@ describe('App button', () => {
 
     expect(button.attributes()).toHaveProperty('disabled')
   })
+
+  it.todo('is-loading class')
+  it.todo('is show loading loader')
+  it.todo('is not show loading loader')
+  it.todo('when loading button disabled')
 })

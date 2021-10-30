@@ -92,9 +92,9 @@ export default {
   },
   data() {
     return {
-      menuIsOpen: true,
+      menuIsOpen: false,
       menuList,
-      componentFormName: 'LoginForm',
+      componentFormName: '',
       COMPONENT_FORM_NAMES: {
         registration: 'RegistrationForm',
         login: 'LoginForm',

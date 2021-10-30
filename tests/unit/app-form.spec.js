@@ -89,4 +89,6 @@ describe('App form', () => {
 
     expect(target.text()).toContain(SLOT_CONTENT)
   })
+
+  it.todo('loading prop')
 })

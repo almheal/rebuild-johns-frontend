@@ -10,6 +10,7 @@
     <div class="wrapper-relative">
       <img
         class="app-field__flag"
+        data-test="flag"
         v-if="countryFlag"
         :src="
           require(`../../assets/img/${
@@ -63,7 +64,7 @@ export default {
       default: '',
     },
     maxLength: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     prefix: {
@@ -124,7 +125,7 @@ export default {
       const isValid = value.slice(0, prefix.length) === prefix
 
       if (value.length < prefix.length) {
-        return prefix
+        return `${prefix}${value}`
       }
 
       if (!isValid) {
@@ -147,7 +148,7 @@ export default {
         // if isInteger || index < prefix length then isValid
         if (
           Number.isInteger(Number(item)) ||
-          (prefix && index < prefix.length - 1)
+          (prefix && index < prefix.length)
         ) {
           acc += item
         }
@@ -159,11 +160,23 @@ export default {
     },
   },
   mounted() {
+    let initialValue = ''
     if (this.prefix) {
-      this.$emit(
-        'update:modelValue',
-        this.validatorPrefix(this.modelValue, this.prefix)
+      initialValue = this.validatorPrefix(
+        initialValue || this.modelValue,
+        this.prefix
       )
+    }
+
+    if (this.maxLength) {
+      initialValue = this.validatorMaxLength(
+        initialValue || this.modelValue,
+        this.maxLength
+      )
+    }
+
+    if (initialValue) {
+      this.$emit('update:modelValue', initialValue)
     }
   },
 }
