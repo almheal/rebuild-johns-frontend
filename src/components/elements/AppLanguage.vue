@@ -41,16 +41,13 @@ export default {
   }),
   methods: {
     languageHandler(language) {
-      if (!this.isActive) {
-        this.isActive = true
-        return
-      }
-
       if (language.title !== this.selectedLanguageTitle) {
         this.$emit('selectLanguage', language)
+        this.isActive = false
+        return
+      } else {
+        this.isActive = !this.isActive
       }
-
-      this.isActive = false
     },
   },
 }
@@ -72,6 +69,15 @@ export default {
     &.is-active {
       background-color: $white-color;
       box-shadow: 0 2px 12px 0 rgba(41, 44, 51, 0.2);
+
+      @media (max-width: 769px) {
+        background-color: transparent;
+        box-shadow: initial;
+      }
+    }
+
+    @media (max-width: 769px) {
+      flex-direction: row;
     }
   }
 
@@ -94,6 +100,21 @@ export default {
 
     &.is-active {
       order: -1;
+    }
+
+    @media (max-width: 769px) {
+      @include flex-center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: 0 8px;
+      transition: 0.3s;
+
+      &.is-active {
+        background-color: $smoky-white;
+        color: $brown-color;
+        order: initial;
+      }
     }
   }
 }

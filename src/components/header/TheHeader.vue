@@ -7,28 +7,24 @@
         </router-link>
         <div class="row-center">
           <div class="row-center wrapper-relative">
-            <div class="header__menu row-center">
-              <template v-if="menuIsOpen">
-                <AppMenu :menu="menuList" />
-                <AppButton
-                  class="header__button"
-                  font="gotham"
-                  view="transparent"
-                  textTransform="uppercase"
-                  :disabled="Boolean(componentFormName)"
-                  @clickButton="
-                    setComponentFormName(COMPONENT_FORM_NAMES.login)
-                  "
-                  >{{ $t('app.utils.login') }}</AppButton
-                >
-              </template>
-              <AppLanguage
-                v-else
-                :languages="locales"
-                :selectedLanguageTitle="currentLocale.title"
-                @selectLanguage="selectLanguageHandler"
-              />
-            </div>
+            <HeaderMenu
+              v-if="menuIsOpen"
+              :menuList="menuList"
+              :buttonDisabled="Boolean(componentFormName)"
+              :selectedLocaleTitle="currentLocale.title"
+              :locales="locales"
+              @clickButton="setComponentFormName(COMPONENT_FORM_NAMES.login)"
+              @selectLanguage="selectLanguageHandler"
+              @clickCross="toggleMenu"
+            />
+
+            <AppLanguage
+              class="header__language"
+              v-if="!menuIsOpen"
+              :languages="locales"
+              :selectedLanguageTitle="currentLocale.title"
+              @selectLanguage="selectLanguageHandler"
+            />
             <div class="header__forms" v-if="componentFormName">
               <AppToggleList
                 class="header__toggle"
@@ -69,8 +65,8 @@ import AppBurgerButton from '@elements/AppBurgerButton'
 import AppButton from '@elements/AppButton'
 import AppCross from '@icons/CrossIcon'
 import AppToggleList from '@elements/AppToggleList'
-const AppMenu = defineAsyncComponent(() =>
-  import(/*webpackChunkName: "appMenu"*/ '@elements/AppMenu')
+const HeaderMenu = defineAsyncComponent(() =>
+  import(/*webpackChunkName: "headerMenu"*/ '@components/header/HeaderMenu')
 )
 const LoginForm = defineAsyncComponent(() =>
   import(/*webpackChunkName: "loginForm"*/ '@components/forms/LoginForm')
@@ -89,15 +85,15 @@ export default {
     AppButton,
     AppCross,
     AppToggleList,
-    AppMenu,
+    HeaderMenu,
     LoginForm,
     RegistrationForm,
   },
   data() {
     return {
-      menuIsOpen: true,
+      menuIsOpen: false,
       menuList,
-      componentFormName: 'LoginForm',
+      componentFormName: '',
       COMPONENT_FORM_NAMES: {
         registration: 'RegistrationForm',
         login: 'LoginForm',
@@ -162,12 +158,7 @@ export default {
     }
   }
 
-  &__button {
-    margin: 0 16px;
-    font-size: 14px;
-  }
-
-  &__menu {
+  &__language {
     @media (max-width: 769px) {
       display: none;
     }

@@ -28,9 +28,14 @@ export default {
 
   &__list {
     @include flex;
+
+    @media (max-width: 769px) {
+      flex-direction: column;
+    }
   }
 
   &__link {
+    display: block;
     padding: 14px;
     color: $brown-color;
     user-select: none;
@@ -42,6 +47,10 @@ export default {
     &.router-link-active.router-link-exact-active {
       color: $light-grey-color;
       cursor: default;
+    }
+
+    @media (max-width: 769px) {
+      padding: 10px 20px;
     }
   }
 }
