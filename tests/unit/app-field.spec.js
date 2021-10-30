@@ -178,4 +178,10 @@ describe('App field', () => {
 
     expect(input.element.value).toEqual(MODEL_VALUE)
   })
+
+  it.todo('maxLength')
+  it.todo('prefix')
+  it.todo('integer')
+  it.todo('phone flag')
+  it.todo('is-flag class')
 })

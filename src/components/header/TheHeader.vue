@@ -46,6 +46,7 @@
                 @toRegistration="
                   setComponentFormName(COMPONENT_FORM_NAMES.registration)
                 "
+                @isSubmited="setComponentFormName('')"
               />
             </div>
           </div>
@@ -91,9 +92,9 @@ export default {
   },
   data() {
     return {
-      menuIsOpen: false,
+      menuIsOpen: true,
       menuList,
-      componentFormName: '',
+      componentFormName: 'LoginForm',
       COMPONENT_FORM_NAMES: {
         registration: 'RegistrationForm',
         login: 'LoginForm',

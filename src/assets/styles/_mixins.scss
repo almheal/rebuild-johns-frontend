@@ -45,9 +45,9 @@
   top: $top;
 }
 
-@mixin absolute-top-center{
+@mixin absolute-top-center($left: 0){
   position: absolute;
-  left: 0;
+  left: $left;
   top: 50%;
   transform: translateY(-50%);
 }

@@ -8,14 +8,25 @@
       >{{ label }}</label
     >
     <div class="wrapper-relative">
+      <img
+        class="app-field__flag"
+        v-if="countryFlag"
+        :src="
+          require(`../../assets/img/${
+            COUNTRY_FLAG_IMAGES[countryFlag.toUpperCase()]
+          }`)
+        "
+        alt="country-flag"
+      />
       <component
         class="app-field__input"
+        :class="{ 'is-flag': countryFlag }"
         data-test="input"
         :value="modelValue"
         :is="fieldType"
         :id="dynamicId"
         :type="typeInput"
-        @input="$emit('update:modelValue', $event.target.value)"
+        @input="inputHandler"
       />
     </div>
     <div class="app-field__error" v-if="error" data-test="error">
@@ -25,6 +36,8 @@
 </template>
 
 <script>
+import { COUNTRY_FLAG_IMAGES } from '@const'
+
 export default {
   name: 'AppField',
   emits: ['update:modelValue'],
@@ -49,11 +62,109 @@ export default {
       type: String,
       default: '',
     },
+    maxLength: {
+      type: String,
+      default: '',
+    },
+    prefix: {
+      type: String,
+      default: '',
+    },
+    typeValue: {
+      type: String,
+      default: '',
+    },
+    countryFlag: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      COUNTRY_FLAG_IMAGES,
+    }
+  },
+  watch: {
+    modelValue(value) {
+      if (this.prefix && value.slice(0, this.prefix.length) !== this.prefix) {
+        this.$emit(
+          'update:modelValue',
+          this.validatorPrefix(this.modelValue, this.prefix)
+        )
+      }
+    },
   },
   computed: {
     dynamicId() {
       return Math.floor(Math.random() * Date.now())
     },
+  },
+  methods: {
+    inputHandler(e) {
+      if (this.prefix) {
+        e.target.value = this.validatorPrefix(e.target.value, this.prefix)
+      }
+
+      if (this.maxLength) {
+        e.target.value = this.validatorMaxLength(e.target.value, this.maxLength)
+      }
+
+      if (this.typeValue) {
+        e.target.value = this.validatorTypeValue(e.target.value, this.prefix)
+      }
+
+      this.$emit('update:modelValue', e.target.value)
+    },
+
+    validatorMaxLength(value, maxLength) {
+      return value.length > maxLength ? value.slice(0, maxLength) : value
+    },
+
+    validatorPrefix(value, prefix) {
+      const isValid = value.slice(0, prefix.length) === prefix
+
+      if (value.length < prefix.length) {
+        return prefix
+      }
+
+      if (!isValid) {
+        return `${prefix}${value}`
+      }
+
+      return value
+    },
+
+    validatorTypeValue(value, prefix) {
+      if (this.typeValue === 'integer') {
+        return this.validatorInteger(value, prefix)
+      }
+    },
+
+    validatorInteger(value, prefix) {
+      const splitValue = value.split('')
+
+      const integerValue = splitValue.reduce((acc, item, index) => {
+        // if isInteger || index < prefix length then isValid
+        if (
+          Number.isInteger(Number(item)) ||
+          (prefix && index < prefix.length - 1)
+        ) {
+          acc += item
+        }
+
+        return acc
+      }, '')
+
+      return integerValue
+    },
+  },
+  mounted() {
+    if (this.prefix) {
+      this.$emit(
+        'update:modelValue',
+        this.validatorPrefix(this.modelValue, this.prefix)
+      )
+    }
   },
 }
 </script>
@@ -74,10 +185,21 @@ export default {
     border-radius: 2px;
     background-color: $smoky-white;
     font-size: 16px;
+    color: $brown-color;
+
+    &.is-flag {
+      padding-left: 46px;
+    }
   }
 
   &__label {
     @include absolute-default;
+  }
+
+  &__flag {
+    @include absolute-top-center(15px);
+    width: 16px;
+    height: 16px;
   }
 
   &__error {
