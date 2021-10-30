@@ -1,9 +1,9 @@
 <template>
-  <form class="form" @submit.prevent="$emit('submitForm')">
+  <form class="form" data-test="form" @submit.prevent="$emit('submitForm')">
     <slot name="formTop"></slot>
-    <div class="form__body">
+    <div class="form__body" data-test="body">
       <slot></slot>
-      <div class="form__actions">
+      <div class="form__actions" data-test="actions">
         <slot name="actions"></slot>
         <AppButton class="form__button" v-if="buttonText" buttonType="submit">{{
           buttonText
