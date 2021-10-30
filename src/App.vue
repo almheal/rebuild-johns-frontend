@@ -1,5 +1,5 @@
 <template>
-  <component :is="layout">
+  <component :is="layout" v-if="isShow">
     <router-view />
   </component>
 </template>
@@ -40,6 +40,7 @@ export default {
     }
     this.fetchLocales({ query: { length: false } }).then(() => {
       this.initialLocale({ languages: this.locales })
+      this.isShow = true
     })
   },
 }

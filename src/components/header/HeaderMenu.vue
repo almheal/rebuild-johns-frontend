@@ -7,10 +7,16 @@
       <AppMenu class="header-menu__list" :menu="menuList" />
     </div>
     <div class="header-menu__section header-menu__login">
-      <div class="header-menu__text media_769-hidden">
+      <div class="header-menu__text media_769-hidden" v-if="!isUser">
         {{ $t('app.utils.loginBonusesAndGifts') }}
       </div>
+      <HeaderProfile
+        :userAvatar="userAvatar"
+        v-if="isUser"
+        @clickLogout="$emit('clickLogout')"
+      />
       <AppButton
+        v-else
         class="header-menu__button"
         font="gotham"
         view="transparent"
@@ -45,18 +51,20 @@ import AppMenu from '@elements/AppMenu'
 import AppButton from '@elements/AppButton'
 import AppLanguage from '@elements/AppLanguage'
 import AppCross from '@icons/CrossIcon'
+import HeaderProfile from '@components/header/HeaderProfile'
 import PhoneIcon from '@icons/PhoneIcon'
 
 export default {
   name: 'HeaderMenu',
-  emits: ['clickButton', 'selectLanguage', 'clickCross'],
   components: {
     AppMenu,
     AppButton,
     AppLanguage,
     AppCross,
+    HeaderProfile,
     PhoneIcon,
   },
+  emits: ['clickButton', 'selectLanguage', 'clickCross', 'clickLogout'],
   props: {
     menuList: {
       type: Array,
@@ -73,6 +81,14 @@ export default {
     locales: {
       type: Array,
       default: () => [],
+    },
+    userAvatar: {
+      type: String,
+      default: '',
+    },
+    isUser: {
+      type: Boolean,
+      default: false,
     },
   },
 }

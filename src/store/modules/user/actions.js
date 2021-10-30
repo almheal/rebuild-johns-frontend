@@ -1,5 +1,7 @@
 import * as userService from '@/services/user.service'
 import * as types from './mutations-types'
+import { setLocalStorage } from '@utils'
+import { TOKEN_NAME } from '@const'
 
 const login = async ({ commit }, body) => {
   try {
@@ -38,9 +40,15 @@ const checkAlreadyUser = async (ctx, body) => {
   }
 }
 
+const logout = async ({ commit }) => {
+  commit(types.SET_USER, {})
+  setLocalStorage({ key: TOKEN_NAME, data: '' })
+}
+
 export default {
   login,
   register,
   auth,
   checkAlreadyUser,
+  logout,
 }
