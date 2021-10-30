@@ -2,6 +2,7 @@
   <ul class="toggle-list">
     <li
       class="toggle-list__item"
+      data-test="item"
       v-for="(item, index) in list"
       :class="{ 'is-active': toActive(item) }"
       :key="index"
@@ -9,13 +10,13 @@
     >
       {{ toShow(item) }}
     </li>
-    <slot></slot>
   </ul>
 </template>
 
 <script>
 export default {
   name: 'AppToggleList',
+  emits: ['toggleItem'],
   props: {
     list: {
       type: Array,

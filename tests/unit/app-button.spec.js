@@ -71,4 +71,14 @@ describe('App button', () => {
 
     expect(button.html()).toContain(SLOT_CONTENT)
   })
+
+  it('button is disabled', () => {
+    createComponent({
+      disabled: true,
+    })
+
+    const button = wrapper.find(DATA_BUTTON)
+
+    expect(button.attributes()).toHaveProperty('disabled')
+  })
 })
