@@ -90,5 +90,22 @@ describe('App form', () => {
     expect(target.text()).toContain(SLOT_CONTENT)
   })
 
-  it.todo('loading prop')
+  it.each`
+    loading  | expectedResult
+    ${true}  | ${'true'}
+    ${false} | ${'false'}
+  `(
+    'loading prop is passed to the app-button',
+    ({ loading, expectedResult }) => {
+      createComponent({
+        props: {
+          buttonText: 'text',
+          loading,
+        },
+      })
+      const button = wrapper.findComponent(AppButton)
+
+      expect(button.attributes('loading')).toBe(expectedResult)
+    }
+  )
 })
