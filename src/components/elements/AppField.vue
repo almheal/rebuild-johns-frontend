@@ -1,24 +1,38 @@
 <template>
   <div class="app-field" :class="{ 'is-error': error }">
-    <label :for="dynamicId" class="app-field__label" v-if="label">{{
-      label
-    }}</label>
+    <label
+      class="app-field__label"
+      data-test="label"
+      v-if="label"
+      :for="dynamicId"
+      >{{ label }}</label
+    >
     <div class="wrapper-relative">
       <component
         class="app-field__input"
+        data-test="input"
+        :value="modelValue"
         :is="fieldType"
         :id="dynamicId"
         :type="typeInput"
+        @input="$emit('update:modelValue', $event.target.value)"
       />
     </div>
-    <div class="app-field__error" v-if="error">{{ error }}</div>
+    <div class="app-field__error" v-if="error" data-test="error">
+      {{ error }}
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'AppField',
+  emits: ['update:modelValue'],
   props: {
+    modelValue: {
+      type: String,
+      default: '',
+    },
     fieldType: {
       type: String,
       default: 'input',
