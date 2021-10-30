@@ -52,6 +52,13 @@
   transform: translateY(-50%);
 }
 
+@mixin absolute-top-center-right($right: 0){
+  position: absolute;
+  right: $right;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 @mixin absolute-left-center{
   position: absolute;
   left: 50%;

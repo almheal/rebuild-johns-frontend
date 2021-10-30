@@ -19,6 +19,12 @@
         "
         alt="country-flag"
       />
+      <div
+        class="app-field__icon"
+        @click="passwordIsHidden = !passwordIsHidden"
+      >
+        <eye-icon class="icon" v-if="icon === 'eye'" />
+      </div>
       <component
         class="app-field__input"
         :class="{ 'is-flag': countryFlag }"
@@ -26,7 +32,9 @@
         :value="modelValue"
         :is="fieldType"
         :id="dynamicId"
-        :type="typeInput"
+        :type="
+          !passwordIsHidden && typeInput === 'password' ? 'text' : typeInput
+        "
         @input="inputHandler"
       />
     </div>
@@ -38,9 +46,13 @@
 
 <script>
 import { COUNTRY_FLAG_IMAGES } from '@const'
+import EyeIcon from '@icons/EyeIcon'
 
 export default {
   name: 'AppField',
+  components: {
+    EyeIcon,
+  },
   emits: ['update:modelValue'],
   props: {
     modelValue: {
@@ -79,9 +91,14 @@ export default {
       type: String,
       default: '',
     },
+    icon: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
+      passwordIsHidden: true,
       COUNTRY_FLAG_IMAGES,
     }
   },
@@ -218,6 +235,25 @@ export default {
   &__error {
     @include absolute-bottom-default;
     color: $dark-red-color;
+  }
+
+  &__icon {
+    @include absolute-top-center-right(8px);
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      .icon {
+        fill: $primary-color;
+      }
+    }
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    fill: $light-grey-color;
+    transition: fill 0.3s;
   }
 }
 </style>

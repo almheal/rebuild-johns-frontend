@@ -7,28 +7,29 @@
   >
     <AppField
       class="login-form__input"
+      maxLength="12"
+      prefix="+7"
+      countryFlag="ru"
+      typeValue="integer"
       :label="$t('app.login.phoneNumber')"
       :error="
         errors.phoneNumber?.params
           ? $t(errors.phoneNumber.message, errors.phoneNumber.params)
           : $t(errors.phoneNumber) || ''
       "
-      maxLength="12"
-      prefix="+7"
-      countryFlag="ru"
-      typeValue="integer"
       v-model="user.phoneNumber"
       @update:modelValue="errors.phoneNumber = ''"
     />
     <AppField
       class="login-form__input"
+      icon="eye"
+      typeInput="password"
       :label="$t('app.login.password')"
       :error="
         errors.password?.params
           ? $t(errors.password.message, errors.password.params)
           : $t(errors.password) || ''
       "
-      typeInput="password"
       v-model="user.password"
       @update:modelValue="errors.password = ''"
     />
@@ -61,11 +62,11 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'LoginForm',
-  emits: ['toRegistration'],
   components: {
     AppForm,
     AppField,
   },
+  emits: ['toRegistration', 'isSubmited'],
   data() {
     return {
       user: {

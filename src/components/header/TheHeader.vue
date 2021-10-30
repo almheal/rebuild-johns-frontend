@@ -36,17 +36,14 @@
                 :activeItem="componentFormName"
                 @toggleItem="setComponentFormName($event.componentFormName)"
               />
-              <AppCross
-                class="header__cross"
-                @clickCross="setComponentFormName('')"
-              />
+              <AppCross class="header__cross" @clickCross="toggleMenu" />
               <component
                 class="header__form"
                 :is="componentFormName"
                 @toRegistration="
                   setComponentFormName(COMPONENT_FORM_NAMES.registration)
                 "
-                @isSubmited="setComponentFormName('')"
+                @isSubmited="toggleMenu"
               />
             </div>
           </div>
@@ -145,7 +142,7 @@ export default {
   background-color: $white-color;
 
   &__inner {
-    @include flex-justify-space;
+    @include flex-space-center;
     padding: 15px 0;
   }
 
@@ -167,7 +164,7 @@ export default {
 
   &__forms {
     @include absolute-top-right(100%);
-    z-index: 10;
+    z-index: 1000;
     width: 340px;
 
     @media (max-width: 769px) {

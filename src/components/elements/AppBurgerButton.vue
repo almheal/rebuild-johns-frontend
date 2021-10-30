@@ -1,8 +1,9 @@
 <template>
   <button
     class="burger-button"
-    :class="{ 'is-cross': isCross }"
+    type="button"
     data-test="button"
+    :class="{ 'is-cross': isCross }"
     @click="$emit('clickButton')"
   >
     <div class="burger-button__list">

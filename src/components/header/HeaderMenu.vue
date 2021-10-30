@@ -84,8 +84,8 @@ export default {
 
   @media (max-width: 769px) {
     @include fixed-full;
-    left: 100%;
-    z-index: 1000;
+    left: 0;
+    z-index: 900;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;

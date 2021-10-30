@@ -18,8 +18,17 @@ function setAuthorizationToken(request) {
   return request
 }
 
+function removeLocalStorageToken(error) {
+  const FORBIDDEN_STATUS = 403
+  if (error.response.status === FORBIDDEN_STATUS) {
+    setLocalStorage({ key: TOKEN_NAME, data: '' })
+  }
+
+  throw error
+}
+
 function interceptors(axios) {
-  axios.interceptors.response.use(setLocalStorageToken)
+  axios.interceptors.response.use(setLocalStorageToken, removeLocalStorageToken)
   axios.interceptors.request.use(setAuthorizationToken)
 }
 
