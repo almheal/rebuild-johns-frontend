@@ -1,13 +1,8 @@
-import { genericService } from '@/services/genericService'
+import * as localeService from '@/services/locale.service'
 import * as types from './mutations-types'
 import { getLocalStorage, setLocalStorage } from '@utils'
 import { LOCALE_NAME, DEFAULT_LOCALE } from '@const'
 import i18n from '@/plugins/i18n'
-
-const localeService = genericService('/locales', {
-  get: true,
-  getAll: true,
-})
 
 const fetchLocale = async (ctx, id) => {
   try {

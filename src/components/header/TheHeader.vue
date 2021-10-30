@@ -46,6 +46,7 @@
                 @toRegistration="
                   setComponentFormName(COMPONENT_FORM_NAMES.registration)
                 "
+                @isSubmited="setComponentFormName('')"
               />
             </div>
           </div>

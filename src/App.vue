@@ -6,7 +6,7 @@
 
 <script>
 import DefaultLayout from '@/layouts/DefaultLayout'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -20,6 +20,9 @@ export default {
     ...mapState({
       locales: (state) => state.locale.locales,
     }),
+    ...mapGetters({
+      userToken: 'user/getToken',
+    }),
     layout() {
       return this.$route.meta.layout
     },
@@ -28,9 +31,13 @@ export default {
     ...mapActions({
       fetchLocales: 'locale/fetchLocales',
       initialLocale: 'locale/initialLocale',
+      auth: 'user/auth',
     }),
   },
   mounted() {
+    if (this.userToken) {
+      this.auth()
+    }
     this.fetchLocales({ query: { length: false } }).then(() => {
       this.initialLocale({ languages: this.locales })
     })

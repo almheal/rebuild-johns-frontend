@@ -5,9 +5,13 @@
       <slot></slot>
       <div class="form__actions" data-test="actions">
         <slot name="actions"></slot>
-        <AppButton class="form__button" v-if="buttonText" buttonType="submit">{{
-          buttonText
-        }}</AppButton>
+        <AppButton
+          class="form__button"
+          v-if="buttonText"
+          buttonType="submit"
+          :loading="loading"
+          >{{ buttonText }}</AppButton
+        >
       </div>
     </div>
   </form>
@@ -26,6 +30,10 @@ export default {
     buttonText: {
       type: String,
       default: '',
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
 }

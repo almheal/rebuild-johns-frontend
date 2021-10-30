@@ -3,21 +3,28 @@
     class="app-button"
     data-test="button"
     :class="{
+      'is-loading': loading,
       'gotham-font': font === 'gotham',
       'transparent-view': view === 'transparent',
       uppercase: textTransform === 'uppercase',
     }"
-    :disabled="disabled"
+    :disabled="disabled || loading"
     :type="buttonType"
     @click="$emit('clickButton')"
   >
     <slot></slot>
+    <AppCircleLoader class="app-button__loader" v-if="loading" />
   </button>
 </template>
 
 <script>
+import AppCircleLoader from '@elements/AppCircleLoader'
+
 export default {
   name: 'AppButton',
+  components: {
+    AppCircleLoader,
+  },
   emits: ['clickButton'],
   props: {
     buttonType: {
@@ -37,6 +44,10 @@ export default {
       default: '',
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
       type: Boolean,
       default: false,
     },
@@ -73,6 +84,10 @@ export default {
     }
   }
 
+  &.is-loading {
+    color: transparent;
+  }
+
   &.transparent-view {
     color: $green-color;
     &::before {
@@ -90,17 +105,24 @@ export default {
 
   &:disabled {
     cursor: default;
-    color: $light-grey-color;
-
-    &::before {
-      background-color: $smoky-white;
-    }
 
     &:hover {
       &::before {
         transform: scale(1);
       }
     }
+
+    &:not(.is-loading) {
+      color: $light-grey-color;
+
+      &::before {
+        background-color: $smoky-white;
+      }
+    }
+  }
+
+  &__loader {
+    @include absolute-center;
   }
 }
 </style>
