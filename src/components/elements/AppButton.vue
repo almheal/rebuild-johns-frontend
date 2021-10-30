@@ -7,6 +7,7 @@
       'transparent-view': view === 'transparent',
       uppercase: textTransform === 'uppercase',
     }"
+    :disabled="disabled"
     :type="buttonType"
     @click="$emit('clickButton')"
   >
@@ -35,6 +36,10 @@ export default {
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
@@ -48,6 +53,7 @@ export default {
   padding: 15px 25px;
   border-radius: 24px;
   font-weight: 700;
+  font-size: 16px;
   color: $white-color;
 
   &::before {
@@ -80,6 +86,21 @@ export default {
 
   &.gotham-font {
     font-family: $gotham-font;
+  }
+
+  &:disabled {
+    cursor: default;
+    color: $light-grey-color;
+
+    &::before {
+      background-color: $smoky-white;
+    }
+
+    &:hover {
+      &::before {
+        transform: scale(1);
+      }
+    }
   }
 }
 </style>
