@@ -28,18 +28,6 @@ module.exports = {
         statsOptions: { source: false },
       }),
     ],
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          vendors: {
-            name: 'chunk-vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: -10,
-            chunks: 'all',
-          },
-        },
-      },
-    },
   },
   css: {
     loaderOptions: {

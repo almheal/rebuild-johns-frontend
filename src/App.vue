@@ -1,5 +1,5 @@
 <template>
-  <component :is="layout" v-if="isShow">
+  <component :is="layout">
     <router-view />
   </component>
 </template>
@@ -44,13 +44,13 @@ export default {
     },
   },
   mounted() {
+    this.isShow = true
     this.requestCategories()
     if (this.userToken) {
       this.auth()
     }
     this.fetchLocales({ query: { length: false } }).then(() => {
       this.initialLocale({ languages: this.locales })
-      this.isShow = true
     })
   },
 }
