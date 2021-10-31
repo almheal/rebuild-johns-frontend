@@ -21,9 +21,11 @@
       />
       <div
         class="app-field__icon"
+        data-test="eye"
+        v-if="icon === 'eye'"
         @click="passwordIsHidden = !passwordIsHidden"
       >
-        <eye-icon class="icon" v-if="icon === 'eye'" />
+        <eye-icon class="icon" />
       </div>
       <component
         class="app-field__input"
