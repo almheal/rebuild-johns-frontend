@@ -8,6 +8,7 @@ describe('App field', () => {
   const DATA_INPUT = '[data-test=input]'
   const DATA_ERROR = '[data-test=error]'
   const DATA_FLAG = '[data-test=flag]'
+  const DATA_EYE = '[data-test=eye]'
 
   const createComponent = (props) => {
     wrapper = shallowMount(AppField, { props })
@@ -287,6 +288,33 @@ describe('App field', () => {
     expect(input.classes()).toContain('is-flag')
   })
 
-  it.todo('eye icon')
-  it.todo('password is showed')
+  it.each`
+    icon     | name           | expectedResult
+    ${'eye'} | ${'is showed'} | ${true}
+    ${''}    | ${'is hidden'} | ${false}
+  `('eye icon $name', ({ icon, expectedResult }) => {
+    createComponent({
+      icon,
+    })
+
+    const eyeIcon = wrapper.find(DATA_EYE)
+
+    expect(eyeIcon.exists()).toBe(expectedResult)
+  })
+
+  it('password type is changed', async () => {
+    createComponent({
+      icon: 'eye',
+      typeInput: 'password',
+    })
+
+    const eyeIcon = wrapper.find(DATA_EYE)
+    const input = wrapper.find(DATA_INPUT)
+    // check type before change
+    expect(input.attributes('type')).toBe('password')
+
+    await eyeIcon.trigger('click')
+
+    expect(input.attributes('type')).toBe('text')
+  })
 })
