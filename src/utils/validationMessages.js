@@ -6,3 +6,5 @@ export const minLength = (min) => ({
   params: { param: min },
 })
 export const required = 'app.utils.requiredField'
+export const passwordMismatch = 'app.utils.passwordMismatch'
+export const incorrentName = 'app.utils.incorrentName'

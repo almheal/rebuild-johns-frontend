@@ -286,4 +286,7 @@ describe('App field', () => {
 
     expect(input.classes()).toContain('is-flag')
   })
+
+  it.todo('eye icon')
+  it.todo('password is showed')
 })

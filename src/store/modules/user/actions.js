@@ -34,7 +34,7 @@ const checkAlreadyUser = async (ctx, body) => {
     const data = await userService.checkAlreadyUser(body)
     return data
   } catch (err) {
-    console.log(err)
+    return err
   }
 }
 

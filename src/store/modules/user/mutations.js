@@ -10,4 +10,7 @@ export default {
   [types.SET_REGISTER_LOADER](state, value) {
     state.registerLoader = value
   },
+  [types.SET_CHECK_ALREADY_LOADER](state, value) {
+    state.checkAlreadyLoader = value
+  },
 }
