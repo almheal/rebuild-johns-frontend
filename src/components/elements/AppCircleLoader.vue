@@ -1,5 +1,8 @@
 <template>
-  <div class="circle-loader">
+  <div
+    class="circle-loader"
+    :class="{ 'is-green': color === 'green', medium: size === 'medium' }"
+  >
     <div class="circle-loader__item" v-for="item in 4" :key="item" />
   </div>
 </template>
@@ -7,6 +10,16 @@
 <script>
 export default {
   name: 'AppCircleLoader',
+  props: {
+    color: {
+      type: String,
+      default: '',
+    },
+    size: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 
@@ -16,6 +29,24 @@ export default {
   position: relative;
   width: 32px;
   height: 32px;
+
+  &.is-green {
+    .circle-loader__item {
+      border-color: $green-color transparent transparent transparent;
+    }
+  }
+
+  &.medium {
+    width: 46px;
+    height: 46px;
+
+    .circle-loader__item {
+      width: round(46px * 0.8);
+      height: round(46px * 0.8);
+      margin: round(46px * 0.1);
+      border-with: round(46px * 0.1);
+    }
+  }
 
   &__item {
     @include absolute-default;
