@@ -24,6 +24,7 @@ export default {
 
   &__body {
     flex: 1 1 0;
+    background-color: $smoky-white;
   }
 }
 </style>
