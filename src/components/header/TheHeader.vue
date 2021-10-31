@@ -142,7 +142,7 @@ export default {
   background-color: $white-color;
 
   &__inner {
-    @include flex-justify-space;
+    @include flex-space-center;
     padding: 15px 0;
   }
 
