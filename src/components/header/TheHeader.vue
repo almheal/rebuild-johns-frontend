@@ -1,7 +1,10 @@
 <template>
   <header class="header">
     <div class="container">
-      <div class="header__inner">
+      <div
+        class="header__inner"
+        :class="{ 'is-padding': !Object.keys(user).length || !menuIsOpen }"
+      >
         <router-link class="header__logo" to="/">
           <img class="header__img" src="../../assets/img/logo.svg" alt="logo" />
         </router-link>
@@ -13,9 +16,12 @@
               :buttonDisabled="Boolean(componentFormName)"
               :selectedLocaleTitle="currentLocale.title"
               :locales="locales"
+              :userAvatar="user.img"
+              :isUser="Boolean(Object.keys(user).length)"
               @clickButton="setComponentFormName(COMPONENT_FORM_NAMES.login)"
               @selectLanguage="selectLanguageHandler"
               @clickCross="toggleMenu"
+              @clickLogout="logoutHandler"
             />
 
             <AppLanguage
@@ -102,6 +108,7 @@ export default {
     ...mapState({
       currentLocale: (state) => state.locale.currentLocale,
       locales: (state) => state.locale.locales,
+      user: (state) => state.user.user,
     }),
     formToggleList() {
       return [
@@ -119,6 +126,7 @@ export default {
   methods: {
     ...mapActions({
       changeLocale: 'locale/changeLocale',
+      logout: 'user/logout',
     }),
     selectLanguageHandler(language) {
       this.changeLocale({ locale: language.title, languages: this.locales })
@@ -132,6 +140,12 @@ export default {
         this.setComponentFormName('')
       }
     },
+    logoutHandler() {
+      if (this.$route.meta.auth) {
+        this.$router.push('/')
+      }
+      this.logout()
+    },
   },
 }
 </script>
@@ -143,7 +157,11 @@ export default {
 
   &__inner {
     @include flex-space-center;
-    padding: 15px 0;
+    padding: 5px 0;
+
+    &.is-padding {
+      padding: 15px 0;
+    }
   }
 
   &__img {
