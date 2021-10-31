@@ -60,6 +60,11 @@ export default {
   height: 50px;
   font-family: $gotham-font;
 
+  @media (max-width: 769px) {
+    width: auto;
+    height: auto;
+  }
+
   &__list {
     @include absolute-default;
     @include flex;
@@ -78,6 +83,7 @@ export default {
 
     @media (max-width: 769px) {
       flex-direction: row;
+      position: relative;
     }
   }
 
