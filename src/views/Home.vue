@@ -4,6 +4,7 @@
       <div class="home__inner">
         <HomeCategories
           class="home__categories"
+          :loading="categoriesLoader"
           :categories="categories"
           @clickCategory="categoryHandler"
         />
@@ -14,7 +15,7 @@
 
 <script>
 import HomeCategories from '@components/home/HomeCategories'
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
@@ -24,18 +25,13 @@ export default {
   computed: {
     ...mapState({
       categories: (state) => state.category.categories,
+      categoriesLoader: (state) => state.category.categoriesLoader,
     }),
   },
   methods: {
-    ...mapActions({
-      fetchCategories: 'category/fetchCategories',
-    }),
     categoryHandler(category) {
       console.log(category)
     },
-  },
-  mounted() {
-    this.fetchCategories()
   },
 }
 </script>
