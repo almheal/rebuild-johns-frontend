@@ -127,6 +127,7 @@ export default {
     padding: 15px 20px 8px;
     font-family: $gotham-font;
     font-weight: 500;
+    cursor: pointer;
 
     @media (max-width: 769px) {
       @include flex-align-center;
@@ -224,6 +225,13 @@ export default {
           opacity: 1;
         }
       }
+    }
+  }
+
+  &__checkbox {
+    display: none;
+    @media (max-width: 769px) {
+      display: flex;
     }
   }
 

@@ -1,0 +1,3 @@
+export const SET_ITEM_CART = 'SET_ITEM_CART'
+export const SET_ITEMS_CART = 'SET_ITEMS_CART'
+export const SET_DISCOUNT = 'SET_DISCOUNT'

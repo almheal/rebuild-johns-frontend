@@ -68,6 +68,7 @@
               </div>
             </section>
           </div>
+          <ShoppingCart class="home__cart" />
         </div>
       </div>
     </div>
@@ -77,6 +78,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import HomeCategories from '@components/home/HomeCategories'
+import ShoppingCart from '@components/shoppingCart/ShoppingCart'
 import ProductList from '@components/product/ProductList'
 import FilterIcon from '@icons/FilterIcon'
 import RevertIcon from '@icons/RevertIcon'
@@ -96,6 +98,7 @@ export default {
   name: 'Home',
   components: {
     HomeCategories,
+    ShoppingCart,
     ProductList,
     FilterIcon,
     RevertIcon,
@@ -106,7 +109,7 @@ export default {
     return {
       ingredientsIdsFilter: [],
       tagsFilter: [],
-      isFilter: true,
+      isFilter: false,
     }
   },
   computed: {
@@ -286,12 +289,18 @@ export default {
   }
 
   &__body {
-    width: calc(100% - 272px);
+    flex: 1 1 0;
     margin-right: 30px;
 
     @media (max-width: 993px) {
       width: 100%;
       margin-right: 0;
+    }
+  }
+
+  &__cart {
+    @media (max-width: 993px) {
+      display: none;
     }
   }
 }
