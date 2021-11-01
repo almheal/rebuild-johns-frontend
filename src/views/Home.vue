@@ -5,12 +5,68 @@
         <HomeCategories
           class="home__categories"
           :loading="categoriesLoader"
-          :categories="categories"
+          :categories="categoriesWithProducts"
           @clickCategory="categoryHandler"
         />
-        <div class="home__body">
-          <div class="home__products">
-            <ProductList :products="products" :loading="productsLoader" />
+        <div class="home__row row">
+          <div class="home__body">
+            <section class="section" v-if="getPizzaCategory">
+              <div class="section__header">
+                <h4 class="section__title">{{ $t(getPizzaCategory.title) }}</h4>
+                <div class="row">
+                  <div
+                    class="section__icon"
+                    :class="{ 'is-active': ingredientsIdsFilter.length }"
+                    @click="isFilter = !isFilter"
+                  >
+                    <FilterIcon />
+                  </div>
+                  <div
+                    class="section__icon section__revert"
+                    v-if="ingredientsIdsFilter.length || tagsFilter.length"
+                    @click="resetFilter"
+                  >
+                    <RevertIcon />
+                  </div>
+                </div>
+              </div>
+              <HomeTagsFilter
+                v-if="isFilter"
+                :list="filteredPizzasTagsAndFeatures"
+                :activeTags="tagsFilter"
+                @clickFilter="toggleFilterItem($event, 'tagsFilter')"
+              />
+              <HomeIngredientsFilter
+                v-if="isFilter"
+                :ingredients="ingredients"
+                :activeIngredientsIds="ingredientsIdsFilter"
+                :pizzasIngredientsIds="filteredPizzasIngredientsIds"
+                :loading="ingredientsLoader"
+                @clickIngredient="addIngredientsFilter"
+                @back="isFilter = false"
+              />
+              <div class="section__products">
+                <ProductList
+                  :products="filteredPizzas"
+                  :loading="productsLoader"
+                />
+              </div>
+            </section>
+            <section
+              class="section"
+              v-for="category in categoriesWithoutPizza"
+              :key="category._id"
+            >
+              <div class="section__header">
+                <h4 class="section__title">{{ $t(category.title) }}</h4>
+              </div>
+              <div class="section__products">
+                <ProductList
+                  :products="productsByCategories[category._id]"
+                  :loading="productsLoader"
+                />
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -19,15 +75,39 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import HomeCategories from '@components/home/HomeCategories'
 import ProductList from '@components/product/ProductList'
-import { mapActions, mapState } from 'vuex'
+import FilterIcon from '@icons/FilterIcon'
+import RevertIcon from '@icons/RevertIcon'
+const HomeIngredientsFilter = defineAsyncComponent(() =>
+  import(
+    /*webpackChunkName: "homeIngredientsFilter"*/ '@components/home/HomeIngredientsFilter'
+  )
+)
+const HomeTagsFilter = defineAsyncComponent(() =>
+  import(
+    /*webpackChunkName: "homeTagsFilter"*/ '@components/home/HomeTagsFilter'
+  )
+)
+import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'Home',
   components: {
     HomeCategories,
     ProductList,
+    FilterIcon,
+    RevertIcon,
+    HomeIngredientsFilter,
+    HomeTagsFilter,
+  },
+  data() {
+    return {
+      ingredientsIdsFilter: [],
+      tagsFilter: [],
+      isFilter: true,
+    }
   },
   computed: {
     ...mapState({
@@ -35,18 +115,156 @@ export default {
       categoriesLoader: (state) => state.category.categoriesLoader,
       products: (state) => state.product.products,
       productsLoader: (state) => state.product.productsLoader,
+      ingredients: (state) => state.ingredient.ingredients,
+      ingredientsLoader: (state) => state.ingredient.ingredientsLoader,
     }),
+
+    ...mapGetters({
+      getPizzaCategory: 'category/getPizzaCategory',
+    }),
+
+    filteredPizzasIngredientsIds() {
+      return this.filteredPizzas.reduce((acc, product) => {
+        for (let i = 0; i < product.ingredients.length; i++) {
+          if (!acc.includes(product.ingredients[i]._id)) {
+            acc.push(product.ingredients[i]._id)
+          }
+        }
+
+        return acc
+      }, [])
+    },
+
+    filteredPizzasTagsAndFeatures() {
+      const uniqueFeaturesAndTags = new Set()
+
+      this.filteredPizzas.forEach((product) => {
+        const featuresAndTags = [...product.tags, ...product.features]
+        for (let i = 0; i < featuresAndTags.length; i++) {
+          uniqueFeaturesAndTags.add(this.$t(featuresAndTags[i].title))
+        }
+      })
+
+      return [...uniqueFeaturesAndTags]
+    },
+
+    filteredPizzas() {
+      const pizzaProducts =
+        this.productsByCategories[this.getPizzaCategory._id] || []
+
+      if (!this.ingredientsIdsFilter.length && !this.tagsFilter.length) {
+        return pizzaProducts
+      }
+
+      return pizzaProducts.filter((product) => {
+        const productFeaturesAndTags = [...product.tags, ...product.features]
+        let successIngredientsLength = 0
+        let successTagsLength = 0
+
+        for (let i = 0; i < product.ingredients.length; i++) {
+          if (this.ingredientsIdsFilter.includes(product.ingredients[i]._id)) {
+            successIngredientsLength++
+          }
+
+          if (successIngredientsLength === this.ingredientsIdsFilter.length) {
+            break
+          }
+        }
+
+        for (let i = 0; i < productFeaturesAndTags.length; i++) {
+          if (
+            this.tagsFilter.includes(this.$t(productFeaturesAndTags[i].title))
+          ) {
+            successTagsLength++
+          }
+
+          if (successTagsLength === this.tagsFilter.length) {
+            break
+          }
+        }
+
+        return (
+          successIngredientsLength === this.ingredientsIdsFilter.length &&
+          successTagsLength === this.tagsFilter.length
+        )
+      })
+    },
+
+    categoriesWithProducts() {
+      return this.categories.filter((category) =>
+        this.products.some((product) => product.category._id === category._id)
+      )
+    },
+
+    categoriesWithoutPizza() {
+      return this.categoriesWithProducts.filter(
+        (category) => category._id !== this.getPizzaCategory._id
+      )
+    },
+
+    productsByCategories() {
+      return this.categoriesWithProducts.reduce((acc, category) => {
+        if (!acc[category._id]) {
+          acc[category._id] = []
+        }
+
+        for (let i = 0; i < this.products.length; i++) {
+          if (this.products[i].category._id === category._id) {
+            acc[category._id].push(this.products[i])
+          }
+        }
+
+        return acc
+      }, {})
+    },
   },
+
   methods: {
     ...mapActions({
       fetchProducts: 'product/fetchProducts',
+      fetchIngredients: 'ingredient/fetchIngredients',
     }),
+
+    ...mapMutations({
+      setIngredientsLoader: 'ingredient/SET_INGREDIENTS_LOADER',
+    }),
+
     categoryHandler(category) {
       console.log(category)
     },
+
+    toggleFilterItem(value, property) {
+      if (this[property].includes(value)) {
+        this[property] = this[property].filter((item) => item !== value)
+        return
+      }
+
+      this[property].push(value)
+    },
+
+    addIngredientsFilter(ingredient) {
+      if (!this.filteredPizzasIngredientsIds.includes(ingredient._id)) {
+        return
+      }
+
+      this.toggleFilterItem(ingredient._id, 'ingredientsIdsFilter')
+    },
+
+    resetFilter() {
+      this.ingredientsIdsFilter = []
+      this.tagsFilter = []
+    },
+
+    async requestIngredients() {
+      this.setIngredientsLoader(true)
+      await this.fetchIngredients({ query: { length: false } })
+      this.setIngredientsLoader(false)
+    },
   },
+
   mounted() {
     this.fetchProducts({ query: { length: false } })
+    this.requestIngredients()
   },
 }
 </script>
@@ -63,13 +281,68 @@ export default {
     }
   }
 
-  &__products {
-    padding: 70px 0;
+  &__row {
+    padding-top: 70px;
+  }
+
+  &__body {
     width: calc(100% - 272px);
     margin-right: 30px;
 
     @media (max-width: 993px) {
       width: 100%;
+      margin-right: 0;
+    }
+  }
+}
+
+.section {
+  padding-bottom: 70px;
+
+  @media (max-width: 576px) {
+    padding-bottom: 40px;
+  }
+
+  &__header {
+    @include flex-align-center;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-family: $gotham-font;
+    font-weight: 700;
+    font-size: 24px;
+    color: $brown-color;
+    margin-right: 16px;
+
+    @media (max-width: 380px) {
+      font-size: 20px;
+    }
+  }
+
+  &__icon {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background-color: $dark-smoky-white;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: $pale-grey-color;
+    }
+
+    &.is-active {
+      background-color: $green-color;
+      color: $white-color;
+    }
+  }
+
+  &__revert {
+    &:hover {
+      transform: rotate(90deg);
     }
   }
 }

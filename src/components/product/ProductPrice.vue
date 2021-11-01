@@ -24,7 +24,7 @@ export default {
   font-size: 18px;
   font-weight: 500;
 
-  @meida (max-width: 577px) {
+  @media (max-width: 577px) {
     font-size: 16px;
   }
 
