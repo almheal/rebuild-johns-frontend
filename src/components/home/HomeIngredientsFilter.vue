@@ -1,9 +1,23 @@
 <template>
   <div class="ingredients-filter" :class="{ 'is-loading': loading }">
     <template v-if="!loading">
+      <div class="ingredients-filter__header" @click="$emit('back')">
+        <ArrowDownIcon class="ingredients-filter__arrow" />
+        <div class="ingredients-filter__title">
+          {{ $t('app.utils.filterPizza') }}
+        </div>
+      </div>
+      <AppToggleList
+        class="ingredients-filter__toggle"
+        :list="categoryTitles"
+        :toShow="(item) => $t(item)"
+        :toActive="(item) => $t(item) === $t(getActiveCategory)"
+        @toggleItem="activeCategory = $event"
+      />
       <div
         class="ingredients-filter__list"
         v-for="(ingredients, categoryTitle) in ingredientsByCategories"
+        :class="{ 'is-active': categoryTitle === getActiveCategory }"
         :key="categoryTitle"
       >
         <div class="ingredients-filter__category">{{ $t(categoryTitle) }}</div>
@@ -18,7 +32,11 @@
           @click="$emit('clickIngredient', ingredient)"
         >
           <CheckMarkIcon class="ingredients-filter__mark" />
-          {{ $t(ingredient.title) }}
+          <AppCheckbox
+            class="ingredients-filter__checkbox"
+            :modelValue="activeIngredientsIds.includes(ingredient._id)"
+          />
+          <div class="ingredients-filter__name">{{ $t(ingredient.title) }}</div>
         </div>
       </div>
     </template>
@@ -29,14 +47,20 @@
 <script>
 import CheckMarkIcon from '@icons/CheckMarkIcon'
 import AppCircleLoader from '@elements/AppCircleLoader'
+import AppToggleList from '@elements/AppToggleList'
+import ArrowDownIcon from '@icons/ArrowDownIcon'
+import AppCheckbox from '@elements/AppCheckbox'
 
 export default {
   name: 'HomeIngredientsFilter',
   components: {
     CheckMarkIcon,
     AppCircleLoader,
+    AppToggleList,
+    ArrowDownIcon,
+    AppCheckbox,
   },
-  emits: ['clickIngredient'],
+  emits: ['clickIngredient', 'back'],
   props: {
     ingredients: {
       type: Array,
@@ -55,6 +79,9 @@ export default {
       default: false,
     },
   },
+  data: () => ({
+    activeCategory: '',
+  }),
   computed: {
     ingredientsByCategories() {
       return this.ingredients.reduce((acc, ingredient) => {
@@ -65,6 +92,14 @@ export default {
         acc[ingredient.category].push(ingredient)
         return acc
       }, {})
+    },
+
+    categoryTitles() {
+      return Object.keys(this.ingredientsByCategories)
+    },
+
+    getActiveCategory() {
+      return this.activeCategory || this.categoryTitles[0]
     },
   },
 }
@@ -78,6 +113,42 @@ export default {
   border-radius: 10px;
   margin-bottom: 24px;
 
+  @media (max-width: 769px) {
+    @include fixed-full;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 1000;
+    padding: 0;
+    overflow: auto;
+  }
+
+  &__header {
+    display: none;
+    padding: 15px 20px 8px;
+    font-family: $gotham-font;
+    font-weight: 500;
+
+    @media (max-width: 769px) {
+      @include flex-align-center;
+    }
+  }
+
+  &__arrow {
+    transform: rotate(90deg);
+    fill: $primary-color;
+  }
+
+  &__title {
+    margin-left: 24px;
+  }
+
+  &__toggle {
+    display: none;
+    @media (max-width: 769px) {
+      display: flex;
+    }
+  }
+
   &.is-loading {
     justify-content: center;
     align-items: center;
@@ -89,6 +160,14 @@ export default {
     &:last-child {
       margin-right: 0;
     }
+
+    @media (max-width: 769px) {
+      padding: 25px 0;
+
+      &:not(.is-active) {
+        display: none;
+      }
+    }
   }
 
   &__category {
@@ -97,9 +176,14 @@ export default {
     margin-bottom: 10px;
     padding-left: 30px;
     user-select: none;
+
+    @media (max-width: 769px) {
+      display: none;
+    }
   }
 
   &__item {
+    @include flex-align-center;
     position: relative;
     margin-bottom: 5px;
     padding: 5px 15px 5px 30px;
@@ -109,6 +193,12 @@ export default {
     cursor: default;
     user-select: none;
     transition: 0.3s;
+
+    @media (max-width: 769px) {
+      font-weight: 500;
+      padding: 6px 20px;
+      font-size: 16px;
+    }
 
     &.is-active {
       color: $green-color;
@@ -144,6 +234,10 @@ export default {
     color: $light-grey-color;
     opacity: 0;
     transition: 0.3s;
+
+    @media (max-width: 769px) {
+      display: none;
+    }
   }
 }
 </style>

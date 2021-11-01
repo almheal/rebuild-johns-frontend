@@ -43,6 +43,7 @@
                 :pizzasIngredientsIds="filteredPizzasIngredientsIds"
                 :loading="ingredientsLoader"
                 @clickIngredient="addIngredientsFilter"
+                @back="isFilter = false"
               />
               <div class="section__products">
                 <ProductList
@@ -105,7 +106,7 @@ export default {
     return {
       ingredientsIdsFilter: [],
       tagsFilter: [],
-      isFilter: false,
+      isFilter: true,
     }
   },
   computed: {

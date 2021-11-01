@@ -35,6 +35,10 @@ export default {
   flex-wrap: wrap;
   margin-bottom: 15px;
 
+  @media (max-width: 577px) {
+    display: none;
+  }
+
   &__item {
     border: 1px solid $wolf-grey-color;
     padding: 8px 16px;
