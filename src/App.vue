@@ -16,6 +16,7 @@ export default {
   data: () => ({
     isShow: false,
   }),
+
   computed: {
     ...mapState({
       locales: (state) => state.locale.locales,
@@ -27,6 +28,7 @@ export default {
       return this.$route.meta.layout
     },
   },
+
   methods: {
     ...mapActions({
       fetchLocales: 'locale/fetchLocales',
@@ -43,14 +45,15 @@ export default {
       this.setCategoriesLoader(false)
     },
   },
+
   mounted() {
-    this.isShow = true
     this.requestCategories()
     if (this.userToken) {
       this.auth()
     }
     this.fetchLocales({ query: { length: false } }).then(() => {
       this.initialLocale({ languages: this.locales })
+      // this.isShow = true
     })
   },
 }

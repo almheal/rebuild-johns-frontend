@@ -20,3 +20,40 @@
 -- remove preload and add prefetch
 1) 94
 2) added preload for chunks vendors and app
+
+
+
+
+------------------
+-
+Perfomance - 63
+First paint - 2.3s
+Speed index - 3.2s
+Largest paint - 4.7s
+Time to interactive - 4.9s
+Total blocking - 630ms
+Cumulative - 0.03
+
+Script evaluation 1079ms
+Other 1300ms
+Style layout 467ms
+
+
+Что нужно сделать
+1) Кол-во товаров - perfomance 66
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
