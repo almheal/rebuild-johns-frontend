@@ -159,7 +159,7 @@ export default {
 .product-card {
   position: relative;
   width: calc((100% - 20px) / 3);
-  margin: 0 10px 100px 0;
+  margin: 0 10px 10px 0;
   background-color: $white-color;
   border-radius: 10px;
 

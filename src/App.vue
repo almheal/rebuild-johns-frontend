@@ -53,7 +53,7 @@ export default {
     }
     this.fetchLocales({ query: { length: false } }).then(() => {
       this.initialLocale({ languages: this.locales })
-      // this.isShow = true
+      this.isShow = true
     })
   },
 }
