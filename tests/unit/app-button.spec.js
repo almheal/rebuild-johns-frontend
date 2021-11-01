@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import AppButton from '@elements/AppButton.vue'
+import AppButton from '@elements/AppButton'
+import AppCircleLoader from '@elements/AppCircleLoader'
 
 describe('App button', () => {
   let wrapper
@@ -70,5 +71,57 @@ describe('App button', () => {
     const button = wrapper.find(DATA_BUTTON)
 
     expect(button.html()).toContain(SLOT_CONTENT)
+  })
+
+  it('button is disabled', () => {
+    createComponent({
+      disabled: true,
+    })
+
+    const button = wrapper.find(DATA_BUTTON)
+
+    expect(button.attributes()).toHaveProperty('disabled')
+  })
+
+  it.each`
+    loading  | name
+    ${true}  | ${'have'}
+    ${false} | ${'no have'}
+  `('button $name is-loading class', ({ loading }) => {
+    createComponent({
+      loading,
+    })
+
+    const button = wrapper.find(DATA_BUTTON)
+
+    if (loading) {
+      expect(button.classes()).toContain('is-loading')
+    } else {
+      expect(button.classes()).not.toContain('is-loading')
+    }
+  })
+
+  it.each`
+    loading  | name               | expectedResult
+    ${true}  | ${'is showed'}     | ${true}
+    ${false} | ${'is not showed'} | ${false}
+  `('component loader $name', ({ loading, expectedResult }) => {
+    createComponent({
+      loading,
+    })
+
+    const loader = wrapper.findComponent(AppCircleLoader)
+
+    expect(loader.exists()).toBe(expectedResult)
+  })
+
+  it('with loading, button is disabled', () => {
+    createComponent({
+      loading: true,
+    })
+
+    const button = wrapper.find(DATA_BUTTON)
+
+    expect(button.attributes()).toHaveProperty('disabled')
   })
 })

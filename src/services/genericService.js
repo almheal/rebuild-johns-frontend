@@ -1,42 +1,47 @@
 import { request } from './request'
 
 export const genericService = (url, options) => {
-  const crudService = generateCrudService(url)
-
-  const serviceByOptions = generateServiceByOptions(crudService, options)
-
-  return serviceByOptions
+  return generateCrudService(url, options)
 }
 
-function generateCrudService(url) {
-  return {
-    async create(body) {
+function generateCrudService(url, options) {
+  const service = {}
+
+  if (options.create) {
+    service.create = async (body = {}) => {
       const response = await request({
         url,
         method: 'post',
         body,
       })
       return response.data
-    },
+    }
+  }
 
-    async get(id) {
+  if (options.get) {
+    service.get = async (id = '') => {
       const response = await request({
         url: `${url}/${id}`,
         method: 'get',
       })
       return response.data
-    },
+    }
+  }
 
-    async getAll() {
+  if (options.getAll) {
+    service.getAll = async ({ query }) => {
       const response = await request({
         url,
         method: 'get',
+        params: query,
       })
 
       return response.data
-    },
+    }
+  }
 
-    async update({ id, body }) {
+  if (options.update) {
+    service.update = async ({ id, body }) => {
       const response = await request({
         url: `${url}/${id}`,
         method: 'put',
@@ -44,22 +49,19 @@ function generateCrudService(url) {
       })
 
       return response.data
-    },
+    }
+  }
 
-    async delete(id) {
+  if (options.delete) {
+    service.delete = async (id) => {
       const response = await request({
         url: `${url}/${id}`,
         method: 'delete',
       })
 
       return response.data
-    },
+    }
   }
-}
 
-function generateServiceByOptions(crudService, options) {
-  return Object.keys(options).reduce((acc, key) => {
-    acc[key] = crudService[key]
-    return acc
-  }, {})
+  return service
 }

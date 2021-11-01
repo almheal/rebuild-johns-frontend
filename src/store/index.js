@@ -1,8 +1,14 @@
 import { createStore } from 'vuex'
+import locale from './modules/locale'
+import user from './modules/user'
+import category from './modules/category'
+import product from './modules/product'
 
 export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+  modules: {
+    locale,
+    user,
+    category,
+    product,
+  },
 })

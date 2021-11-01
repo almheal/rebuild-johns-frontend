@@ -3,7 +3,7 @@
     <ul class="menu__list">
       <li class="menu__item" v-for="menuItem in menu" :key="menuItem.title">
         <router-link class="menu__link" :to="menuItem.link" data-test="link">
-          {{ menuItem.title }}
+          {{ $t(menuItem.title) }}
         </router-link>
       </li>
     </ul>
@@ -28,9 +28,14 @@ export default {
 
   &__list {
     @include flex;
+
+    @media (max-width: 769px) {
+      flex-direction: column;
+    }
   }
 
   &__link {
+    display: block;
     padding: 14px;
     color: $brown-color;
     user-select: none;
@@ -42,6 +47,10 @@ export default {
     &.router-link-active.router-link-exact-active {
       color: $light-grey-color;
       cursor: default;
+    }
+
+    @media (max-width: 769px) {
+      padding: 10px 20px;
     }
   }
 }

@@ -87,7 +87,7 @@ describe('App language', () => {
     const activeLanguage = findActiveLanguage()
     //check is-active class before click
     expect(languageList.classes('is-active')).toBe(false)
-    await activeLanguage?.trigger('click')
+    await activeLanguage.trigger('click')
 
     expect(languageList.classes('is-active')).toBe(true)
   })
@@ -99,8 +99,8 @@ describe('App language', () => {
     })
 
     const activeLanguage = findActiveLanguage()
-    await activeLanguage?.trigger('click')
-    await activeLanguage?.trigger('click')
+    await activeLanguage.trigger('click')
+    await activeLanguage.trigger('click')
     const isShowedLanguages = findIsShowLanguages()
 
     expect(isShowedLanguages).toHaveLength(0)
@@ -113,8 +113,8 @@ describe('App language', () => {
     })
 
     const activeLanguage = findActiveLanguage()
-    await activeLanguage?.trigger('click')
-    await activeLanguage?.trigger('click')
+    await activeLanguage.trigger('click')
+    await activeLanguage.trigger('click')
 
     expect(wrapper.emitted('selectLanguage')).toBeUndefined()
   })
@@ -128,7 +128,7 @@ describe('App language', () => {
     const activeLanguage = findActiveLanguage()
     await activeLanguage?.trigger('click')
     const language = findLanguageByTitle(SELECTED_LANGUAGE.title)
-    await language?.trigger('click')
+    await language.trigger('click')
 
     expect(wrapper.emitted()).toHaveProperty('selectLanguage')
   })
@@ -142,7 +142,7 @@ describe('App language', () => {
     const activeLanguage = findActiveLanguage()
     await activeLanguage?.trigger('click')
     const language = findLanguageByTitle(SELECTED_LANGUAGE.title)
-    await language?.trigger('click')
+    await language.trigger('click')
     const event = wrapper.emitted('selectLanguage')
 
     expect(event).toEqual(expect.arrayContaining([[SELECTED_LANGUAGE]]))
