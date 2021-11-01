@@ -19,3 +19,13 @@ export const resetObjProperties = (obj) => {
     return acc
   }, {})
 }
+
+export const initialIngredients = (ingredients) => {
+  return ingredients.map((ingredient) => {
+    return {
+      ...ingredient,
+      isRemoved: false,
+      isDefault: true,
+    }
+  })
+}

@@ -67,6 +67,10 @@ export default {
   font-size: 16px;
   color: $white-color;
 
+  @media (max-width: 576px) {
+    font-size: 14px;
+  }
+
   &::before {
     content: '';
     @include absolute-default;
