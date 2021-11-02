@@ -28,7 +28,7 @@
             :count="item.count"
             :id="item.id"
             :price="item.size.price"
-            :varietyTitle="$t(item.variety.variety)"
+            :varietyTitle="$t(item.variety.variety || '')"
             :sizeTitle="
               item.size?.size
                 ? `${item.size.size.title} ${$t(item.size?.size?.unit)}`

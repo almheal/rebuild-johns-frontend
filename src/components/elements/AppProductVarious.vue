@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'ProductVarious',
+  name: 'AppProductVarious',
   emits: ['update:modelValue'],
   props: {
     items: {
