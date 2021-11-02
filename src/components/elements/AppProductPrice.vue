@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'ProductPrice',
+  name: 'AppProductPrice',
   props: {
     price: {
       type: String,

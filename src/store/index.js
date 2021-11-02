@@ -4,6 +4,7 @@ import user from './modules/user'
 import category from './modules/category'
 import product from './modules/product'
 import ingredient from './modules/ingredient'
+import shoppingCart from './modules/shoppingCart'
 
 export default createStore({
   modules: {
@@ -12,5 +13,6 @@ export default createStore({
     category,
     product,
     ingredient,
+    shoppingCart,
   },
 })

@@ -52,8 +52,10 @@
       </div>
 
       <div class="product-card__row product-card__content">
-        <AppButton>{{ $t('app.utils.addToCart') }}</AppButton>
-        <ProductPrice :price="activeSize.price" />
+        <AppButton @clickButton="addToCartHandler">{{
+          $t('app.utils.addToCart')
+        }}</AppButton>
+        <AppProductPrice :price="activeSize.price" />
       </div>
     </div>
     <ProductIngredients
@@ -78,10 +80,11 @@ const ProductIngredients = defineAsyncComponent(() =>
 )
 import ProductAdditionals from '@components/product/ProductAdditionals'
 import ProductVarious from '@components/product/ProductVarious'
-import ProductPrice from '@components/product/ProductPrice'
+import AppProductPrice from '@elements/AppProductPrice'
 import AppButton from '@elements/AppButton'
 import InfoIcon from '@icons/InfoIcon'
 import { initialIngredients } from '@utils'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductCard',
@@ -90,7 +93,7 @@ export default {
     ProductIngredients,
     ProductAdditionals,
     ProductVarious,
-    ProductPrice,
+    AppProductPrice,
     AppButton,
     InfoIcon,
   },
@@ -121,6 +124,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      addToCart: 'shoppingCart/addToCart',
+    }),
     defaultVarietyAndSize(option) {
       this.activeVariety = option
       this.activeSize = option.sizes[0]
@@ -141,7 +147,16 @@ export default {
     },
 
     addToCartHandler() {
-      console.log('to cart')
+      const product = {
+        title: this.product.title,
+        ingredients: this.ingredients,
+        variety: this.activeVariety,
+        size: this.activeSize,
+        options: [{ ...this.activeVariety, sizes: [this.activeSize] }],
+        category: this.product.category._id,
+      }
+
+      this.addToCart(product)
     },
 
     toggleIngredient(ingredient) {
@@ -195,14 +210,14 @@ export default {
   }
 
   &__img {
-    height: 230px;
-    width: 292px;
+    height: 223px;
+    width: 283px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 
     @media (max-width: 1201px) {
-      width: 340px;
-      height: 268px;
+      width: 325px;
+      height: 256px;
     }
 
     @media (max-width: 769px) {
