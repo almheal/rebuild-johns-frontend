@@ -1,5 +1,11 @@
 <template>
-  <div class="app-field" :class="{ 'is-error': error }">
+  <div
+    class="app-field"
+    :class="{
+      'is-message': error || message,
+      'is-promo-code': componentName === 'promoCode',
+    }"
+  >
     <label
       class="app-field__label"
       data-test="label"
@@ -29,9 +35,11 @@
       </div>
       <component
         class="app-field__input"
-        :class="{ 'is-flag': countryFlag }"
         data-test="input"
+        :class="{ 'is-flag': countryFlag }"
+        :placeholder="placeholder"
         :value="modelValue"
+        :disabled="disabled"
         :is="fieldType"
         :id="dynamicId"
         :type="
@@ -39,9 +47,16 @@
         "
         @input="inputHandler"
       />
+
+      <slot></slot>
     </div>
-    <div class="app-field__error" v-if="error" data-test="error">
-      {{ error }}
+    <div
+      class="app-field__message"
+      :class="{ 'is-error': error, 'is-success': message }"
+      v-if="error || message"
+      data-test="message"
+    >
+      {{ error || message }}
     </div>
   </div>
 </template>
@@ -73,7 +88,15 @@ export default {
       type: String,
       default: 'text',
     },
+    placeholder: {
+      type: String,
+      default: '',
+    },
     error: {
+      type: String,
+      default: '',
+    },
+    message: {
       type: String,
       default: '',
     },
@@ -96,6 +119,14 @@ export default {
     icon: {
       type: String,
       default: '',
+    },
+    componentName: {
+      type: String,
+      default: '',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -206,8 +237,25 @@ export default {
   position: relative;
   padding-top: 20px;
 
-  &.is-error {
-    padding-bottom: 18px;
+  &.is-message {
+    padding-bottom: 20px;
+  }
+
+  &.is-promo-code {
+    padding-top: 0;
+
+    .app-field__input {
+      border: 1px solid $smoky-white;
+      border-radius: 20px;
+      height: 46px;
+      padding: 8px 50px 8px 20px;
+      transition: 0.3s;
+
+      &:focus {
+        background-color: $white-color;
+        border-color: $green-color;
+      }
+    }
   }
 
   &__input {
@@ -218,6 +266,17 @@ export default {
     background-color: $smoky-white;
     font-size: 16px;
     color: $brown-color;
+    transition: background-color 0.3s;
+
+    &::placeholder {
+      color: $light-grey-color;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    &:focus {
+      background-color: $light-smoky-white;
+    }
 
     &.is-flag {
       padding-left: 46px;
@@ -234,9 +293,16 @@ export default {
     height: 16px;
   }
 
-  &__error {
+  &__message {
     @include absolute-bottom-default;
-    color: $dark-red-color;
+
+    &.is-error {
+      color: $dark-red-color;
+    }
+
+    &.is-success {
+      color: $green-color;
+    }
   }
 
   &__icon {

@@ -8,3 +8,4 @@ export const minLength = (min) => ({
 export const required = 'app.utils.requiredField'
 export const passwordMismatch = 'app.utils.passwordMismatch'
 export const incorrentName = 'app.utils.incorrentName'
+export const failPromoCode = 'app.utils.failedToApply'
