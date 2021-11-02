@@ -5,6 +5,7 @@ import category from './modules/category'
 import product from './modules/product'
 import ingredient from './modules/ingredient'
 import shoppingCart from './modules/shoppingCart'
+import promoCode from './modules/promoCode'
 
 export default createStore({
   modules: {
@@ -14,5 +15,6 @@ export default createStore({
     product,
     ingredient,
     shoppingCart,
+    promoCode,
   },
 })

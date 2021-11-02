@@ -62,3 +62,11 @@ export const nameValidation = (name) => {
 export const emailValidation = (email) => {
   return !emailRegExp.test(email) ? incorrentEmail : ''
 }
+
+export const promoCodeValidation = (promoCode) => {
+  if (!promoCode) {
+    return required
+  }
+
+  return ''
+}

@@ -44,7 +44,7 @@
             {{ $t('app.cart.orderPrice') }}:
           </div>
           <div class="shopping-cart__count" v-else>{{ cartCountTitle }}</div>
-          <AppProductPrice :price="getTotal" />
+          <AppProductPrice :price="total" />
         </div>
         <AppButton class="shopping-cart__button">{{
           $t('app.cart.orderNow')
@@ -70,8 +70,8 @@ import CartIcon from '@icons/CartIcon'
 import AppCartItem from '@elements/AppCartItem'
 import AppProductPrice from '@elements/AppProductPrice'
 import AppButton from '@elements/AppButton'
-import { mapActions, mapGetters } from 'vuex'
-import { wordWithRightEnding } from '../../utils'
+import { mapActions, mapGetters, mapState } from 'vuex'
+import { wordWithRightEnding, calculateDiscount } from '@utils'
 
 export default {
   name: 'ShoppingCart',
@@ -89,11 +89,25 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      promoCode: (state) => state.promoCode.promoCode,
+    }),
     ...mapGetters({
       getItems: 'shoppingCart/getItems',
       getTotal: 'shoppingCart/getTotal',
       getItemsCount: 'shoppingCart/getItemsCount',
     }),
+
+    total() {
+      const { discount, percent } = this.promoCode
+      return Object.keys(this.promoCode).length
+        ? calculateDiscount({
+            total: this.getTotal,
+            discount,
+            isPercent: percent,
+          })
+        : this.getTotal
+    },
 
     cartCountTitle() {
       return `${this.getItemsCount} ${wordWithRightEnding(this.getItemsCount, [
@@ -124,8 +138,6 @@ export default {
 
 <style lang="scss" scoped>
 .shopping-cart {
-  width: 272px;
-
   &__icon {
     @include absolute-left-center;
     top: -20px;

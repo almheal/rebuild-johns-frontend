@@ -68,7 +68,19 @@
               </div>
             </section>
           </div>
-          <ShoppingCart class="home__cart" />
+          <div class="home__column">
+            <ShoppingCart class="home__cart" />
+            <AppPromoCode
+              class="home__promo-code"
+              :promoCode="promoCodeName"
+              :error="$t(errors.promoCodeName)"
+              :message="$t(messages.promoCodeName)"
+              :disabled="Object.keys(promoCode).length"
+              @submitPromoCode="submitPromoCodeHandler"
+              @removePromoCode="removePromoCodeHandler"
+              @update:promoCode="updatePromoCodeHandler"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -82,6 +94,7 @@ import ShoppingCart from '@components/shoppingCart/ShoppingCart'
 import ProductList from '@components/product/ProductList'
 import FilterIcon from '@icons/FilterIcon'
 import RevertIcon from '@icons/RevertIcon'
+import AppPromoCode from '@elements/AppPromoCode'
 const HomeIngredientsFilter = defineAsyncComponent(() =>
   import(
     /*webpackChunkName: "homeIngredientsFilter"*/ '@components/home/HomeIngredientsFilter'
@@ -93,6 +106,9 @@ const HomeTagsFilter = defineAsyncComponent(() =>
   )
 )
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
+import { promoCodeValidation } from '@utils/validations'
+import { failPromoCode } from '@utils/validationMessages'
+import { NOTIFICATION_TIMEOUT } from '@const'
 
 export default {
   name: 'Home',
@@ -102,6 +118,7 @@ export default {
     ProductList,
     FilterIcon,
     RevertIcon,
+    AppPromoCode,
     HomeIngredientsFilter,
     HomeTagsFilter,
   },
@@ -110,6 +127,13 @@ export default {
       ingredientsIdsFilter: [],
       tagsFilter: [],
       isFilter: false,
+      promoCodeName: '',
+      errors: {
+        promoCodeName: '',
+      },
+      messages: {
+        promoCodeName: '',
+      },
     }
   },
   computed: {
@@ -120,6 +144,7 @@ export default {
       productsLoader: (state) => state.product.productsLoader,
       ingredients: (state) => state.ingredient.ingredients,
       ingredientsLoader: (state) => state.ingredient.ingredientsLoader,
+      promoCode: (state) => state.promoCode.promoCode,
     }),
 
     ...mapGetters({
@@ -226,6 +251,8 @@ export default {
     ...mapActions({
       fetchProducts: 'product/fetchProducts',
       fetchIngredients: 'ingredient/fetchIngredients',
+      fetchPromoCode: 'promoCode/fetchPromoCode',
+      resetPromoCode: 'promoCode/resetPromoCode',
     }),
 
     ...mapMutations({
@@ -234,6 +261,41 @@ export default {
 
     categoryHandler(category) {
       console.log(category)
+    },
+
+    updatePromoCodeHandler(value) {
+      this.promoCodeName = value
+      this.errors.promoCodeName = ''
+    },
+
+    removePromoCodeHandler() {
+      this.promoCodeName = ''
+      this.resetPromoCode()
+    },
+
+    async submitPromoCodeHandler() {
+      const isValid = this.validatePromoCodeName()
+
+      if (!isValid) {
+        return
+      }
+
+      const isSuccess = await this.fetchPromoCode(this.promoCodeName)
+
+      if (!isSuccess) {
+        this.errors.promoCodeName = this.$t(failPromoCode)
+      } else {
+        this.messages.promoCodeName = 'app.utils.successfullyApplied'
+        setTimeout(() => {
+          this.messages.promoCodeName = ''
+        }, NOTIFICATION_TIMEOUT)
+      }
+    },
+
+    validatePromoCodeName() {
+      this.errors.promoCodeName = promoCodeValidation(this.promoCodeName)
+
+      return this.errors.promoCodeName ? false : true
     },
 
     toggleFilterItem(value, property) {
@@ -260,13 +322,13 @@ export default {
 
     async requestIngredients() {
       this.setIngredientsLoader(true)
-      await this.fetchIngredients({ query: { length: false } })
+      await this.fetchIngredients({ params: { length: false } })
       this.setIngredientsLoader(false)
     },
   },
 
   mounted() {
-    this.fetchProducts({ query: { length: false } })
+    this.fetchProducts({ params: { length: false } })
     this.requestIngredients()
   },
 }
@@ -286,6 +348,10 @@ export default {
 
   &__row {
     padding-top: 70px;
+
+    @media (max-width: 993px) {
+      flex-direction: column;
+    }
   }
 
   &__body {
@@ -298,10 +364,25 @@ export default {
     }
   }
 
+  &__column {
+    width: 272px;
+
+    @media (max-width: 993px) {
+      width: 100%;
+      order: -1;
+      margin-bottom: 25px;
+    }
+  }
+
   &__cart {
+    margin-bottom: 10px;
+
     @media (max-width: 993px) {
       display: none;
     }
+  }
+
+  &__promo-code {
   }
 }
 

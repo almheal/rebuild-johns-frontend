@@ -1,0 +1,1 @@
+export const SET_PROMO_CODE = 'SET_PROMO_CODE'

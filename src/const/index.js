@@ -8,3 +8,4 @@ export const MINIMUM_PASSWORD_LENGTH = 6
 export const PHONE_LENGTH_WITH_PREFIX = 12
 export const PHONE_LENGTH = 11
 export const CART_NAME = 'cart'
+export const NOTIFICATION_TIMEOUT = 2000
