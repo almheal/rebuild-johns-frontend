@@ -49,7 +49,22 @@
                 <ProductList
                   :products="filteredPizzas"
                   :loading="productsLoader"
-                />
+                >
+                  <AppSpecialCard
+                    img="constructor-card.png"
+                    :title="$t('app.utils.createYourPizza')"
+                    :buttonText="$t('app.utils.createPizza')"
+                    :description="$t('app.utils.anyIngredients')"
+                    @clickButton="$router.push('/constructor')"
+                  />
+                  <AppSpecialCard
+                    img="halvesPizza.png"
+                    :title="$t('app.halves.card.title')"
+                    :buttonText="$t('app.halves.card.selectPizza')"
+                    :description="$t('app.halves.card.combineTwoFlavors')"
+                    @clickButton="$router.push('/halves')"
+                  />
+                </ProductList>
               </div>
             </section>
             <section
@@ -95,6 +110,7 @@ import ProductList from '@components/product/ProductList'
 import FilterIcon from '@icons/FilterIcon'
 import RevertIcon from '@icons/RevertIcon'
 import AppPromoCode from '@elements/AppPromoCode'
+import AppSpecialCard from '@elements/AppSpecialCard'
 const HomeIngredientsFilter = defineAsyncComponent(() =>
   import(
     /*webpackChunkName: "homeIngredientsFilter"*/ '@components/home/HomeIngredientsFilter'
@@ -121,6 +137,7 @@ export default {
     AppPromoCode,
     HomeIngredientsFilter,
     HomeTagsFilter,
+    AppSpecialCard,
   },
   data() {
     return {
