@@ -1,5 +1,6 @@
 <template>
   <div class="product-list">
+    <slot></slot>
     <ProductCard
       v-for="product in products"
       :key="product._id"
