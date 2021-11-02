@@ -6,7 +6,7 @@ describe('App field', () => {
 
   const DATA_LABEL = '[data-test=label]'
   const DATA_INPUT = '[data-test=input]'
-  const DATA_ERROR = '[data-test=error]'
+  const DATA_MESSAGE = '[data-test=message]'
   const DATA_FLAG = '[data-test=flag]'
   const DATA_EYE = '[data-test=eye]'
 
@@ -18,7 +18,7 @@ describe('App field', () => {
     errorValue | name                  | expectedResult
     ${'error'} | ${'with error'}       | ${true}
     ${''}      | ${'without error no'} | ${false}
-  `('wrapper $name have an is-error class', ({ errorValue }) => {
+  `('wrapper $name have an is-message class', ({ errorValue }) => {
     createComponent({
       error: errorValue,
     })
@@ -26,9 +26,9 @@ describe('App field', () => {
     const classes = wrapper.classes()
 
     if (errorValue) {
-      expect(classes).toContain('is-error')
+      expect(classes).toContain('is-message')
     } else {
-      expect(classes).not.toContain('is-error')
+      expect(classes).not.toContain('is-message')
     }
   })
 
@@ -133,7 +133,7 @@ describe('App field', () => {
       error: errorValue,
     })
 
-    const error = wrapper.find(DATA_ERROR)
+    const error = wrapper.find(DATA_MESSAGE)
 
     expect(error.exists()).toBe(expectedResult)
   })
@@ -144,7 +144,7 @@ describe('App field', () => {
       error: ERROR_VALUE,
     })
 
-    const error = wrapper.find(DATA_ERROR)
+    const error = wrapper.find(DATA_MESSAGE)
 
     expect(error.text()).toEqual(ERROR_VALUE)
   })
