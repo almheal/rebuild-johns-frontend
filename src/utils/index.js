@@ -38,3 +38,11 @@ export const wordWithRightEnding = (number, texts) => {
       : cases[number % 10 < 5 ? number % 10 : 5]
   ]
 }
+
+export const calculateDiscount = ({ total, discount, isPercent }) => {
+  return isPercent
+    ? (total * discount) / 100
+    : discount > total
+    ? 0
+    : total - discount
+}

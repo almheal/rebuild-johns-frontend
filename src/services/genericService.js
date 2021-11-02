@@ -19,21 +19,22 @@ function generateCrudService(url, options) {
   }
 
   if (options.get) {
-    service.get = async (id = '') => {
+    service.get = async ({ id = '', params } = {}) => {
       const response = await request({
         url: `${url}/${id}`,
         method: 'get',
+        params,
       })
       return response.data
     }
   }
 
   if (options.getAll) {
-    service.getAll = async ({ query }) => {
+    service.getAll = async ({ params }) => {
       const response = await request({
         url,
         method: 'get',
-        params: query,
+        params,
       })
 
       return response.data
