@@ -61,6 +61,10 @@ export default {
   &__toggle {
     padding: 0;
     font-size: 12px;
+
+    @media (max-width: 769px) {
+      font-size: 16px;
+    }
   }
 
   &__list {

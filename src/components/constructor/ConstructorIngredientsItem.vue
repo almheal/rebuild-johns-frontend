@@ -100,6 +100,38 @@ export default {
     margin-right: 0;
   }
 
+  @media (max-width: 769px) {
+    flex: 0 0 calc((100% / 3) - 6px);
+
+    &:nth-child(4n + 4) {
+      margin-right: 8px;
+    }
+
+    &:nth-child(3n + 3) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 544px) {
+    flex: 0 0 calc(50% - 6px);
+    margin-right: 0;
+    &:nth-child(4n + 4) {
+      margin-right: 0;
+    }
+
+    &:nth-child(2n) {
+      margin-left: 8px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    flex: 0 0 100%;
+
+    &:nth-child(2n) {
+      margin-left: 0;
+    }
+  }
+
   &__picture {
     min-height: 50px;
     margin-bottom: 10px;
