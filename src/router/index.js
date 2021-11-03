@@ -5,7 +5,14 @@ const routes = [
     path: '/',
     name: 'Home',
     meta: { layout: 'DefaultLayout' },
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home'),
+    component: () => import(/* webpackChunkName: "homeView" */ '../views/Home'),
+  },
+  {
+    path: '/constructor',
+    name: 'Constructor',
+    meta: { layout: 'DefaultLayout' },
+    component: () =>
+      import(/*webpackChunkName: "constructorView"*/ '../views/Constructor'),
   },
 ]
 

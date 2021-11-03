@@ -5,18 +5,23 @@
       :placeholder="$t('app.cart.enterPromoCode')"
       :message="message"
       :error="error"
-      :disabled="disabled"
+      :disabled="disabled || loading"
       :modelValue="promoCode"
       @update:modelValue="$emit('update:promoCode', $event)"
     >
       <button
         class="promo-code__button"
-        :class="{ 'is-disabled': disabled }"
+        :class="{ 'is-disabled': disabled || loading }"
         type="submit"
       >
+        <AppCircleLoader
+          class="promo-code__loader"
+          v-if="loading"
+          color="green"
+        />
         <CrossIcon
           class="promo-code__cross"
-          v-if="disabled"
+          v-if="disabled && !loading"
           width="14"
           height="14"
         />
@@ -28,12 +33,14 @@
 <script>
 import AppField from '@elements/AppField'
 import CrossIcon from '@icons/CrossIcon'
+import AppCircleLoader from '@elements/AppCircleLoader'
 
 export default {
   name: 'AppPromoCode',
   components: {
     AppField,
     CrossIcon,
+    AppCircleLoader,
   },
   emits: ['submitPromoCode', 'update:promoCode'],
   props: {
@@ -50,6 +57,10 @@ export default {
       default: '',
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
       type: Boolean,
       default: false,
     },
@@ -122,6 +133,11 @@ export default {
     &::after {
       background-color: $pale-grey-color;
     }
+  }
+
+  &__loader {
+    @include absolute-center;
+    z-index: 5;
   }
 }
 </style>
