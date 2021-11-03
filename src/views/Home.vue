@@ -88,9 +88,10 @@
             <AppPromoCode
               class="home__promo-code"
               :promoCode="promoCodeName"
+              :loading="promoCodeLoader"
               :error="$t(errors.promoCodeName)"
               :message="$t(messages.promoCodeName)"
-              :disabled="Object.keys(promoCode).length"
+              :disabled="Boolean(Object.keys(promoCode).length)"
               @submitPromoCode="submitPromoCodeHandler"
               @removePromoCode="removePromoCodeHandler"
               @update:promoCode="updatePromoCodeHandler"
@@ -162,6 +163,7 @@ export default {
       ingredients: (state) => state.ingredient.ingredients,
       ingredientsLoader: (state) => state.ingredient.ingredientsLoader,
       promoCode: (state) => state.promoCode.promoCode,
+      promoCodeLoader: (state) => state.promoCode.promoCodeLoader,
     }),
 
     ...mapGetters({
@@ -274,6 +276,7 @@ export default {
 
     ...mapMutations({
       setIngredientsLoader: 'ingredient/SET_INGREDIENTS_LOADER',
+      setPromoCodeLoader: 'promoCode/SET_PROMO_CODE_LOADER',
     }),
 
     categoryHandler(category) {
@@ -297,7 +300,9 @@ export default {
         return
       }
 
+      this.setPromoCodeLoader(true)
       const isSuccess = await this.fetchPromoCode(this.promoCodeName)
+      this.setPromoCodeLoader(false)
 
       if (!isSuccess) {
         this.errors.promoCodeName = this.$t(failPromoCode)

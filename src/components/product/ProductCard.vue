@@ -31,7 +31,7 @@
 
         <div class="product-card__content">
           <div class="product-card__varieties" v-if="productVarieties.length">
-            <ProductVarious
+            <AppProductVarious
               :items="productVarieties"
               :toShow="(item) => $t(item.variety)"
               :modelValue="activeVariety"
@@ -40,7 +40,7 @@
           </div>
 
           <template v-if="activeVarietySizes.length">
-            <ProductVarious
+            <AppProductVarious
               :items="activeVarietySizes"
               :toShow="
                 (item) => `${item.size.title} ${$t(item.size?.unit || '')}`
@@ -55,7 +55,7 @@
         <AppButton @clickButton="addToCartHandler">{{
           $t('app.utils.addToCart')
         }}</AppButton>
-        <AppProductPrice :price="activeSize.price" />
+        <AppPrice :price="activeSize.price" />
       </div>
     </div>
     <ProductIngredients
@@ -79,8 +79,8 @@ const ProductIngredients = defineAsyncComponent(() =>
   )
 )
 import ProductAdditionals from '@components/product/ProductAdditionals'
-import ProductVarious from '@components/product/ProductVarious'
-import AppProductPrice from '@elements/AppProductPrice'
+import AppProductVarious from '@elements/AppProductVarious'
+import AppPrice from '@elements/AppPrice'
 import AppButton from '@elements/AppButton'
 import InfoIcon from '@icons/InfoIcon'
 import { initialIngredients } from '@utils'
@@ -92,8 +92,8 @@ export default {
     ProductIngredientsButton,
     ProductIngredients,
     ProductAdditionals,
-    ProductVarious,
-    AppProductPrice,
+    AppProductVarious,
+    AppPrice,
     AppButton,
     InfoIcon,
   },

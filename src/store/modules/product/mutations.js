@@ -7,4 +7,10 @@ export default {
   [types.SET_PRODUCTS_LOADER](state, value) {
     state.productsLoader = value
   },
+  [types.SET_PRODUCT](state, product) {
+    state.product = product
+  },
+  [types.SET_PRODUCT_LOADER](state, value) {
+    state.productLoader = value
+  },
 }
