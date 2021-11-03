@@ -91,7 +91,7 @@
               :loading="promoCodeLoader"
               :error="$t(errors.promoCodeName)"
               :message="$t(messages.promoCodeName)"
-              :disabled="Object.keys(promoCode).length"
+              :disabled="Boolean(Object.keys(promoCode).length)"
               @submitPromoCode="submitPromoCodeHandler"
               @removePromoCode="removePromoCodeHandler"
               @update:promoCode="updatePromoCodeHandler"

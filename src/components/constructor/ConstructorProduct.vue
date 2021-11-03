@@ -3,18 +3,12 @@
     <div class="constructor-product__picture">
       <img
         class="constructor-product__img"
-        v-if="!img"
-        src="../../assets/img/constructor-product.png"
-        alt="default-product-img"
-      />
-      <img
-        class="constructor-product__img"
-        v-else
-        :src="img"
+        v-if="activeVariety.img"
+        :src="activeVariety.img"
         alt="product-img"
       />
     </div>
-    <div class="constructor-product__title">
+    <div class="constructor-product__title" :class="{ 'is-error': errorTitle }">
       <input
         class="constructor-product__input"
         type="text"
@@ -22,6 +16,9 @@
         @input="$emit('update:title', $event.target.value)"
       />
       <PenIcon class="constructor-product__pen" />
+    </div>
+    <div class="constructor-product__error" v-if="errorTitle">
+      {{ errorTitle }}
     </div>
     <AppProductVarious
       class="constructor-product__various"
@@ -78,6 +75,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    errorTitle: {
+      type: String,
+      default: '',
+    },
   },
 }
 </script>
@@ -86,6 +87,7 @@ export default {
 .constructor-product {
   padding-bottom: 32px;
   &__picture {
+    min-height: 150px;
     margin-bottom: 20px;
   }
 
@@ -96,6 +98,16 @@ export default {
   &__title {
     position: relative;
     margin: 0 20px 30px;
+
+    &.is-error {
+      margin-bottom: 0;
+
+      .constructor-product__input {
+        &::placeholder {
+          color: $dark-red-color;
+        }
+      }
+    }
   }
 
   &__input {
@@ -109,6 +121,7 @@ export default {
 
     &::placeholder {
       color: $light-grey-color;
+      transition: color 0.3s;
     }
   }
 
@@ -121,6 +134,12 @@ export default {
 
   &__various {
     margin-bottom: 8px;
+  }
+
+  &__error {
+    margin: 10px 0 30px;
+    color: $dark-red-color;
+    text-align: center;
   }
 }
 </style>

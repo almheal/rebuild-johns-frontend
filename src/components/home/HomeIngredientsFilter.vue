@@ -145,6 +145,7 @@ export default {
 
   &__toggle {
     display: none;
+    padding-left: 24px;
     @media (max-width: 769px) {
       display: flex;
     }

@@ -25,7 +25,7 @@ export default {
 
 <style lang="scss" scoped>
 .circle-loader {
-  display: inline-block;
+  display: block;
   position: relative;
   width: 32px;
   height: 32px;

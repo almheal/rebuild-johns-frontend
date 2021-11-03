@@ -12,7 +12,7 @@ export const fetchProducts = async ({ commit }, { query } = {}) => {
 
 export const fetchProduct = async ({ commit }, id) => {
   try {
-    const data = await productService.get(id)
+    const data = await productService.get({ id })
     commit(types.SET_PRODUCT, data)
     return data
   } catch (err) {
