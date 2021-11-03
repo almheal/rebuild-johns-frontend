@@ -23,7 +23,7 @@
             :class="{ 'is-removed': title.includes('-') }"
             :key="index"
           >
-            {{ `${index ? ',' : ''}${title}` }}
+            {{ `${index ? ', ' : ''}${title}` }}
           </span>
         </div>
       </div>
@@ -34,7 +34,7 @@
         @decrement="$emit('decrement', id)"
         @increment="$emit('increment', id)"
       />
-      <AppProductPrice class="cart-item__price" :price="count * price" />
+      <AppPrice class="cart-item__price" :price="count * price" />
     </div>
   </div>
 </template>
@@ -42,14 +42,14 @@
 <script>
 import CrossIcon from '@icons/CrossIcon'
 import AppCartItemCounter from '@elements/AppCartItemCounter'
-import AppProductPrice from '@elements/AppProductPrice'
+import AppPrice from '@elements/AppPrice'
 
 export default {
   name: 'AppCartItem',
   components: {
     CrossIcon,
     AppCartItemCounter,
-    AppProductPrice,
+    AppPrice,
   },
   emits: ['removeItem', 'decrement', 'increment'],
   props: {
@@ -62,7 +62,7 @@ export default {
       default: '',
     },
     count: {
-      type: String,
+      type: [String, Number],
       default: '1',
     },
     price: {
@@ -74,7 +74,7 @@ export default {
       default: () => [],
     },
     id: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     varietyTitle: {
@@ -82,8 +82,8 @@ export default {
       default: '',
     },
     sizeTitle: {
-      type: Object,
-      default: () => ({}),
+      type: String,
+      default: '',
     },
   },
   computed: {
@@ -92,16 +92,19 @@ export default {
         (acc, ingredient) => {
           if (ingredient.isRemoved) {
             acc.removedIngredients.push(`- ${this.$t(ingredient.title)}`)
+            return acc
           }
 
           if (ingredient.count > 1) {
             acc.doubleIngredients.push(
               `+ ${this.$t(ingredient.title)} x${ingredient.count}`
             )
+            return acc
           }
 
           if (!ingredient.isDefault) {
             acc.addedIngredients.push(`+ ${this.$t(ingredient.title)}`)
+            return acc
           }
 
           return acc

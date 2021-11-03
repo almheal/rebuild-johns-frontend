@@ -44,7 +44,7 @@
             {{ $t('app.cart.orderPrice') }}:
           </div>
           <div class="shopping-cart__count" v-else>{{ cartCountTitle }}</div>
-          <AppProductPrice :price="total" />
+          <AppPrice :price="total" />
         </div>
         <AppButton class="shopping-cart__button">{{
           $t('app.cart.orderNow')
@@ -68,7 +68,7 @@ import ShoppingCartDecor from '@components/shoppingCart/ShoppingCartDecor'
 import AppCartHeader from '@elements/AppCartHeader'
 import CartIcon from '@icons/CartIcon'
 import AppCartItem from '@elements/AppCartItem'
-import AppProductPrice from '@elements/AppProductPrice'
+import AppPrice from '@elements/AppPrice'
 import AppButton from '@elements/AppButton'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { wordWithRightEnding, calculateDiscount } from '@utils'
@@ -80,7 +80,7 @@ export default {
     AppCartHeader,
     CartIcon,
     AppCartItem,
-    AppProductPrice,
+    AppPrice,
     AppButton,
   },
   data() {

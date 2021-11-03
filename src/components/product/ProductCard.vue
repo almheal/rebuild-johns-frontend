@@ -55,7 +55,7 @@
         <AppButton @clickButton="addToCartHandler">{{
           $t('app.utils.addToCart')
         }}</AppButton>
-        <AppProductPrice :price="activeSize.price" />
+        <AppPrice :price="activeSize.price" />
       </div>
     </div>
     <ProductIngredients
@@ -80,7 +80,7 @@ const ProductIngredients = defineAsyncComponent(() =>
 )
 import ProductAdditionals from '@components/product/ProductAdditionals'
 import AppProductVarious from '@elements/AppProductVarious'
-import AppProductPrice from '@elements/AppProductPrice'
+import AppPrice from '@elements/AppPrice'
 import AppButton from '@elements/AppButton'
 import InfoIcon from '@icons/InfoIcon'
 import { initialIngredients } from '@utils'
@@ -93,7 +93,7 @@ export default {
     ProductIngredients,
     ProductAdditionals,
     AppProductVarious,
-    AppProductPrice,
+    AppPrice,
     AppButton,
     InfoIcon,
   },

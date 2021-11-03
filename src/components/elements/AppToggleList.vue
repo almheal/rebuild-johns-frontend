@@ -60,6 +60,31 @@ export default {
       transition: opacity 0.3s;
     }
 
+    &:first-child {
+      padding-left: 0;
+
+      &::after {
+        left: 0;
+      }
+    }
+
+    &:last-child {
+      padding-right: 0;
+
+      &::after {
+        right: 0;
+        left: initial;
+      }
+    }
+
+    &:first-child,
+    &:last-child {
+      &::after {
+        width: calc(100% - 12px);
+        transform: translateX(0);
+      }
+    }
+
     &.is-active {
       color: $green-color;
 
