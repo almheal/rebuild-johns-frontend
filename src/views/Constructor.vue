@@ -283,6 +283,7 @@ export default {
     ...mapActions({
       fetchIngredients: 'ingredient/fetchIngredients',
       fetchProduct: 'product/fetchProduct',
+      fetchCategories: 'category/fetchCategories',
       addToCart: 'shoppingCart/addToCart',
     }),
 
@@ -496,6 +497,7 @@ export default {
   },
 
   mounted() {
+    this.fetchCategories()
     this.requestIngredients().then(() => {
       this.initialIngredientsCounter(this.ingredients, 0)
     })

@@ -14,6 +14,13 @@ const routes = [
     component: () =>
       import(/*webpackChunkName: "constructorView"*/ '../views/Constructor'),
   },
+  {
+    path: '/halves',
+    name: 'Halves',
+    meta: { layout: 'DefaultLayout' },
+    component: () =>
+      import(/*webpackChunkName: "halvesView"*/ '../views/Halves'),
+  },
 ]
 
 const router = createRouter({

@@ -51,7 +51,7 @@
         }}</AppButton>
       </template>
 
-      <div class="shopping-cart__empty" v-else>
+      <div class="shopping-cart__empty" v-if="!getItemsCount && isOpened">
         <img
           class="shopping-cart__img"
           src="../../assets/img/emptyCart.jpg"

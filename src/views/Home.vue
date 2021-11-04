@@ -272,11 +272,13 @@ export default {
       fetchIngredients: 'ingredient/fetchIngredients',
       fetchPromoCode: 'promoCode/fetchPromoCode',
       resetPromoCode: 'promoCode/resetPromoCode',
+      fetchCategories: 'category/fetchCategories',
     }),
 
     ...mapMutations({
       setIngredientsLoader: 'ingredient/SET_INGREDIENTS_LOADER',
       setPromoCodeLoader: 'promoCode/SET_PROMO_CODE_LOADER',
+      setCategoriesLoader: 'category/SET_CATEGORIES_LOADER',
     }),
 
     categoryHandler(category) {
@@ -347,11 +349,18 @@ export default {
       await this.fetchIngredients({ params: { length: false } })
       this.setIngredientsLoader(false)
     },
+
+    async requestCategories() {
+      this.setCategoriesLoader(true)
+      await this.fetchCategories()
+      this.setCategoriesLoader(false)
+    },
   },
 
   mounted() {
     this.fetchProducts({ params: { length: false } })
     this.requestIngredients()
+    this.requestCategories()
   },
 }
 </script>

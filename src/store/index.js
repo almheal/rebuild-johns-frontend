@@ -6,6 +6,7 @@ import product from './modules/product'
 import ingredient from './modules/ingredient'
 import shoppingCart from './modules/shoppingCart'
 import promoCode from './modules/promoCode'
+import halves from './modules/halves'
 
 export default createStore({
   modules: {
@@ -16,5 +17,6 @@ export default createStore({
     ingredient,
     shoppingCart,
     promoCode,
+    halves,
   },
 })
