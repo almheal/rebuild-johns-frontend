@@ -6,12 +6,14 @@
       <AppButton
         class="next-view__button"
         view="transparent"
+        textTransform="uppercase"
         @clickButton="$router.push('/')"
         >{{ $t('app.utils.toMenu') }}</AppButton
       >
       <AppButton
         class="next-view__button"
         v-if="isCheckoutButton"
+        textTransform="uppercase"
         @clickButton="$router.push('/order')"
         >{{ $t('app.utils.checkout') }}</AppButton
       >
@@ -48,6 +50,7 @@ export default {
   padding: 56px 32px;
   text-align: center;
   border-radius: 10px;
+  margin: 25px 0;
 
   &__icon {
     color: $dark-red-color;
@@ -60,18 +63,34 @@ export default {
     font-size: 24px;
     color: $brown-color;
     margin-bottom: 32px;
+
+    @media (max-width: 380px) {
+      font-size: 20px;
+    }
   }
 
   &__body {
     @include flex-justify(center);
     max-width: 650px;
     margin: 0 auto;
+
+    @media (max-width: 380px) {
+      flex-direction: column;
+    }
   }
 
   &__button {
     margin-right: 16px;
     &:last-child {
       margin-right: 0;
+    }
+
+    @media (max-width: 380px) {
+      margin: 0 0 16px 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }

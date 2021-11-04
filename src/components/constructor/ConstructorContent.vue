@@ -105,10 +105,30 @@ export default {
   color: $brown-color;
   padding-bottom: 32px;
 
+  @media (max-width: 993px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 14px;
+  }
+
   &__title {
     font-family: $gotham-font;
     font-weight: 700;
     margin-bottom: 15px;
+
+    @media (max-width: 993px) {
+      font-size: 24px;
+    }
+
+    @media (max-width: 544px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 380px) {
+      font-size: 18px;
+    }
   }
 
   &__item {
@@ -151,6 +171,14 @@ export default {
     width: 50px;
     margin-left: 5px;
     text-align: right;
+
+    @media (max-width: 993px) {
+      font-size: 18px;
+    }
+
+    @media (max-width: 420px) {
+      font-size: 16px;
+    }
   }
 
   &__sign {

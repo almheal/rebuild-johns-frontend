@@ -2,12 +2,47 @@
   <div class="constructor">
     <div class="container">
       <div class="constructor__inner">
+        <ConstructorHeader
+          class="constructor__header"
+          :class="{
+            'is-active':
+              activeStepKey !== constructorStepNames.CONTENT && !isNextView,
+          }"
+          :buttonText="$t(constructorSteps[getActiveStep].backText)"
+          @toBack="changeStepHandler('prev')"
+        >
+          <div
+            class="constructor__total"
+            :class="{
+              'is-active': activeStepKey !== constructorStepNames.CONTENT,
+            }"
+          >
+            <span>{{ $t('app.utils.total') }}:</span>
+            <AppPrice :price="total" />
+          </div>
+        </ConstructorHeader>
         <div class="constructor__body" v-if="!isNextView">
           <div class="constructor__wrapper">
-            <ConstructorHeader
-              :title="$t('app.constructor.title')"
-              :subtitle="$t('app.constructor.subtitle')"
-            />
+            <h1
+              class="constructor__title"
+              :class="{
+                'is-active': activeStepKey !== constructorStepNames.CONTENT,
+              }"
+            >
+              {{
+                activeStepKey === constructorStepNames.INGREDIENTS
+                  ? $t('app.ingredients.title')
+                  : $t('app.constructor.title')
+              }}
+            </h1>
+            <h2
+              class="constructor__subtitle"
+              :class="{
+                'is-active': activeStepKey === constructorStepNames.INGREDIENTS,
+              }"
+            >
+              {{ $t('app.constructor.subtitle') }}
+            </h2>
             <template v-if="!ingredientsLoader">
               <ConstructorIngredients
                 class="constructor__ingredients"
@@ -37,7 +72,12 @@
             />
           </div>
 
-          <div class="constructor__column">
+          <div
+            class="constructor__column"
+            :class="{
+              'width-100': getActiveStep !== constructorStepNames.PIZZA_BASE,
+            }"
+          >
             <template v-if="!productLoader">
               <ConstructorProduct
                 class="constructor__product"
@@ -69,10 +109,28 @@
                 @reset="calculateIngredientCounter($event, true)"
               />
               <div class="constructor__row">
-                <AppButton @clickButton="addToCartHandler">{{
-                  $t('app.utils.addToCart')
-                }}</AppButton>
-                <div class="constructor__total">
+                <AppButton
+                  class="constructor__button"
+                  @clickButton="addToCartHandler"
+                  >{{ $t('app.utils.addToCart') }}</AppButton
+                >
+                <div class="constructor__action">
+                  <AppButton
+                    class="constructor__next"
+                    @clickButton="changeStepHandler('next')"
+                    >{{
+                      $t(constructorSteps[getActiveStep].buttonText)
+                    }}</AppButton
+                  >
+                </div>
+
+                <div
+                  class="constructor__total"
+                  :class="{
+                    'is-content':
+                      getActiveStep === constructorStepNames.CONTENT,
+                  }"
+                >
                   <span>{{ $t('app.utils.total') }}:</span>
                   <AppPrice :price="total" />
                 </div>
@@ -80,6 +138,9 @@
             </template>
             <AppCircleLoader
               class="constructor__loader"
+              :class="{
+                'is-active': getActiveStep === constructorStepNames.PIZZA_BASE,
+              }"
               v-else
               color="green"
               size="medium"
@@ -90,7 +151,7 @@
           v-else
           :title="
             $t('app.utils.pizzaAddedToCard', {
-              title: constructorProduct.title || this.$t(product.title),
+              title: constructorProduct.title || this.$t(product.title || ''),
             })
           "
         />
@@ -372,7 +433,9 @@ export default {
       let isSuccess = false
 
       if (this.queryId) {
+        this.setProductLoader(true)
         isSuccess = await this.fetchProduct(this.queryId)
+        this.setProductLoader(false)
         this.constructorProduct.ingredients = this.product.ingredients || []
       }
 
@@ -390,6 +453,46 @@ export default {
         isSuccess ? this.product.options[0] : DEFAULT_PIZZA_OPTIONS[0]
       )
     },
+
+    changeStepHandler(direction) {
+      const keys = Object.keys(this.constructorSteps)
+      const activeIndex = keys.findIndex((key) => key === this.getActiveStep)
+      let activeStepKey
+
+      if (activeIndex === -1) {
+        return
+      }
+
+      if (
+        direction === 'next' &&
+        this.getActiveStep === this.constructorStepNames.PIZZA_BASE
+      ) {
+        const isValid = this.validateAddProduct()
+        if (!isValid) {
+          return
+        }
+      }
+
+      if (direction === 'prev' && !keys[activeIndex - 1]) {
+        this.$router.push('/')
+        return
+      }
+
+      if (direction === 'next' && !keys[activeIndex + 1]) {
+        this.addToCartHandler()
+        return
+      }
+
+      if (direction === 'prev') {
+        activeStepKey = keys[activeIndex - 1]
+      }
+
+      if (direction === 'next') {
+        activeStepKey = keys[activeIndex + 1]
+      }
+
+      this.activeStepKey = activeStepKey
+    },
   },
 
   mounted() {
@@ -404,10 +507,63 @@ export default {
 
 <style lang="scss" scoped>
 .constructor {
+  @media (max-width: 544px) {
+    .container {
+      padding: 0;
+    }
+  }
+
   &__inner {
     max-width: 1000px;
     margin: 0 auto;
     padding: 50px 0;
+
+    @media (max-width: 993px) {
+      padding: 0;
+    }
+  }
+
+  &__header {
+    display: none;
+
+    @media (max-width: 993px) {
+      &.is-active {
+        display: flex;
+      }
+    }
+  }
+
+  &__title {
+    font-family: $gotham-font;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: $brown-color;
+
+    @media (max-width: 993px) {
+      display: none;
+
+      &.is-active {
+        display: block;
+      }
+    }
+
+    @media (max-width: 544px) {
+      font-size: 20px;
+    }
+  }
+
+  &__subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+
+    @media (max-width: 993px) {
+      display: none;
+
+      &.is-active {
+        display: block;
+      }
+    }
   }
 
   &__body {
@@ -415,19 +571,46 @@ export default {
     background-color: $white-color;
     padding: 50px 64px;
     border-radius: 10px;
+
+    @media (max-width: 993px) {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @media (max-width: 544px) {
+      padding: 40px 28px;
+    }
   }
 
   &__column {
     width: 325px;
+
+    @media (max-width: 993px) {
+      &.width-100 {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 380px) {
+      width: 100%;
+    }
   }
 
   &__wrapper {
     flex: 1 1 0;
     margin-right: 40px;
+
+    @media (max-width: 993px) {
+      margin-right: 0;
+    }
   }
 
   &__row {
     @include flex-space-center;
+
+    @media (max-width: 993px) {
+      flex-direction: column;
+    }
   }
 
   &__ingredients,
@@ -447,16 +630,71 @@ export default {
     text-align: right;
 
     span {
+      display: inline-block;
       font-size: 12px;
     }
+
+    @media (max-width: 993px) {
+      display: none;
+
+      span {
+        font-size: 14px;
+        margin-right: 5px;
+      }
+
+      &.is-active,
+      &.is-content {
+        @include flex-align-center;
+      }
+
+      &.is-content {
+        margin-top: 10px;
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  &__button {
+    @media (max-width: 993px) {
+      display: none;
+    }
+  }
+
+  &__action {
+    display: none;
+    width: 100%;
+
+    @media (max-width: 993px) {
+      display: block;
+    }
+  }
+
+  &__next {
+    width: 100%;
+    font-size: 16px;
   }
 
   &__error {
     color: $dark-red-color;
+
+    @media (max-width: 993px) {
+      margin-bottom: 10px;
+    }
   }
 
   &__loader {
     margin: 0 auto;
+
+    @media (max-width: 993px) {
+      display: none;
+
+      &.is-active {
+        display: block;
+      }
+    }
   }
 }
 </style>

@@ -1,19 +1,23 @@
 <template>
   <div class="constructor__header">
-    <h1 class="constructor__title">{{ title }}</h1>
-    <div class="constructor__subtitle">{{ subtitle }}</div>
+    <button class="constructor__back" @click="$emit('toBack')">
+      <ArrowDownIcon class="constructor__arrow" />
+      <span>{{ buttonText }}</span>
+    </button>
+    <slot></slot>
   </div>
 </template>
 
 <script>
+import ArrowDownIcon from '@icons/ArrowDownIcon'
+
 export default {
   name: 'ConstructorHeader',
+  components: {
+    ArrowDownIcon,
+  },
   props: {
-    title: {
-      type: String,
-      default: '',
-    },
-    subtitle: {
+    buttonText: {
       type: String,
       default: '',
     },
@@ -24,19 +28,31 @@ export default {
 <style lang="scss" scoped>
 .constructor {
   &__header {
-    margin-bottom: 20px;
+    @include flex-space-center;
+    padding: 15px 20px;
   }
 
-  &__title {
+  &__back {
+    @include flex-align-center;
+    color: $light-grey-color;
     font-family: $gotham-font;
-    font-weight: 700;
-    font-size: 24px;
-    margin-bottom: 8px;
-    color: $brown-color;
+    font-weight: 500;
+    transition: color 0.3s;
+
+    &:hover {
+      color: $green-color;
+
+      .constructor__arrow {
+        fill: $green-color;
+      }
+    }
   }
 
-  &__subtitle {
-    font-size: 12px;
+  &__arrow {
+    margin-right: 8px;
+    fill: $light-grey-color;
+    transform: rotate(90deg);
+    transition: fill 0.3s;
   }
 }
 </style>

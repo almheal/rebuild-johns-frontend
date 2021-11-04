@@ -108,6 +108,10 @@ export default {
         }
       }
     }
+
+    @media (max-width: 380px) {
+      margin: 0 0 30px;
+    }
   }
 
   &__input {
@@ -118,6 +122,10 @@ export default {
     color: $brown-color;
     text-align: center;
     width: 100%;
+
+    @media (max-width: 380px) {
+      font-size: 16px;
+    }
 
     &::placeholder {
       color: $light-grey-color;
