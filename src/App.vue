@@ -32,22 +32,15 @@ export default {
   methods: {
     ...mapActions({
       fetchLocales: 'locale/fetchLocales',
-      fetchCategories: 'category/fetchCategories',
       initialLocale: 'locale/initialLocale',
       auth: 'user/auth',
     }),
     ...mapMutations({
       setCategoriesLoader: 'category/SET_CATEGORIES_LOADER',
     }),
-    async requestCategories() {
-      this.setCategoriesLoader(true)
-      await this.fetchCategories()
-      this.setCategoriesLoader(false)
-    },
   },
 
   mounted() {
-    this.requestCategories()
     if (this.userToken) {
       this.auth()
     }

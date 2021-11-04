@@ -1,0 +1,2 @@
+export const SET_HALVES = 'SET_HALVES'
+export const SET_HALVES_LOADER = 'SET_HALVES_LOADER'
