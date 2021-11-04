@@ -8,6 +8,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@icons/(.*)$': '<rootDir>/src/components/icons/$1',
     '^@elements/(.*)$': '<rootDir>/src/components/elements/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@const': '<rootDir>/src/const/index.js',
     '^@utils': '<rootDir>/src/utils/index.js',
