@@ -11,6 +11,9 @@
               @userChanged="changeUserHandler"
             />
           </div>
+          <div class="profile__content">
+            <ProfileHistoryOrders />
+          </div>
         </div>
       </div>
     </div>
@@ -19,12 +22,14 @@
 
 <script>
 import ProfileSidebar from '@components/profile/ProfileSidebar'
+import ProfileHistoryOrders from '@components/profile/ProfileHistoryOrders'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Profile',
   components: {
     ProfileSidebar,
+    ProfileHistoryOrders,
   },
   computed: {
     ...mapState({
@@ -53,6 +58,10 @@ export default {
   &__column {
     width: 280px;
     margin-right: 32px;
+  }
+
+  &__content {
+    flex: 1 1 0;
   }
 }
 </style>
