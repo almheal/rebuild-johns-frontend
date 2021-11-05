@@ -42,7 +42,7 @@ function generateCrudService(url, options) {
   }
 
   if (options.update) {
-    service.update = async ({ id, body }) => {
+    service.update = async ({ id = '', body }) => {
       const response = await request({
         url: `${url}/${id}`,
         method: 'put',

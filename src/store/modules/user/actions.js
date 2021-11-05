@@ -3,6 +3,18 @@ import * as types from './mutations-types'
 import { setLocalStorage } from '@utils'
 import { TOKEN_NAME } from '@const'
 
+const updateUser = async ({ commit }, body) => {
+  try {
+    const data = await userService.update({ body })
+    const user = data.data ? data.data : data
+
+    commit(types.SET_USER, user)
+    return user
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 const login = async ({ commit }, body) => {
   try {
     const data = await userService.login(body)
@@ -46,6 +58,7 @@ const logout = async ({ commit }) => {
 }
 
 export default {
+  updateUser,
   login,
   register,
   auth,

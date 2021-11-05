@@ -247,7 +247,7 @@ export default {
 <style lang="scss" scoped>
 .app-field {
   position: relative;
-  padding-top: 20px;
+  padding-top: 26px;
   font-size: 16px;
 
   &.is-message {

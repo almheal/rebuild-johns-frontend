@@ -5,6 +5,9 @@ const { create: register } = genericService('auth/register', { create: true })
 const { create: checkAlreadyUser } = genericService('auth/check', {
   create: true,
 })
-const { get: auth } = genericService('/users', { get: true })
+const { get: auth, update } = genericService('/users', {
+  get: true,
+  update: true,
+})
 
-export { login, register, checkAlreadyUser, auth }
+export { login, register, checkAlreadyUser, auth, update }
