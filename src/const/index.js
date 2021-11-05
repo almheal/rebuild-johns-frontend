@@ -34,3 +34,7 @@ export const DEFAULT_PIZZA_OPTIONS = [
 ]
 export const MAX_LENGTH_ONE_INGREDIENT = 2
 export const MAX_LENGTH_INGREDIENTS = 10
+export const GENDERS = {
+  MALE: 'app.profile.gender.male',
+  FEMALE: 'app.profile.gender.female',
+}
