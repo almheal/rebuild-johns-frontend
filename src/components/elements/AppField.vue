@@ -300,7 +300,7 @@ export default {
 
     &::placeholder {
       color: $light-grey-color;
-      font-size: 0.875em;
+      font-size: 14px;
     }
 
     &:focus {
