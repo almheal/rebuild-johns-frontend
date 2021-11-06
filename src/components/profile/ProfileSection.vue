@@ -36,5 +36,23 @@ export default {
   &:last-child {
     margin-bottom: 0;
   }
+
+  &__header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid $wolf-grey-color;
+    margin-bottom: 32px;
+  }
+
+  &__title {
+    font-family: $gotham-font;
+    font-weight: 700;
+    font-size: 18px;
+    color: $brown-color;
+    margin-bottom: 6px;
+  }
+
+  &__subtitle {
+    font-size: 12px;
+  }
 }
 </style>
