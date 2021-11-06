@@ -7,6 +7,11 @@
           :count="getItemsCount"
           :total="getTotal"
         />
+        <OrderContacts
+          v-model:name="order.name"
+          v-model:email="order.email"
+          v-model:phoneNumber="order.phoneNumber"
+        />
       </div>
     </div>
   </div>
@@ -14,12 +19,23 @@
 
 <script>
 import OrderCart from '@components/order/OrderCart'
+import OrderContacts from '@components/order/OrderContacts'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Order',
   components: {
     OrderCart,
+    OrderContacts,
+  },
+  data() {
+    return {
+      order: {
+        name: '',
+        email: '',
+        phoneNumber: '',
+      },
+    }
   },
   computed: {
     ...mapGetters({
