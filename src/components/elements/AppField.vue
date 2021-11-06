@@ -4,6 +4,7 @@
     :class="{
       'is-message': error || message,
       'is-promo-code': componentName === 'promoCode',
+      large: size === 'large',
     }"
   >
     <label
@@ -144,6 +145,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    size: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -271,6 +276,13 @@ export default {
     }
   }
 
+  &.large {
+    .app-field__input {
+      height: 62px;
+      border-radius: 12px;
+    }
+  }
+
   &__label {
     @include absolute-default;
   }
@@ -288,8 +300,7 @@ export default {
 
     &::placeholder {
       color: $light-grey-color;
-      font-weight: 500;
-      font-size: 14px;
+      font-size: 0.875em;
     }
 
     &:focus {
