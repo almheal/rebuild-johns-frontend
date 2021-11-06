@@ -74,6 +74,11 @@ export default {
 
   &__input {
     margin-bottom: 20px;
+
+    @media (max-width: 576px) {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
   }
 }
 </style>
