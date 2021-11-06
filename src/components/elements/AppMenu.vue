@@ -1,22 +1,36 @@
 <template>
   <nav class="menu">
-    <ul class="menu__list">
-      <li class="menu__item" v-for="menuItem in menu" :key="menuItem.title">
-        <router-link class="menu__link" :to="menuItem.link" data-test="link">
-          {{ $t(menuItem.title) }}
-        </router-link>
-      </li>
+    <ul
+      class="menu__list"
+      :class="{ 'direction-column': direction === 'column' }"
+    >
+      <AppMenuItem
+        v-for="menuItem in menu"
+        :key="menuItem.title"
+        :link="menuItem.link"
+        :title="$t(menuItem.title)"
+        :direction="direction"
+      />
     </ul>
   </nav>
 </template>
 
 <script>
+import AppMenuItem from '@elements/AppMenuItem'
+
 export default {
   name: 'AppMenu',
+  components: {
+    AppMenuItem,
+  },
   props: {
     menu: {
       type: Array,
       default: () => [],
+    },
+    direction: {
+      type: String,
+      default: '',
     },
   },
 }
@@ -32,25 +46,9 @@ export default {
     @media (max-width: 769px) {
       flex-direction: column;
     }
-  }
 
-  &__link {
-    display: block;
-    padding: 14px;
-    color: $brown-color;
-    user-select: none;
-
-    &:not(.router-link-active, .router-link-exact-active) {
-      @include green-color-hover;
-    }
-
-    &.router-link-active.router-link-exact-active {
-      color: $light-grey-color;
-      cursor: default;
-    }
-
-    @media (max-width: 769px) {
-      padding: 10px 20px;
+    &.direction-column {
+      flex-direction: column;
     }
   }
 }
