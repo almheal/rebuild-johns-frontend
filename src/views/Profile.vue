@@ -13,6 +13,15 @@
           </div>
           <div class="profile__content">
             <ProfileHistoryOrders />
+            <ProfileDeliveryAddresses
+              :isForm="isAddressForm"
+              :loading="addressLoader"
+              :deliveryAddresses="user.deliveryAddresses"
+              @saveAddress="changeAddress"
+              @addAddress="isAddressForm = true"
+              @cancel="isAddressForm = false"
+              @deleteAddress="deleteAddressHandler"
+            />
           </div>
         </div>
       </div>
@@ -23,14 +32,25 @@
 <script>
 import ProfileSidebar from '@components/profile/ProfileSidebar'
 import ProfileHistoryOrders from '@components/profile/ProfileHistoryOrders'
-import { mapState } from 'vuex'
+import ProfileDeliveryAddresses from '@components/profile/ProfileDeliveryAddresses'
+
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Profile',
   components: {
     ProfileSidebar,
     ProfileHistoryOrders,
+    ProfileDeliveryAddresses,
   },
+
+  data() {
+    return {
+      addressLoader: false,
+      isAddressForm: false,
+    }
+  },
+
   computed: {
     ...mapState({
       user: (state) => state.user.user,
@@ -38,8 +58,38 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      updateUser: 'user/updateUser',
+    }),
+
     changeUserHandler({ property, value }) {
       console.log(property, value)
+    },
+
+    async changeAddress(address) {
+      this.addressLoader = true
+      await this.updateUser({
+        ...this.user,
+        deliveryAddresses: [...this.user.deliveryAddresses, address],
+      })
+      this.addressLoader = false
+      this.isAddressForm = false
+    },
+
+    deleteAddressHandler({ _id }) {
+      const isConfirm = confirm(this.$t('app.utils.confirmDelete'))
+      if (!isConfirm) {
+        return
+      }
+
+      const deliveryAddresses = this.user.deliveryAddresses.filter(
+        (address) => address._id !== _id
+      )
+
+      this.updateUser({
+        ...this.user,
+        deliveryAddresses,
+      })
     },
   },
 }

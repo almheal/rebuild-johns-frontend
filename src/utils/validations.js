@@ -70,3 +70,7 @@ export const promoCodeValidation = (promoCode) => {
 
   return ''
 }
+
+export const addressValidation = (address) => {
+  return address ? '' : required
+}
