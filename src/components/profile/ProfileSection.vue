@@ -33,6 +33,14 @@ export default {
   border-radius: 10px;
   background-color: $white-color;
 
+  @media (max-width: 993px) {
+    padding: 32px;
+  }
+
+  @media (max-width: 380px) {
+    padding: 32px 20px;
+  }
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -41,6 +49,10 @@ export default {
     padding-bottom: 10px;
     border-bottom: 1px solid $wolf-grey-color;
     margin-bottom: 32px;
+
+    @media (max-width: 576px) {
+      margin-bottom: 26px;
+    }
   }
 
   &__title {
@@ -49,6 +61,10 @@ export default {
     font-size: 18px;
     color: $brown-color;
     margin-bottom: 6px;
+
+    @media (max-width: 576px) {
+      font-size: 16px;
+    }
   }
 
   &__subtitle {

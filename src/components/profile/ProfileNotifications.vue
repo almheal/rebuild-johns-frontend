@@ -3,7 +3,7 @@
     class="profile-notifications"
     :title="$t('app.profile.notification.title')"
   >
-    <div class="row">
+    <div class="profile-notifications__row">
       <div class="profile-notifications__item">
         <AppCheckbox
           class="profile-notifications__checkbox"
@@ -52,12 +52,29 @@ export default {
 
 <style lang="scss" scoped>
 .profile-notifications {
+  &__row {
+    @include flex;
+
+    @media (max-width: 993px) {
+      flex-direction: column;
+    }
+  }
+
   &__item {
     width: 50%;
     margin-right: 15px;
 
     &:nth-child(2n) {
       margin-right: 0;
+    }
+
+    @media (max-width: 993px) {
+      margin: 0 0 15px 0;
+      width: 100%;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 

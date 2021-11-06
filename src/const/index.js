@@ -38,3 +38,6 @@ export const GENDERS = {
   MALE: 'app.profile.gender.male',
   FEMALE: 'app.profile.gender.female',
 }
+export const CARD_NUMBER_LENGTH = 16
+export const CVV_LENGTH = 3
+export const MY_LENGTH = 5
