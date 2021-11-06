@@ -18,7 +18,7 @@
       />
     </template>
 
-    <AddressDeliveryForm
+    <DeliveryAddressForm
       v-else
       :errors="errors"
       v-model:address="addressDelivery.address"
@@ -33,14 +33,14 @@
         @cancel="$emit('cancel')"
         :loading="loading"
       />
-    </AddressDeliveryForm>
+    </DeliveryAddressForm>
   </ProfileSection>
 </template>
 
 <script>
 import ProfileSection from '@components/profile/ProfileSection'
 import AppPlusButton from '@elements/AppPlusButton'
-import AddressDeliveryForm from '@components/forms/AddressDeliveryForm'
+import DeliveryAddressForm from '@components/forms/DeliveryAddressForm'
 import ProfileButtonsForm from '@components/profile/ProfileButtonsForm'
 import ProfileList from '@components/profile/ProfileList'
 import { addressValidation } from '@utils/validations'
@@ -51,7 +51,7 @@ export default {
   components: {
     ProfileSection,
     AppPlusButton,
-    AddressDeliveryForm,
+    DeliveryAddressForm,
     ProfileButtonsForm,
     ProfileList,
   },

@@ -1,23 +1,23 @@
 <template>
-  <form class="address-delivery" @submit.prevent="$emit('submit')">
-    <div class="address-delivery__row">
+  <form class="delivery-address" @submit.prevent="$emit('submit')">
+    <div class="delivery-address__row">
       <AppField
-        class="address-delivery__input address-delivery__input_width-100"
+        class="delivery-address__input delivery-address__input_width-100"
         :label="$t('app.addressDelivery.address')"
         :required="true"
         :modelValue="address"
-        :error="$t(errors.address)"
+        :error="$t(errors.address || '')"
         @update:modelValue="$emit('update:address', $event)"
       />
       <AppField
-        class="address-delivery__input"
+        class="delivery-address__input"
         :label="$t('app.addressDelivery.apartment')"
         :modelValue="apartment"
         :error="errors.apartment"
         @update:modelValue="$emit('update:apartment', $event)"
       />
       <AppField
-        class="address-delivery__input"
+        class="delivery-address__input"
         :label="$t('app.addressDelivery.floor')"
         :modelValue="floor"
         :error="errors.floor"
@@ -25,23 +25,23 @@
       />
     </div>
     <div
-      class="address-delivery__additional"
+      class="delivery-address__additional"
       :class="{ 'is-open': intercomAndEntrance }"
       @click="intercomAndEntrance = !intercomAndEntrance"
     >
       {{ $t('app.addressDelivery.intercomAndEntrance') }}
-      <ArrowDownIcon class="address-delivery__arrow" />
+      <ArrowDownIcon class="delivery-address__arrow" />
     </div>
-    <div class="address-delivery__row" v-if="intercomAndEntrance">
+    <div class="delivery-address__row" v-if="intercomAndEntrance">
       <AppField
-        class="address-delivery__input"
+        class="delivery-address__input"
         :label="$t('app.addressDelivery.intercom')"
         :modelValue="intercom"
         :error="errors.intercom"
         @update:modelValue="$emit('update:intercom', $event)"
       />
       <AppField
-        class="address-delivery__input"
+        class="delivery-address__input"
         :label="$t('app.addressDelivery.entrance')"
         :modelValue="entrance"
         :error="errors.entrance"
@@ -57,7 +57,7 @@ import AppField from '@elements/AppField'
 import ArrowDownIcon from '@icons/ArrowDownIcon'
 
 export default {
-  name: 'AddressDeliveryForm',
+  name: 'DeliveryAddressForm',
   components: {
     AppField,
     ArrowDownIcon,
@@ -104,7 +104,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.address-delivery {
+.delivery-address {
   &__address {
     width: 100%;
   }
