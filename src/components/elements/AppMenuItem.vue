@@ -4,7 +4,6 @@
       class="menu-item__link"
       :class="{ 'direction-column': direction === 'column' }"
       :to="link"
-      data-test="link"
     >
       {{ title }}
     </router-link>
