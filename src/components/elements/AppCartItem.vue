@@ -144,7 +144,7 @@ export default {
   &.is-order {
     @include flex-space-center;
     padding: 20px 0;
-    border-bottom: 3px solid $dark-smoky-white;
+    border-bottom: 3px solid rgba($dark-smoky-white, 0.5);
 
     @media (max-width: 769px) {
       flex-direction: column;
@@ -156,7 +156,7 @@ export default {
     }
 
     &:first-child {
-      border-top: 3px solid $dark-smoky-white;
+      border-top: 3px solid rgba($dark-smoky-white, 0.5);
     }
 
     .cart-item {
