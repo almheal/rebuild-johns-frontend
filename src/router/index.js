@@ -30,6 +30,12 @@ const routes = [
     component: () =>
       import(/*webpackChunkName: "profileView"*/ '../views/Profile'),
   },
+  {
+    path: '/order',
+    name: 'Order',
+    meta: { layout: 'DefaultLayout' },
+    component: () => import(/*webpackChunkName: "orderView"*/ '../views/Order'),
+  },
 ]
 
 const router = createRouter({

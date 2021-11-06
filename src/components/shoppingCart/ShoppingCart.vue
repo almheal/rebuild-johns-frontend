@@ -6,6 +6,7 @@
       <AppCartHeader
         :count="getItemsCount"
         :isOpen="isOpened"
+        :isCount="isOpened && getItemsCount"
         @clickContent="isOpened = !isOpened"
       >
         <button
@@ -46,9 +47,11 @@
           <div class="shopping-cart__count" v-else>{{ cartCountTitle }}</div>
           <AppPrice :price="total" />
         </div>
-        <AppButton class="shopping-cart__button">{{
-          $t('app.cart.orderNow')
-        }}</AppButton>
+        <AppButton
+          class="shopping-cart__button"
+          @clickButton="$router.push('/order')"
+          >{{ $t('app.cart.orderNow') }}</AppButton
+        >
       </template>
 
       <div class="shopping-cart__empty" v-if="!getItemsCount && isOpened">
