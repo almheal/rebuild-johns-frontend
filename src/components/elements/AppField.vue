@@ -10,7 +10,7 @@
       class="app-field__label"
       data-test="label"
       v-if="label"
-      :for="dynamicId"
+      :for="id || dynamicId"
       >{{ label }}</label
     >
     <div class="wrapper-relative">
@@ -31,21 +31,25 @@
         v-if="icon === 'eye'"
         @click="passwordIsHidden = !passwordIsHidden"
       >
-        <eye-icon class="icon" />
+        <EyeIcon class="icon" />
       </div>
       <component
         class="app-field__input"
         data-test="input"
-        :class="{ 'is-flag': countryFlag }"
+        :class="{
+          'is-flag': countryFlag,
+          'text-center': textAlign === 'center',
+        }"
         :placeholder="placeholder"
         :value="modelValue"
         :disabled="disabled"
         :is="fieldType"
-        :id="dynamicId"
+        :id="id || dynamicId"
         :type="
           !passwordIsHidden && typeInput === 'password' ? 'text' : typeInput
         "
         @input="inputHandler"
+        @click.stop
       />
 
       <slot></slot>
@@ -79,6 +83,10 @@ export default {
     fieldType: {
       type: String,
       default: 'input',
+    },
+    id: {
+      type: [String, Number],
+      default: '',
     },
     label: {
       type: String,
@@ -127,6 +135,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    textAlign: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -236,6 +248,7 @@ export default {
 .app-field {
   position: relative;
   padding-top: 20px;
+  font-size: 16px;
 
   &.is-message {
     padding-bottom: 20px;
@@ -258,13 +271,18 @@ export default {
     }
   }
 
+  &__label {
+    @include absolute-default;
+  }
+
   &__input {
     height: 49px;
     width: 100%;
     padding: 12px 16px;
     border-radius: 2px;
     background-color: $smoky-white;
-    font-size: 16px;
+    font-size: 1em;
+    font-weight: inherit;
     color: $brown-color;
     transition: background-color 0.3s;
 
@@ -281,10 +299,10 @@ export default {
     &.is-flag {
       padding-left: 46px;
     }
-  }
 
-  &__label {
-    @include absolute-default;
+    &.text-center {
+      text-align: center;
+    }
   }
 
   &__flag {
@@ -309,6 +327,8 @@ export default {
     @include absolute-top-center-right(8px);
     cursor: pointer;
     user-select: none;
+    width: 24px;
+    height: 24px;
 
     &:hover {
       .icon {
@@ -318,8 +338,8 @@ export default {
   }
 
   .icon {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
     fill: $light-grey-color;
     transition: fill 0.3s;
   }
