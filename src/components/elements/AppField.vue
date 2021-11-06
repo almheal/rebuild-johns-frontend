@@ -11,7 +11,7 @@
       data-test="label"
       v-if="label"
       :for="id || dynamicId"
-      >{{ label }}</label
+      >{{ label }}<span v-if="required">*</span></label
     >
     <div class="wrapper-relative">
       <img
@@ -140,6 +140,10 @@ export default {
       type: String,
       default: '',
     },
+    required: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -250,10 +254,6 @@ export default {
   padding-top: 26px;
   font-size: 16px;
 
-  &.is-message {
-    padding-bottom: 20px;
-  }
-
   &.is-promo-code {
     padding-top: 0;
 
@@ -312,7 +312,8 @@ export default {
   }
 
   &__message {
-    @include absolute-bottom-default;
+    font-size: 0.875em;
+    margin: 5px 0;
 
     &.is-error {
       color: $dark-red-color;

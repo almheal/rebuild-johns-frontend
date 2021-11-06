@@ -3,6 +3,7 @@
     <AppField
       class="address-delivery__address"
       :label="$t('app.addressDelivery.address')"
+      :required="true"
       :modelValue="address"
       :error="$t(errors.address)"
       @update:modelValue="$emit('update:address', $event)"

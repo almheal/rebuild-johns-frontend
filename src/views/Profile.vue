@@ -17,10 +17,35 @@
               :isForm="isAddressForm"
               :loading="addressLoader"
               :deliveryAddresses="user.deliveryAddresses"
-              @saveAddress="changeAddress"
               @addAddress="isAddressForm = true"
               @cancel="isAddressForm = false"
-              @deleteAddress="deleteAddressHandler"
+              @saveAddress="
+                addNewItem({
+                  value: $event,
+                  key: 'deliveryAddresses',
+                  loaderKey: 'addressLoader',
+                  formKey: 'isAddressForm',
+                })
+              "
+              @deleteAddress="
+                removeItem({ id: $event._id, key: 'deliveryAddresses' })
+              "
+            />
+            <ProfilePayments
+              :isForm="isPaymentCard"
+              :loading="paymentCardLoader"
+              :paymentCards="user.paymentCards"
+              @toggleForm="isPaymentCard = !isPaymentCard"
+              @cancel="isPaymentCard = false"
+              @saveCard="
+                addNewItem({
+                  value: $event,
+                  key: 'paymentCards',
+                  loaderKey: 'paymentCardLoader',
+                  formKey: 'isPaymentCard',
+                })
+              "
+              @deleteCard="removeItem({ id: $event._id, key: 'paymentCards' })"
             />
             <ProfileNotifications
               :sms="user.notifications?.sms"
@@ -39,6 +64,7 @@
 import ProfileSidebar from '@components/profile/ProfileSidebar'
 import ProfileHistoryOrders from '@components/profile/ProfileHistoryOrders'
 import ProfileDeliveryAddresses from '@components/profile/ProfileDeliveryAddresses'
+import ProfilePayments from '@components/profile/ProfilePayments'
 import ProfileNotifications from '@components/profile/ProfileNotifications'
 
 import { mapActions, mapState } from 'vuex'
@@ -49,6 +75,7 @@ export default {
     ProfileSidebar,
     ProfileHistoryOrders,
     ProfileDeliveryAddresses,
+    ProfilePayments,
     ProfileNotifications,
   },
 
@@ -56,6 +83,8 @@ export default {
     return {
       addressLoader: false,
       isAddressForm: false,
+      paymentCardLoader: false,
+      isPaymentCard: false,
     }
   },
 
@@ -74,29 +103,27 @@ export default {
       console.log(property, value)
     },
 
-    async changeAddress(address) {
-      this.addressLoader = true
+    async addNewItem({ value, loaderKey, key, formKey }) {
+      this[loaderKey] = true
       await this.updateUser({
         ...this.user,
-        deliveryAddresses: [...this.user.deliveryAddresses, address],
+        [key]: [...this.user[key], value],
       })
-      this.addressLoader = false
-      this.isAddressForm = false
+      this[loaderKey] = false
+      this[formKey] = false
     },
 
-    deleteAddressHandler({ _id }) {
+    removeItem({ id, key }) {
       const isConfirm = confirm(this.$t('app.utils.confirmDelete'))
       if (!isConfirm) {
         return
       }
 
-      const deliveryAddresses = this.user.deliveryAddresses.filter(
-        (address) => address._id !== _id
-      )
+      const filteredArr = this.user[key].filter((item) => item._id !== id)
 
       this.updateUser({
         ...this.user,
-        deliveryAddresses,
+        [key]: filteredArr,
       })
     },
 
