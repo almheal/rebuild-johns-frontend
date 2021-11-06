@@ -5,7 +5,6 @@ export const createOrder = async (ctx, body) => {
     const data = await orderService.create(body)
     return data
   } catch (err) {
-    console.log(err)
     return false
   }
 }

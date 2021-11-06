@@ -11,7 +11,7 @@ const updateUser = async ({ commit }, body) => {
     commit(types.SET_USER, user)
     return user
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
@@ -21,7 +21,7 @@ const login = async ({ commit }, body) => {
     commit(types.SET_USER, data.user)
     return data
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
@@ -30,7 +30,7 @@ const register = async (ctx, body) => {
     const data = await userService.register(body)
     return data
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
@@ -39,7 +39,7 @@ const auth = async ({ commit }) => {
     const data = await userService.auth()
     commit(types.SET_USER, data)
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
@@ -48,7 +48,7 @@ const checkAlreadyUser = async (ctx, body) => {
     const data = await userService.checkAlreadyUser(body)
     return data
   } catch (err) {
-    return err
+    return false
   }
 }
 

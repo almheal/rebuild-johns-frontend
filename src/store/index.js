@@ -8,6 +8,7 @@ import shoppingCart from './modules/shoppingCart'
 import promoCode from './modules/promoCode'
 import halves from './modules/halves'
 import order from './modules/order'
+import notification from './modules/notification'
 
 export default createStore({
   modules: {
@@ -20,5 +21,6 @@ export default createStore({
     promoCode,
     halves,
     order,
+    notification,
   },
 })
