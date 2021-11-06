@@ -22,6 +22,12 @@
               @cancel="isAddressForm = false"
               @deleteAddress="deleteAddressHandler"
             />
+            <ProfileNotifications
+              :sms="user.notifications?.sms"
+              :company="user.notifications?.company"
+              @update:sms="updateNotification('sms')"
+              @update:company="updateNotification('company')"
+            />
           </div>
         </div>
       </div>
@@ -33,6 +39,7 @@
 import ProfileSidebar from '@components/profile/ProfileSidebar'
 import ProfileHistoryOrders from '@components/profile/ProfileHistoryOrders'
 import ProfileDeliveryAddresses from '@components/profile/ProfileDeliveryAddresses'
+import ProfileNotifications from '@components/profile/ProfileNotifications'
 
 import { mapActions, mapState } from 'vuex'
 
@@ -42,6 +49,7 @@ export default {
     ProfileSidebar,
     ProfileHistoryOrders,
     ProfileDeliveryAddresses,
+    ProfileNotifications,
   },
 
   data() {
@@ -89,6 +97,16 @@ export default {
       this.updateUser({
         ...this.user,
         deliveryAddresses,
+      })
+    },
+
+    updateNotification(key) {
+      this.updateUser({
+        ...this.user,
+        notifications: {
+          ...this.user.notifications,
+          [key]: !this.user.notifications[key],
+        },
       })
     },
   },
