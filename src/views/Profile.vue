@@ -148,11 +148,25 @@ export default {
 
   &__body {
     @include flex;
+
+    @media (max-width: 769px) {
+      flex-direction: column;
+    }
   }
 
   &__column {
     width: 280px;
     margin-right: 32px;
+
+    @media (max-width: 993px) {
+      width: 250px;
+      margin-right: 26px;
+    }
+
+    @media (max-width: 769px) {
+      width: 100%;
+      margin: 0 0 8px 0;
+    }
   }
 
   &__content {

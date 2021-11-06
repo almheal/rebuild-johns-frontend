@@ -9,7 +9,7 @@
       {{ $t('app.cardAndPayment.addCard') }}
     </div>
     <div class="payment-form__body" v-if="isForm">
-      <div class="row">
+      <div class="payment-form__row">
         <AppField
           class="payment-form__input"
           typeValue="integer"
@@ -36,7 +36,7 @@
           @update:modelValue="$emit('update:MY', $event)"
         />
       </div>
-      <div class="row">
+      <div class="payment-form__row">
         <AppField
           class="payment-form__input"
           :placeholder="$t('app.cardAndPayment.nameHolder')"
@@ -150,6 +150,14 @@ export default {
     margin-bottom: 5px;
   }
 
+  &__row {
+    @include flex;
+
+    @media (max-width: 576px) {
+      flex-wrap: wrap;
+    }
+  }
+
   &__input {
     width: 100%;
     max-width: 154px;
@@ -157,6 +165,15 @@ export default {
     &:first-child {
       max-width: 308px;
       margin-right: 15px;
+    }
+
+    @media (max-width: 576px) {
+      max-width: initial;
+
+      &:first-child {
+        max-width: initial;
+        margin-right: 0;
+      }
     }
   }
 }

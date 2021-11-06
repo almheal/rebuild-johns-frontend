@@ -1,14 +1,14 @@
 <template>
   <form class="address-delivery" @submit.prevent="$emit('submit')">
-    <AppField
-      class="address-delivery__address"
-      :label="$t('app.addressDelivery.address')"
-      :required="true"
-      :modelValue="address"
-      :error="$t(errors.address)"
-      @update:modelValue="$emit('update:address', $event)"
-    />
     <div class="address-delivery__row">
+      <AppField
+        class="address-delivery__input address-delivery__input_width-100"
+        :label="$t('app.addressDelivery.address')"
+        :required="true"
+        :modelValue="address"
+        :error="$t(errors.address)"
+        @update:modelValue="$emit('update:address', $event)"
+      />
       <AppField
         class="address-delivery__input"
         :label="$t('app.addressDelivery.apartment')"
@@ -107,23 +107,31 @@ export default {
 .address-delivery {
   &__address {
     width: 100%;
-    margin-bottom: 24px;
-    font-size: 14px;
   }
 
   &__input {
-    width: 50%;
-    margin-right: 40px;
+    width: calc(50% - 20px);
+    margin: 0 40px 24px 0;
     font-size: 14px;
 
     &:last-child {
       margin-right: 0;
     }
+
+    &_width-100 {
+      width: 100%;
+      margin: 0 0 24px 0;
+    }
+
+    @media (max-width: 576px) {
+      width: 100%;
+      margin: 0 0 15px 0;
+    }
   }
 
   &__row {
     @include flex;
-    margin-bottom: 24px;
+    flex-wrap: wrap;
 
     &:last-child {
       margin-bottom: 0;

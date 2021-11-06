@@ -13,7 +13,7 @@
           </div>
         </div>
         <ProfileField
-          class="profile-sidebar__field profile-sidebar__name"
+          class="profile-sidebar__name"
           textAlign="center"
           :modelValue="user.name || name"
           :isField="activeInputName === INPUT_NAMES.NAME"
@@ -176,8 +176,32 @@ export default {
     font-size: 18px;
   }
 
+  &__list {
+    @media (max-width: 769px) {
+      @include flex;
+      flex-wrap: wrap;
+    }
+  }
+
   &__field {
     margin-bottom: 20px;
+
+    @media (max-width: 769px) {
+      width: calc(50% - 7px);
+      margin-bottom: 14px;
+
+      &:nth-child(2n) {
+        margin-left: 14px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      width: 100%;
+
+      &:nth-child(2n) {
+        margin-left: 0;
+      }
+    }
   }
 }
 </style>
