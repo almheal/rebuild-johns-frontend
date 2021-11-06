@@ -2,16 +2,19 @@
   <div class="layout">
     <TheHeader />
     <router-view class="layout__body" />
+    <TheFooter />
   </div>
 </template>
 
 <script>
 import TheHeader from '@components/header/TheHeader'
+import TheFooter from '@components/footer/TheFooter'
 
 export default {
   name: 'DefaultLayout',
   components: {
     TheHeader,
+    TheFooter,
   },
 }
 </script>
