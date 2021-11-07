@@ -14,7 +14,7 @@ export const fetchProducts = async (
     }
     return products
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
@@ -24,7 +24,7 @@ export const fetchProduct = async ({ commit }, id) => {
     commit(types.SET_PRODUCT, data)
     return data
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
