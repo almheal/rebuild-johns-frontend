@@ -22,7 +22,8 @@
           </router-link>
           <HeaderCategories
             v-if="headerIsShow && getRouteName === 'Home' && !menuIsOpen"
-            :categories="categories"
+            :categories="categoriesWithProducts"
+            @clickCategory="setCategoryRefId($event._id)"
           />
           <div
             class="header__row row-center"
@@ -82,7 +83,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { menuList } from './menuList'
 import AppLanguage from '@elements/AppLanguage'
 import AppBurgerButton from '@elements/AppBurgerButton'
@@ -138,10 +139,17 @@ export default {
       locales: (state) => state.locale.locales,
       user: (state) => state.user.user,
       categories: (state) => state.category.categories,
+      products: (state) => state.product.products,
     }),
 
     getRouteName() {
       return this.$route.name
+    },
+
+    categoriesWithProducts() {
+      return this.categories.filter((category) =>
+        this.products.some((product) => product.category._id === category._id)
+      )
     },
 
     formToggleList() {
@@ -161,6 +169,10 @@ export default {
     ...mapActions({
       changeLocale: 'locale/changeLocale',
       logout: 'user/logout',
+    }),
+
+    ...mapMutations({
+      setCategoryRefId: 'category/SET_SCROLL_CATEGORY_ID',
     }),
 
     selectLanguageHandler(language) {
