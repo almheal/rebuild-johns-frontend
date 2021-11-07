@@ -1,7 +1,7 @@
 <template>
   <div class="app-dropdown" :class="{ 'is-open': isOpen }">
     <div class="app-dropdown__placeholder" @click.stop="toggle">
-      {{ toShow(modelValue) }}
+      {{ modelValue }}
       <ArrowDownIcon class="app-dropdown__arrow" />
     </div>
     <ul class="app-dropdown__list" v-if="isOpen">
@@ -9,7 +9,7 @@
         class="app-dropdown__item"
         v-for="(item, index) in list"
         :key="index"
-        :class="{ 'is-active': toShow(item) === toShow(modelValue) }"
+        :class="{ 'is-active': toShow(item) === modelValue }"
         @click="select(item)"
       >
         {{ toShow(item) }}

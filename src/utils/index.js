@@ -47,6 +47,22 @@ export const calculateDiscount = ({ total, discount, isPercent }) => {
     : total - discount
 }
 
+export const eventClickDocument = (callback) => {
+  let isRemove = null
+
+  const removeEvent = () => {
+    isRemove = isRemove !== null
+
+    if (isRemove) {
+      document.removeEventListener('click', removeEvent)
+    }
+
+    callback()
+  }
+
+  document.addEventListener('click', removeEvent)
+}
+
 export const moveToElement = ($el, callback = () => {}, timeout) => {
   const { top } = $el.getBoundingClientRect()
 

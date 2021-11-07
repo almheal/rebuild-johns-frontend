@@ -32,7 +32,7 @@
       class="profile-payments__list"
       v-if="!isForm"
       :items="cardsForTemplate"
-      @clickCross="$emit('deleteCard', $event)"
+      @clickCross="deleteCardHandler"
     />
   </ProfileSection>
 </template>
@@ -58,7 +58,7 @@ export default {
     ProfileButtonsForm,
     ProfileList,
   },
-  emits: ['toggleForm'],
+  emits: ['updateUser', 'toggleForm'],
   props: {
     isForm: {
       type: Boolean,
@@ -68,9 +68,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    paymentCards: {
-      type: Array,
-      default: () => [],
+    user: {
+      type: Object,
+      default: () => ({}),
     },
   },
 
@@ -101,7 +101,7 @@ export default {
 
   computed: {
     cardsForTemplate() {
-      return this.paymentCards.map((card) => {
+      return this.user?.paymentCards?.map((card) => {
         const title = `${card.cardNumber} ${card.holderName} ${card.MY}`
         return {
           title,
@@ -119,7 +119,23 @@ export default {
         return
       }
 
-      this.$emit('saveCard', this.paymentCard)
+      this.$emit('updateUser', {
+        ...this.user,
+        paymentCards: [...this.user.paymentCards, this.paymentCard],
+      })
+    },
+
+    deleteCardHandler({ _id }) {
+      const isConfirm = confirm(this.$t('app.utils.confirmDelete'))
+      if (!isConfirm) {
+        return
+      }
+
+      const paymentCards = this.user.paymentCards.filter(
+        (card) => card._id !== _id
+      )
+
+      this.$emit('updateUser', { ...this.user, paymentCards })
     },
 
     inputHandler(value, key) {
