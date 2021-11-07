@@ -1,27 +1,27 @@
 <template>
-  <form class="promo-code" @submit.prevent="promoCodeHandler">
+  <form class="promo-code" @submit.prevent="submitPromoCodeHandler">
     <AppField
       componentName="promoCode"
       :placeholder="$t('app.cart.enterPromoCode')"
-      :message="message"
-      :error="error"
-      :disabled="disabled || loading"
-      :modelValue="promoCode"
-      @update:modelValue="$emit('update:promoCode', $event)"
+      :message="$t(message)"
+      :error="$t(errors.promoCodeName)"
+      :disabled="isDisabled || promoCodeLoader"
+      :modelValue="promoCode.code || promoCodeName"
+      @update:modelValue="inputHandler"
     >
       <button
         class="promo-code__button"
-        :class="{ 'is-disabled': disabled || loading }"
+        :class="{ 'is-disabled': isDisabled || promoCodeLoader }"
         type="submit"
       >
         <AppCircleLoader
           class="promo-code__loader"
-          v-if="loading"
+          v-if="promoCodeLoader"
           color="green"
         />
         <CrossIcon
           class="promo-code__cross"
-          v-if="disabled && !loading"
+          v-if="isDisabled && !promoCodeLoader"
           width="14"
           height="14"
         />
@@ -34,6 +34,10 @@
 import AppField from '@elements/AppField'
 import CrossIcon from '@icons/CrossIcon'
 import AppCircleLoader from '@elements/AppCircleLoader'
+import { promoCodeValidation } from '@utils/validations'
+import { failPromoCode } from '@utils/validationMessages'
+import { NOTIFICATION_TIMEOUT } from '@const'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'AppPromoCode',
@@ -42,37 +46,82 @@ export default {
     CrossIcon,
     AppCircleLoader,
   },
-  emits: ['submitPromoCode', 'update:promoCode'],
-  props: {
-    promoCode: {
-      type: String,
-      default: '',
-    },
-    message: {
-      type: String,
-      default: '',
-    },
-    error: {
-      type: String,
-      default: '',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    loading: {
-      type: Boolean,
-      default: false,
+  data() {
+    return {
+      promoCodeName: '',
+      errors: {
+        promoCodeName: '',
+      },
+      message: '',
+    }
+  },
+
+  computed: {
+    ...mapState({
+      promoCode: (state) => state.promoCode.promoCode,
+      promoCodeLoader: (state) => state.promoCode.promoCodeLoader,
+    }),
+
+    isDisabled() {
+      return Boolean(Object.keys(this.promoCode).length)
     },
   },
+
   methods: {
-    promoCodeHandler() {
-      if (!this.disabled) {
-        this.$emit('submitPromoCode')
+    ...mapMutations({
+      setPromoCodeLoader: 'promoCode/SET_PROMO_CODE_LOADER',
+    }),
+
+    ...mapActions({
+      fetchPromoCode: 'promoCode/fetchPromoCode',
+      resetPromoCode: 'promoCode/resetPromoCode',
+    }),
+
+    inputHandler(value) {
+      this.promoCodeName = value
+      this.errors.promoCodeName = ''
+    },
+
+    updatePromoCodeHandler(value) {
+      this.promoCodeName = value
+      this.errors.promoCodeName = ''
+    },
+
+    removePromoCodeHandler() {
+      this.promoCodeName = ''
+      this.resetPromoCode()
+    },
+
+    async submitPromoCodeHandler() {
+      if (this.isDisabled) {
+        this.removePromoCodeHandler()
         return
       }
 
-      this.$emit('removePromoCode')
+      const isValid = this.validatePromoCodeName()
+
+      if (!isValid) {
+        return
+      }
+
+      this.setPromoCodeLoader(true)
+      const isSuccess = await this.fetchPromoCode(this.promoCodeName)
+      this.setPromoCodeLoader(false)
+
+      if (!isSuccess) {
+        this.errors.promoCodeName = this.$t(failPromoCode)
+      } else {
+        this.message = 'app.utils.successfullyApplied'
+        setTimeout(() => {
+          this.message = ''
+        }, NOTIFICATION_TIMEOUT)
+      }
+    },
+
+    validatePromoCodeName() {
+      this.errors.promoCodeName = promoCodeValidation(this.promoCodeName)
+
+      return !this.errors.promoCodeName
     },
   },
 }
