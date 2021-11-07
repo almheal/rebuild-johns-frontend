@@ -3,7 +3,7 @@
     <div class="container">
       <div
         class="header__inner"
-        :class="{ 'is-padding': !Object.keys(user).length || !menuIsOpen }"
+        :class="{ 'is-padding': !Object.keys(user).length }"
       >
         <router-link class="header__logo" to="/">
           <img class="header__img" src="../../assets/img/logo.svg" alt="logo" />
@@ -157,6 +157,7 @@ export default {
 
   &__inner {
     @include flex-space-center;
+    height: 100%;
     padding: 5px 0;
 
     &.is-padding {
