@@ -1,5 +1,5 @@
 <template>
-  <div class="user-avatar">
+  <div class="user-avatar" :class="{ large: size === 'large' }">
     <img
       class="user-avatar__img"
       :src="img ? img : require('../../assets/img/default-avatar.svg')"
@@ -16,6 +16,10 @@ export default {
       type: String,
       default: '',
     },
+    size: {
+      type: String,
+      default: '',
+    },
   },
 }
 </script>
@@ -28,6 +32,12 @@ export default {
   height: 52px;
   padding: 2px;
   border-radius: 50%;
+  cursor: pointer;
+
+  &.large {
+    width: 141px;
+    height: 141px;
+  }
 
   &::before {
     content: '';

@@ -7,7 +7,6 @@ const fetchPromoCode = async ({ commit }, code) => {
     commit(types.SET_PROMO_CODE, data)
     return data
   } catch (err) {
-    console.log(err)
     return false
   }
 }

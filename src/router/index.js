@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { TOKEN_NAME } from '@const'
+import { getLocalStorage } from '@utils'
 
 const routes = [
   {
@@ -21,11 +23,33 @@ const routes = [
     component: () =>
       import(/*webpackChunkName: "halvesView"*/ '../views/Halves'),
   },
+  {
+    path: '/profile',
+    name: 'Profile',
+    meta: { layout: 'DefaultLayout', auth: true },
+    component: () =>
+      import(/*webpackChunkName: "profileView"*/ '../views/Profile'),
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    meta: { layout: 'DefaultLayout' },
+    component: () => import(/*webpackChunkName: "orderView"*/ '../views/Order'),
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const token = getLocalStorage(TOKEN_NAME)
+  if (to.meta.auth && !token) {
+    next({ path: from.name ? from.path : '/' })
+  } else {
+    next()
+  }
 })
 
 export default router

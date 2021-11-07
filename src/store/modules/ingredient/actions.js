@@ -5,8 +5,10 @@ const fetchIngredients = async ({ commit }, { params } = {}) => {
   try {
     const data = await ingredientService.getAll({ params })
     commit(types.SET_INGREDIENTS, data.data ? data.data : data)
+
+    return data
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 

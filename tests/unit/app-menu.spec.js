@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import AppMenu from '@elements/AppMenu.vue'
+import AppMenu from '@elements/AppMenu'
+import AppMenuItem from '@elements/AppMenuItem'
 
 describe('App menu', () => {
   let wrapper
@@ -22,7 +23,7 @@ describe('App menu', () => {
       menu: MENU_LIST,
     })
 
-    const links = wrapper.findAll(DATA_LINK)
+    const links = wrapper.findAllComponents(AppMenuItem)
 
     expect(links).toHaveLength(MENU_LIST.length)
   })

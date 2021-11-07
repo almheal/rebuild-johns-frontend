@@ -2,16 +2,19 @@
   <component :is="layout">
     <router-view />
   </component>
+  <AppNotification :notifications="notifications" />
 </template>
 
 <script>
 import DefaultLayout from '@/layouts/DefaultLayout'
+import AppNotification from '@elements/AppNotification'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     DefaultLayout,
+    AppNotification,
   },
   data: () => ({
     isShow: false,
@@ -20,6 +23,7 @@ export default {
   computed: {
     ...mapState({
       locales: (state) => state.locale.locales,
+      notifications: (state) => state.notification.notifications,
     }),
     ...mapGetters({
       userToken: 'user/getToken',

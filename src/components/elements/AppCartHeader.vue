@@ -2,7 +2,7 @@
   <div class="cart-header">
     <div class="cart-header__row" @click="$emit('clickContent')">
       <div class="cart-header__title">{{ $t('app.cart.title') }}</div>
-      <div class="cart-header__count" v-if="count && isOpen">({{ count }})</div>
+      <div class="cart-header__count" v-if="isCount">({{ count }})</div>
       <ArrowDownIcon
         class="cart-header__arrow"
         :class="{ 'is-open': isOpen }"
@@ -30,6 +30,10 @@ export default {
       type: [Number, String],
       default: 0,
     },
+    isCount: {
+      type: Boolean,
+      default: true,
+    },
   },
 }
 </script>
@@ -55,6 +59,10 @@ export default {
     font-size: 18px;
     color: $brown-color;
     margin-right: 8px;
+
+    @media (max-width: 424px) {
+      font-size: 16px;
+    }
   }
 
   &__count {

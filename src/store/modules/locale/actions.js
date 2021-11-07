@@ -9,7 +9,7 @@ const fetchLocale = async (ctx, id) => {
     const data = await localeService.get(id)
     return data
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
@@ -18,8 +18,9 @@ const fetchLocales = async ({ commit }, { query } = {}) => {
     const data = await localeService.getAll({ query })
 
     commit(types.SET_LOCALES, data.data ? data.data : data)
+    return data
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
