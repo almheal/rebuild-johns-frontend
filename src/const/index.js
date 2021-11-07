@@ -9,6 +9,7 @@ export const PHONE_LENGTH_WITH_PREFIX = 12
 export const PHONE_LENGTH = 11
 export const CART_NAME = 'cart'
 export const NOTIFICATION_TIMEOUT = 3000
+export const SCROLL_TO_CATEGORY_TIMEOUT = 600
 export const DEFAULT_CONSTRUCTOR_IMG =
   'https://res.cloudinary.com/dimdjrct2/image/upload/w_320,h_200,c_scale/v1635943461/constructor-product_io1mv7.png'
 export const DEFAULT_PIZZA_OPTIONS = [

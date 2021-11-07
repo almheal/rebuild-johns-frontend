@@ -4,7 +4,7 @@
       class="header-categories__item"
       v-for="category in categories"
       :key="category._id"
-      @click="$emit('clickCategory', category._id)"
+      @click="$emit('clickCategory', category)"
     >
       {{ $t(category.title) }}
     </li>
@@ -14,6 +14,7 @@
 <script>
 export default {
   name: 'HeaderCategories',
+  emits: ['clickCategory'],
   props: {
     categories: {
       type: Array,

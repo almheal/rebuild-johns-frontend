@@ -46,3 +46,12 @@ export const calculateDiscount = ({ total, discount, isPercent }) => {
     ? 0
     : total - discount
 }
+
+export const moveToElement = ($el, callback = () => {}, timeout) => {
+  const { top } = $el.getBoundingClientRect()
+
+  setTimeout(() => {
+    window.scrollTo(0, window.scrollY + Number(top) - 80)
+    callback()
+  }, timeout)
+}
