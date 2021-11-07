@@ -1,13 +1,15 @@
 <template>
-  <component :is="layout">
+  <component :is="layout" v-if="isShow">
     <router-view />
   </component>
+  <AppCircleLoader class="app-loader" v-else color="green" size="medium" />
   <AppNotification :notifications="notifications" />
 </template>
 
 <script>
 import DefaultLayout from '@/layouts/DefaultLayout'
 import AppNotification from '@elements/AppNotification'
+import AppCircleLoader from '@elements/AppCircleLoader'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
@@ -15,6 +17,7 @@ export default {
   components: {
     DefaultLayout,
     AppNotification,
+    AppCircleLoader,
   },
   data: () => ({
     isShow: false,
@@ -58,4 +61,13 @@ export default {
 
 <style lang="scss">
 @import './assets/styles/index';
+</style>
+
+<style lang="scss" scoped>
+.app-loader {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>
