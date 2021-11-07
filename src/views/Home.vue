@@ -85,17 +85,7 @@
           </div>
           <div class="home__column">
             <ShoppingCart class="home__cart" />
-            <AppPromoCode
-              class="home__promo-code"
-              :promoCode="promoCodeName"
-              :loading="promoCodeLoader"
-              :error="$t(errors.promoCodeName)"
-              :message="$t(messages.promoCodeName)"
-              :disabled="Boolean(Object.keys(promoCode).length)"
-              @submitPromoCode="submitPromoCodeHandler"
-              @removePromoCode="removePromoCodeHandler"
-              @update:promoCode="updatePromoCodeHandler"
-            />
+            <AppPromoCode class="home__promo-code" />
           </div>
         </div>
       </div>
@@ -123,9 +113,6 @@ const HomeTagsFilter = defineAsyncComponent(() =>
   )
 )
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
-import { promoCodeValidation } from '@utils/validations'
-import { failPromoCode } from '@utils/validationMessages'
-import { NOTIFICATION_TIMEOUT } from '@const'
 
 export default {
   name: 'Home',
@@ -145,13 +132,6 @@ export default {
       ingredientsIdsFilter: [],
       tagsFilter: [],
       isFilter: false,
-      promoCodeName: '',
-      errors: {
-        promoCodeName: '',
-      },
-      messages: {
-        promoCodeName: '',
-      },
     }
   },
   computed: {
@@ -162,8 +142,6 @@ export default {
       productsLoader: (state) => state.product.productsLoader,
       ingredients: (state) => state.ingredient.ingredients,
       ingredientsLoader: (state) => state.ingredient.ingredientsLoader,
-      promoCode: (state) => state.promoCode.promoCode,
-      promoCodeLoader: (state) => state.promoCode.promoCodeLoader,
     }),
 
     ...mapGetters({
@@ -270,54 +248,16 @@ export default {
     ...mapActions({
       fetchProducts: 'product/fetchProducts',
       fetchIngredients: 'ingredient/fetchIngredients',
-      fetchPromoCode: 'promoCode/fetchPromoCode',
-      resetPromoCode: 'promoCode/resetPromoCode',
+      fetchCategories: 'category/fetchCategories',
     }),
 
     ...mapMutations({
       setIngredientsLoader: 'ingredient/SET_INGREDIENTS_LOADER',
-      setPromoCodeLoader: 'promoCode/SET_PROMO_CODE_LOADER',
+      setCategoriesLoader: 'category/SET_CATEGORIES_LOADER',
     }),
 
     categoryHandler(category) {
       console.log(category)
-    },
-
-    updatePromoCodeHandler(value) {
-      this.promoCodeName = value
-      this.errors.promoCodeName = ''
-    },
-
-    removePromoCodeHandler() {
-      this.promoCodeName = ''
-      this.resetPromoCode()
-    },
-
-    async submitPromoCodeHandler() {
-      const isValid = this.validatePromoCodeName()
-
-      if (!isValid) {
-        return
-      }
-
-      this.setPromoCodeLoader(true)
-      const isSuccess = await this.fetchPromoCode(this.promoCodeName)
-      this.setPromoCodeLoader(false)
-
-      if (!isSuccess) {
-        this.errors.promoCodeName = this.$t(failPromoCode)
-      } else {
-        this.messages.promoCodeName = 'app.utils.successfullyApplied'
-        setTimeout(() => {
-          this.messages.promoCodeName = ''
-        }, NOTIFICATION_TIMEOUT)
-      }
-    },
-
-    validatePromoCodeName() {
-      this.errors.promoCodeName = promoCodeValidation(this.promoCodeName)
-
-      return this.errors.promoCodeName ? false : true
     },
 
     toggleFilterItem(value, property) {
@@ -347,11 +287,18 @@ export default {
       await this.fetchIngredients({ params: { length: false } })
       this.setIngredientsLoader(false)
     },
+
+    async requestCategories() {
+      this.setCategoriesLoader(true)
+      await this.fetchCategories()
+      this.setCategoriesLoader(false)
+    },
   },
 
   mounted() {
     this.fetchProducts({ params: { length: false } })
     this.requestIngredients()
+    this.requestCategories()
   },
 }
 </script>

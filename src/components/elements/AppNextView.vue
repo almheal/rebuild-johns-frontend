@@ -7,6 +7,7 @@
         class="next-view__button"
         view="transparent"
         textTransform="uppercase"
+        font="gotham"
         @clickButton="$router.push('/')"
         >{{ $t('app.utils.toMenu') }}</AppButton
       >
@@ -14,6 +15,7 @@
         class="next-view__button"
         v-if="isCheckoutButton"
         textTransform="uppercase"
+        font="gotham"
         @clickButton="$router.push('/order')"
         >{{ $t('app.utils.checkout') }}</AppButton
       >

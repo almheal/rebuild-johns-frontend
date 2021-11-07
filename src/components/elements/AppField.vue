@@ -4,14 +4,15 @@
     :class="{
       'is-message': error || message,
       'is-promo-code': componentName === 'promoCode',
+      large: size === 'large',
     }"
   >
     <label
       class="app-field__label"
       data-test="label"
       v-if="label"
-      :for="dynamicId"
-      >{{ label }}</label
+      :for="id || dynamicId"
+      >{{ label }}<span v-if="required">*</span></label
     >
     <div class="wrapper-relative">
       <img
@@ -31,21 +32,25 @@
         v-if="icon === 'eye'"
         @click="passwordIsHidden = !passwordIsHidden"
       >
-        <eye-icon class="icon" />
+        <EyeIcon class="icon" />
       </div>
       <component
         class="app-field__input"
         data-test="input"
-        :class="{ 'is-flag': countryFlag }"
+        :class="{
+          'is-flag': countryFlag,
+          'text-center': textAlign === 'center',
+        }"
         :placeholder="placeholder"
         :value="modelValue"
         :disabled="disabled"
         :is="fieldType"
-        :id="dynamicId"
+        :id="id || dynamicId"
         :type="
           !passwordIsHidden && typeInput === 'password' ? 'text' : typeInput
         "
         @input="inputHandler"
+        @click.stop
       />
 
       <slot></slot>
@@ -79,6 +84,10 @@ export default {
     fieldType: {
       type: String,
       default: 'input',
+    },
+    id: {
+      type: [String, Number],
+      default: '',
     },
     label: {
       type: String,
@@ -127,6 +136,18 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    textAlign: {
+      type: String,
+      default: '',
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    size: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -235,11 +256,8 @@ export default {
 <style lang="scss" scoped>
 .app-field {
   position: relative;
-  padding-top: 20px;
-
-  &.is-message {
-    padding-bottom: 20px;
-  }
+  padding-top: 26px;
+  font-size: 16px;
 
   &.is-promo-code {
     padding-top: 0;
@@ -258,19 +276,30 @@ export default {
     }
   }
 
+  &.large {
+    .app-field__input {
+      height: 62px;
+      border-radius: 12px;
+    }
+  }
+
+  &__label {
+    @include absolute-default;
+  }
+
   &__input {
     height: 49px;
     width: 100%;
     padding: 12px 16px;
     border-radius: 2px;
     background-color: $smoky-white;
-    font-size: 16px;
+    font-size: 1em;
+    font-weight: inherit;
     color: $brown-color;
     transition: background-color 0.3s;
 
     &::placeholder {
       color: $light-grey-color;
-      font-weight: 500;
       font-size: 14px;
     }
 
@@ -281,10 +310,10 @@ export default {
     &.is-flag {
       padding-left: 46px;
     }
-  }
 
-  &__label {
-    @include absolute-default;
+    &.text-center {
+      text-align: center;
+    }
   }
 
   &__flag {
@@ -294,7 +323,8 @@ export default {
   }
 
   &__message {
-    @include absolute-bottom-default;
+    font-size: 0.875em;
+    margin: 5px 0;
 
     &.is-error {
       color: $dark-red-color;
@@ -309,6 +339,8 @@ export default {
     @include absolute-top-center-right(8px);
     cursor: pointer;
     user-select: none;
+    width: 24px;
+    height: 24px;
 
     &:hover {
       .icon {
@@ -318,8 +350,8 @@ export default {
   }
 
   .icon {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
     fill: $light-grey-color;
     transition: fill 0.3s;
   }

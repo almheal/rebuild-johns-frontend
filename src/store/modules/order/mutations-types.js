@@ -1,0 +1,1 @@
+export const SET_ORDER_LOADER = 'SET_ORDER_LOADER'

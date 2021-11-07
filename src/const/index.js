@@ -34,3 +34,24 @@ export const DEFAULT_PIZZA_OPTIONS = [
 ]
 export const MAX_LENGTH_ONE_INGREDIENT = 2
 export const MAX_LENGTH_INGREDIENTS = 10
+export const GENDERS = {
+  MALE: 'app.profile.gender.male',
+  FEMALE: 'app.profile.gender.female',
+}
+export const CARD_NUMBER_LENGTH = 16
+export const CVV_LENGTH = 3
+export const MY_LENGTH = 5
+export const DELIVERY_METHODS = {
+  DELIVERY: 'delivery',
+  PICKUP: 'pickup',
+}
+export const PAYMENT_METHODS = {
+  CASH: 'cash',
+  CARD_TO_COURIER: 'cardToCourier',
+  GOOGLE_PAY: 'googlePay',
+  BY_CARD: 'byCard',
+}
+export const DELIVERY_TIMES = {
+  SOON_AS_POSSIBLE: 'soonAsPossible',
+  IN_TIME: 'inTime',
+}

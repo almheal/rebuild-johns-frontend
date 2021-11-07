@@ -1,12 +1,20 @@
 import * as productService from '@/services/product.service'
 import * as types from './mutations-types'
 
-export const fetchProducts = async ({ commit }, { query } = {}) => {
+export const fetchProducts = async (
+  { commit },
+  { isSet = true, params } = {}
+) => {
   try {
-    const data = await productService.getAll({ query })
-    commit(types.SET_PRODUCTS, data.data ? data.data : data)
+    const data = await productService.getAll({ params })
+    const products = data.data ? data.data : data
+
+    if (isSet) {
+      commit(types.SET_PRODUCTS, products)
+    }
+    return products
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 
@@ -16,7 +24,7 @@ export const fetchProduct = async ({ commit }, id) => {
     commit(types.SET_PRODUCT, data)
     return data
   } catch (err) {
-    console.log(err)
+    return false
   }
 }
 

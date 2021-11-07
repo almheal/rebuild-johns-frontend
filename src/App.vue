@@ -1,17 +1,23 @@
 <template>
-  <component :is="layout">
+  <component :is="layout" v-if="isShow">
     <router-view />
   </component>
+  <AppCircleLoader class="app-loader" v-else color="green" size="medium" />
+  <AppNotification :notifications="notifications" />
 </template>
 
 <script>
 import DefaultLayout from '@/layouts/DefaultLayout'
+import AppNotification from '@elements/AppNotification'
+import AppCircleLoader from '@elements/AppCircleLoader'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     DefaultLayout,
+    AppNotification,
+    AppCircleLoader,
   },
   data: () => ({
     isShow: false,
@@ -20,6 +26,7 @@ export default {
   computed: {
     ...mapState({
       locales: (state) => state.locale.locales,
+      notifications: (state) => state.notification.notifications,
     }),
     ...mapGetters({
       userToken: 'user/getToken',
@@ -32,22 +39,15 @@ export default {
   methods: {
     ...mapActions({
       fetchLocales: 'locale/fetchLocales',
-      fetchCategories: 'category/fetchCategories',
       initialLocale: 'locale/initialLocale',
       auth: 'user/auth',
     }),
     ...mapMutations({
       setCategoriesLoader: 'category/SET_CATEGORIES_LOADER',
     }),
-    async requestCategories() {
-      this.setCategoriesLoader(true)
-      await this.fetchCategories()
-      this.setCategoriesLoader(false)
-    },
   },
 
   mounted() {
-    this.requestCategories()
     if (this.userToken) {
       this.auth()
     }
@@ -61,4 +61,13 @@ export default {
 
 <style lang="scss">
 @import './assets/styles/index';
+</style>
+
+<style lang="scss" scoped>
+.app-loader {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>
