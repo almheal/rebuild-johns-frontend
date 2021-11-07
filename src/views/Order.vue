@@ -24,6 +24,19 @@
             {{ $t('app.order.delivery.pickupDescription') }}
           </div>
         </div>
+
+        <OrderSection :title="$t('app.order.delivery.title')">
+          <DeliveryAddressForm
+            class="order__address"
+            :errors="errors.addressDelivery"
+            v-model:address="order.addressDelivery.address"
+            v-model:apartment="order.addressDelivery.apartment"
+            v-model:floor="order.addressDelivery.floor"
+            v-model:intercom="order.addressDelivery.intercom"
+            v-model:entrance="order.addressDelivery.entrance"
+            @update:address="errors.addressDelivery.address = ''"
+          />
+        </OrderSection>
       </div>
     </div>
   </div>
@@ -33,6 +46,8 @@
 import OrderCart from '@components/order/OrderCart'
 import OrderContacts from '@components/order/OrderContacts'
 import OrderDeliveryMethod from '@components/order/OrderDeliveryMethod'
+import OrderSection from '@components/order/OrderSection'
+import DeliveryAddressForm from '@components/forms/DeliveryAddressForm'
 import { DELIVERY_METHODS } from '@const'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -42,6 +57,8 @@ export default {
     OrderCart,
     OrderContacts,
     OrderDeliveryMethod,
+    OrderSection,
+    DeliveryAddressForm,
   },
   data() {
     return {
@@ -50,8 +67,20 @@ export default {
         email: '',
         phoneNumber: '',
         paymentMethod: DELIVERY_METHODS.DELIVERY,
+        addressDelivery: {
+          address: '',
+          apartment: '',
+          floor: '',
+          intercom: '',
+          entrance: '',
+        },
       },
       DELIVERY_METHODS,
+      errors: {
+        addressDelivery: {
+          address: '',
+        },
+      },
     }
   },
   computed: {
@@ -107,6 +136,10 @@ export default {
     color: $brown-color;
     background-color: rgba($light-orange-color, 0.5);
     border-radius: 12px;
+  }
+
+  &__address {
+    max-width: 750px;
   }
 }
 </style>
