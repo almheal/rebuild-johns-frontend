@@ -9,14 +9,25 @@
           class="header__inner"
           :class="{ 'is-padding': !Object.keys(user).length }"
         >
-          <router-link class="header__logo" to="/">
+          <router-link
+            class="header__logo"
+            to="/"
+            :class="{ 'is-hidden': headerIsShow }"
+          >
             <img
               class="header__img"
               src="../../assets/img/logo.svg"
               alt="logo"
             />
           </router-link>
-          <div class="row-center">
+          <HeaderCategories
+            v-if="headerIsShow && getRouteName === 'Home' && !menuIsOpen"
+            :categories="categories"
+          />
+          <div
+            class="header__row row-center"
+            :class="{ 'is-hidden': headerIsShow }"
+          >
             <div class="row-center wrapper-relative">
               <HeaderMenu
                 v-if="menuIsOpen"
@@ -89,6 +100,11 @@ const RegistrationForm = defineAsyncComponent(() =>
     /*webpackChunkName: "registrationForm"*/ '@components/forms/RegistrationForm'
   )
 )
+const HeaderCategories = defineAsyncComponent(() =>
+  import(
+    /*webpackChunkName: "headerCategories"*/ '@components/header/HeaderCategories'
+  )
+)
 
 export default {
   name: 'TheHeader',
@@ -101,6 +117,7 @@ export default {
     HeaderMenu,
     LoginForm,
     RegistrationForm,
+    HeaderCategories,
   },
   data() {
     return {
@@ -120,7 +137,13 @@ export default {
       currentLocale: (state) => state.locale.currentLocale,
       locales: (state) => state.locale.locales,
       user: (state) => state.user.user,
+      categories: (state) => state.category.categories,
     }),
+
+    getRouteName() {
+      return this.$route.name
+    },
+
     formToggleList() {
       return [
         {
@@ -218,11 +241,6 @@ export default {
   &__inner {
     @include flex-space-center;
     height: 100%;
-    padding: 5px 0;
-
-    &.is-padding {
-      padding: 15px 0;
-    }
   }
 
   &__img {
@@ -232,6 +250,15 @@ export default {
     @media (max-width: 577px) {
       width: 90px;
       height: 37px;
+    }
+  }
+
+  &__row,
+  &__logo {
+    &.is-hidden {
+      @media (max-width: 993px) {
+        display: none;
+      }
     }
   }
 
