@@ -62,3 +62,10 @@ export const DELIVERY_TIMES = {
   SOON_AS_POSSIBLE: 'soonAsPossible',
   IN_TIME: 'inTime',
 }
+export const IMAGES_SIZES_MEDIA = [
+  { value: '1600', media: '(min-width: 1367px)' },
+  { value: '1366', media: '(min-width: 1025px)' },
+  { value: '1024', media: '(min-width: 769px)' },
+  { value: '768', media: '(min-width: 641px)' },
+  { value: '640', media: '(max-width: 641px)' },
+]
