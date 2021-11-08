@@ -165,6 +165,7 @@ export default {
       ]
     },
   },
+
   methods: {
     ...mapActions({
       changeLocale: 'locale/changeLocale',
@@ -191,23 +192,27 @@ export default {
     },
 
     scrollHandler(scrollPosition) {
-      this.headerIsShow = scrollPosition >= 400 ? true : false
-      this.headerIsFixed = scrollPosition >= 200 ? true : false
+      this.headerIsShow = scrollPosition >= 400
+      this.headerIsFixed = scrollPosition >= 200
     },
 
     addScrollEvent() {
       let lastScrollPosition = 0
       let tick = false
-      window.addEventListener('scroll', () => {
-        lastScrollPosition = window.scrollY
-        if (!tick) {
-          window.requestAnimationFrame(() => {
-            this.scrollHandler(lastScrollPosition)
-            tick = false
-          })
-          tick = true
-        }
-      })
+      window.addEventListener(
+        'scroll',
+        () => {
+          lastScrollPosition = window.scrollY
+          if (!tick) {
+            window.requestAnimationFrame(() => {
+              this.scrollHandler(lastScrollPosition)
+              tick = false
+            })
+            tick = true
+          }
+        },
+        { passive: true }
+      )
     },
   },
 

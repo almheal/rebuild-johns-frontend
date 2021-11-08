@@ -18,7 +18,11 @@
           v-for="feature in features"
           :key="feature.title"
         >
-          <img class="product-additionals__icon" :src="feature.icon" />
+          <img
+            class="product-additionals__icon"
+            v-lazy="feature.icon"
+            alt="feature-img"
+          />
         </div>
       </div>
 

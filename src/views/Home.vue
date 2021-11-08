@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <HomeCarousel />
     <div class="container">
       <div class="home__inner">
         <HomeCategories
@@ -8,7 +9,10 @@
           :categories="categoriesWithProducts"
           @clickCategory="setCategoryRefId($event._id)"
         />
-        <div class="home__row row">
+        <div
+          class="home__row row"
+          :class="{ 'is-loading': productsLoader && !products.length }"
+        >
           <div class="home__body">
             <div
               class="home__products"
@@ -109,6 +113,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import HomeCategories from '@components/home/HomeCategories'
+import HomeCarousel from '@components/home/HomeCarousel'
 import ShoppingCart from '@components/shoppingCart/ShoppingCart'
 import ProductList from '@components/product/ProductList'
 import FilterIcon from '@icons/FilterIcon'
@@ -133,6 +138,7 @@ export default {
   name: 'Home',
   components: {
     HomeCategories,
+    HomeCarousel,
     ShoppingCart,
     ProductList,
     FilterIcon,
@@ -337,6 +343,10 @@ export default {
 .home {
   &__inner {
     padding: 40px 0;
+
+    @media (max-width: 769px) {
+      padding-top: 0;
+    }
   }
 
   &__categories {
@@ -347,9 +357,14 @@ export default {
 
   &__row {
     padding-top: 70px;
+    min-height: 500px;
 
     @media (max-width: 993px) {
       flex-direction: column;
+    }
+
+    @media (max-width: 769px) {
+      padding-top: 0;
     }
   }
 

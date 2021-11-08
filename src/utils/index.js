@@ -71,3 +71,15 @@ export const moveToElement = ($el, callback = () => {}, timeout) => {
     callback()
   }, timeout)
 }
+
+export const generateUrlImageVariousSize = ({ defaultUrl, sizes }) => {
+  const split = defaultUrl.split('/upload')
+
+  const urls = sizes.reduce((acc, size) => {
+    const url = `${split[0]}/upload/w_${size.value},c_scale${split[1]}`
+    acc[size.media] = url
+    return acc
+  }, {})
+
+  return urls
+}

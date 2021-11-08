@@ -5,7 +5,7 @@
     @click="$emit('clickCategory')"
   >
     <div class="home-categories__picture">
-      <img class="home-categories__img" :src="img" alt="category-image" />
+      <img class="home-categories__img" v-lazy="img" alt="category-image" />
     </div>
     <div class="home-categories__title">{{ title }}</div>
   </div>
