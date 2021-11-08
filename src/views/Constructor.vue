@@ -273,7 +273,18 @@ export default {
 
     total() {
       return this.ingredientsWithCount.reduce((acc, ingredient) => {
-        acc += ingredient.price * this.ingredientsCounter[ingredient._id]
+        const isDefaultIngredient = this.constructorProduct.ingredients.find(
+          (item) => item._id === ingredient._id
+        )
+
+        if (isDefaultIngredient) {
+          acc +=
+            this.ingredientsCounter[ingredient._id] > 1
+              ? (this.ingredientsCounter[ingredient._id] - 1) * ingredient.price
+              : 0
+        } else {
+          acc += ingredient.price * this.ingredientsCounter[ingredient._id]
+        }
         return acc
       }, Number(this.constructorProduct.activeSize?.price) || 0)
     },
@@ -458,7 +469,6 @@ export default {
     changeStepHandler(direction) {
       const keys = Object.keys(this.constructorSteps)
       const activeIndex = keys.findIndex((key) => key === this.getActiveStep)
-      let activeStepKey
 
       if (activeIndex === -1) {
         return
@@ -469,6 +479,7 @@ export default {
         this.getActiveStep === this.constructorStepNames.PIZZA_BASE
       ) {
         const isValid = this.validateAddProduct()
+
         if (!isValid) {
           return
         }
@@ -484,15 +495,8 @@ export default {
         return
       }
 
-      if (direction === 'prev') {
-        activeStepKey = keys[activeIndex - 1]
-      }
-
-      if (direction === 'next') {
-        activeStepKey = keys[activeIndex + 1]
-      }
-
-      this.activeStepKey = activeStepKey
+      this.activeStepKey =
+        direction === 'prev' ? keys[activeIndex - 1] : keys[activeIndex + 1]
     },
   },
 
