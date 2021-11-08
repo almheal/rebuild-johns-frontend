@@ -14,6 +14,7 @@
         :userAvatar="userAvatar"
         v-if="isUser"
         @clickLogout="$emit('clickLogout')"
+        @toProfile="toProfileHandler"
       />
       <AppButton
         v-else
@@ -89,6 +90,13 @@ export default {
     isUser: {
       type: Boolean,
       default: false,
+    },
+  },
+
+  methods: {
+    toProfileHandler() {
+      this.$emit('clickCross')
+      this.$router.push('/profile')
     },
   },
 }
