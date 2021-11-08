@@ -104,6 +104,16 @@ export default {
   &__picture {
     width: 235px;
     height: 185px;
+
+    @media (max-width: 993px) {
+      width: 316px;
+      height: 249px;
+    }
+
+    @media (max-width: 380px) {
+      width: 100%;
+      height: auto;
+    }
   }
 
   &__img {

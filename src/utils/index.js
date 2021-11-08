@@ -46,3 +46,40 @@ export const calculateDiscount = ({ total, discount, isPercent }) => {
     ? 0
     : total - discount
 }
+
+export const eventClickDocument = (callback) => {
+  let isRemove = null
+
+  const removeEvent = () => {
+    isRemove = isRemove !== null
+
+    if (isRemove) {
+      document.removeEventListener('click', removeEvent)
+    }
+
+    callback()
+  }
+
+  document.addEventListener('click', removeEvent)
+}
+
+export const moveToElement = ($el, callback = () => {}, timeout) => {
+  const { top } = $el.getBoundingClientRect()
+
+  setTimeout(() => {
+    window.scrollTo(0, window.scrollY + Number(top) - 80)
+    callback()
+  }, timeout)
+}
+
+export const generateUrlImageVariousSize = ({ defaultUrl, sizes }) => {
+  const split = defaultUrl.split('/upload')
+
+  const urls = sizes.reduce((acc, size) => {
+    const url = `${split[0]}/upload/w_${size.value},c_scale${split[1]}`
+    acc[size.media] = url
+    return acc
+  }, {})
+
+  return urls
+}

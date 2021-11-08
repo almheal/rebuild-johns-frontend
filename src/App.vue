@@ -42,15 +42,23 @@ export default {
       initialLocale: 'locale/initialLocale',
       auth: 'user/auth',
     }),
+
     ...mapMutations({
       setCategoriesLoader: 'category/SET_CATEGORIES_LOADER',
+      setAuthLoader: 'user/SET_AUTH_LOADER',
     }),
+
+    async authUser() {
+      if (this.userToken) {
+        this.setAuthLoader(true)
+        await this.auth()
+        this.setAuthLoader(false)
+      }
+    },
   },
 
   mounted() {
-    if (this.userToken) {
-      this.auth()
-    }
+    this.authUser()
     this.fetchLocales({ query: { length: false } }).then(() => {
       this.initialLocale({ languages: this.locales })
       this.isShow = true

@@ -1,7 +1,11 @@
 <template>
   <div
     class="circle-loader"
-    :class="{ 'is-green': color === 'green', medium: size === 'medium' }"
+    :class="{
+      'is-green': color === 'green',
+      medium: size === 'medium',
+      small: size === 'small',
+    }"
   >
     <div class="circle-loader__item" v-for="item in 4" :key="item" />
   </div>
@@ -44,7 +48,19 @@ export default {
       width: round(46px * 0.8);
       height: round(46px * 0.8);
       margin: round(46px * 0.1);
-      border-with: round(46px * 0.1);
+      border-width: round(46px * 0.1);
+    }
+  }
+
+  &.small {
+    width: 16px;
+    height: 16px;
+
+    .circle-loader__item {
+      width: round(16px * 0.8);
+      height: round(16px * 0.8);
+      margin: round(16px * 0.1);
+      border-width: round(16px * 0.1);
     }
   }
 

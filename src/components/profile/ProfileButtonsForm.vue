@@ -1,9 +1,9 @@
 <template>
   <div class="buttons">
-    <button class="buttons__cancel" @click="$emit('cancel')">
+    <button class="buttons__cancel" @click="$emit('cancel')" type="button">
       {{ $t('app.utils.cancel') }}
     </button>
-    <AppButton @clickButton="$emit('save')" :loading="loading">{{
+    <AppButton :loading="loading" @clickButton="$emit('save')">{{
       $t('app.utils.save')
     }}</AppButton>
   </div>

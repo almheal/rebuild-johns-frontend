@@ -9,6 +9,7 @@ export const PHONE_LENGTH_WITH_PREFIX = 12
 export const PHONE_LENGTH = 11
 export const CART_NAME = 'cart'
 export const NOTIFICATION_TIMEOUT = 3000
+export const SCROLL_TO_CATEGORY_TIMEOUT = 600
 export const DEFAULT_CONSTRUCTOR_IMG =
   'https://res.cloudinary.com/dimdjrct2/image/upload/w_320,h_200,c_scale/v1635943461/constructor-product_io1mv7.png'
 export const DEFAULT_PIZZA_OPTIONS = [
@@ -35,8 +36,14 @@ export const DEFAULT_PIZZA_OPTIONS = [
 export const MAX_LENGTH_ONE_INGREDIENT = 2
 export const MAX_LENGTH_INGREDIENTS = 10
 export const GENDERS = {
-  MALE: 'app.profile.gender.male',
-  FEMALE: 'app.profile.gender.female',
+  MALE: {
+    title: 'app.profile.gender.male',
+    param: 'male',
+  },
+  FEMALE: {
+    title: 'app.profile.gender.female',
+    param: 'female',
+  },
 }
 export const CARD_NUMBER_LENGTH = 16
 export const CVV_LENGTH = 3
@@ -55,3 +62,10 @@ export const DELIVERY_TIMES = {
   SOON_AS_POSSIBLE: 'soonAsPossible',
   IN_TIME: 'inTime',
 }
+export const IMAGES_SIZES_MEDIA = [
+  { value: '1600', media: '(min-width: 1367px)' },
+  { value: '1366', media: '(min-width: 1025px)' },
+  { value: '1024', media: '(min-width: 769px)' },
+  { value: '768', media: '(min-width: 641px)' },
+  { value: '640', media: '(max-width: 641px)' },
+]

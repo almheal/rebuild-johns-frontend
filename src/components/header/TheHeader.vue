@@ -9,14 +9,26 @@
           class="header__inner"
           :class="{ 'is-padding': !Object.keys(user).length }"
         >
-          <router-link class="header__logo" to="/">
+          <router-link
+            class="header__logo"
+            to="/"
+            :class="{ 'is-hidden': headerIsShow }"
+          >
             <img
               class="header__img"
               src="../../assets/img/logo.svg"
               alt="logo"
             />
           </router-link>
-          <div class="row-center">
+          <HeaderCategories
+            v-if="headerIsShow && getRouteName === 'Home' && !menuIsOpen"
+            :categories="categoriesWithProducts"
+            @clickCategory="setCategoryRefId($event._id)"
+          />
+          <div
+            class="header__row row-center"
+            :class="{ 'is-hidden': headerIsShow }"
+          >
             <div class="row-center wrapper-relative">
               <HeaderMenu
                 v-if="menuIsOpen"
@@ -29,7 +41,7 @@
                 @clickButton="setComponentFormName(COMPONENT_FORM_NAMES.login)"
                 @selectLanguage="selectLanguageHandler"
                 @clickCross="toggleMenu"
-                @clickLogout="logoutHandler"
+                @clickLogout="logout"
               />
 
               <AppLanguage
@@ -71,7 +83,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { menuList } from './menuList'
 import AppLanguage from '@elements/AppLanguage'
 import AppBurgerButton from '@elements/AppBurgerButton'
@@ -89,6 +101,11 @@ const RegistrationForm = defineAsyncComponent(() =>
     /*webpackChunkName: "registrationForm"*/ '@components/forms/RegistrationForm'
   )
 )
+const HeaderCategories = defineAsyncComponent(() =>
+  import(
+    /*webpackChunkName: "headerCategories"*/ '@components/header/HeaderCategories'
+  )
+)
 
 export default {
   name: 'TheHeader',
@@ -101,6 +118,7 @@ export default {
     HeaderMenu,
     LoginForm,
     RegistrationForm,
+    HeaderCategories,
   },
   data() {
     return {
@@ -120,7 +138,20 @@ export default {
       currentLocale: (state) => state.locale.currentLocale,
       locales: (state) => state.locale.locales,
       user: (state) => state.user.user,
+      categories: (state) => state.category.categories,
+      products: (state) => state.product.products,
     }),
+
+    getRouteName() {
+      return this.$route.name
+    },
+
+    categoriesWithProducts() {
+      return this.categories.filter((category) =>
+        this.products.some((product) => product.category._id === category._id)
+      )
+    },
+
     formToggleList() {
       return [
         {
@@ -134,10 +165,15 @@ export default {
       ]
     },
   },
+
   methods: {
     ...mapActions({
       changeLocale: 'locale/changeLocale',
       logout: 'user/logout',
+    }),
+
+    ...mapMutations({
+      setCategoryRefId: 'category/SET_SCROLL_CATEGORY_ID',
     }),
 
     selectLanguageHandler(language) {
@@ -155,31 +191,28 @@ export default {
       }
     },
 
-    logoutHandler() {
-      if (this.$route?.meta?.auth) {
-        this.$router.push('/')
-      }
-      this.logout()
-    },
-
     scrollHandler(scrollPosition) {
-      this.headerIsShow = scrollPosition >= 400 ? true : false
-      this.headerIsFixed = scrollPosition >= 200 ? true : false
+      this.headerIsShow = scrollPosition >= 400
+      this.headerIsFixed = scrollPosition >= 200
     },
 
     addScrollEvent() {
       let lastScrollPosition = 0
       let tick = false
-      window.addEventListener('scroll', () => {
-        lastScrollPosition = window.scrollY
-        if (!tick) {
-          window.requestAnimationFrame(() => {
-            this.scrollHandler(lastScrollPosition)
-            tick = false
-          })
-          tick = true
-        }
-      })
+      window.addEventListener(
+        'scroll',
+        () => {
+          lastScrollPosition = window.scrollY
+          if (!tick) {
+            window.requestAnimationFrame(() => {
+              this.scrollHandler(lastScrollPosition)
+              tick = false
+            })
+            tick = true
+          }
+        },
+        { passive: true }
+      )
     },
   },
 
@@ -218,11 +251,6 @@ export default {
   &__inner {
     @include flex-space-center;
     height: 100%;
-    padding: 5px 0;
-
-    &.is-padding {
-      padding: 15px 0;
-    }
   }
 
   &__img {
@@ -232,6 +260,15 @@ export default {
     @media (max-width: 577px) {
       width: 90px;
       height: 37px;
+    }
+  }
+
+  &__row,
+  &__logo {
+    &.is-hidden {
+      @media (max-width: 993px) {
+        display: none;
+      }
     }
   }
 

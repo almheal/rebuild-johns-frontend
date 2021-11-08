@@ -12,7 +12,17 @@
     <div class="profile-field__placeholder" v-if="!isField">
       <span class="profile-field__value">
         {{ modelValue }}
-        <PenIcon class="profile-field__icon" @click="$emit('clickEdit')" />
+        <AppCircleLoader
+          v-if="loading"
+          class="profile-field__loader"
+          color="green"
+          size="small"
+        />
+        <PenIcon
+          v-else
+          class="profile-field__icon"
+          @click="$emit('clickEdit')"
+        />
       </span>
     </div>
     <AppField
@@ -21,6 +31,9 @@
       :class="{ 'padding_top-0': !label }"
       :id="id"
       :textAlign="textAlign"
+      :maxLength="maxLength"
+      :prefix="prefix"
+      :typeValue="typeValue"
       :modelValue="modelValue"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
@@ -32,6 +45,7 @@
       :toShow="toShow"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
+    <div class="profile-field__error" v-if="error">{{ error }}</div>
   </div>
 </template>
 
@@ -39,6 +53,7 @@
 import AppField from '@elements/AppField'
 import AppDropdown from '@elements/AppDropdown'
 import PenIcon from '@icons/PenIcon'
+import AppCircleLoader from '@elements/AppCircleLoader'
 
 export default {
   name: 'ProfileField',
@@ -46,6 +61,7 @@ export default {
     AppField,
     AppDropdown,
     PenIcon,
+    AppCircleLoader,
   },
   emits: ['clickEdit'],
   props: {
@@ -74,12 +90,32 @@ export default {
       default: 'input',
     },
     list: {
-      type: Array,
+      type: [Array, Object],
       default: () => [],
     },
     toShow: {
       type: Function,
       default: (item) => item,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    maxLength: {
+      type: [String, Number],
+      default: '',
+    },
+    prefix: {
+      type: String,
+      default: '',
+    },
+    typeValue: {
+      type: String,
+      default: '',
+    },
+    error: {
+      type: String,
+      default: '',
     },
   },
 }
@@ -140,8 +176,19 @@ export default {
     }
   }
 
+  &__loader {
+    @include absolute-top-center-right(0);
+    transform: translate(calc(100% + 6px), -50%);
+  }
+
   &__dropdown {
     font-weight: 500;
+  }
+
+  &__error {
+    color: $dark-red-color;
+    margin: 5px 0;
+    font-size: 12px;
   }
 }
 </style>

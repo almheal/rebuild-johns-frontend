@@ -3,4 +3,5 @@ export default () => ({
   loginLoader: false,
   registerLoader: false,
   checkAlreadyLoader: false,
+  authLoader: false,
 })

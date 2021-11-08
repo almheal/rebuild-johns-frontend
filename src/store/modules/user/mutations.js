@@ -13,4 +13,7 @@ export default {
   [types.SET_CHECK_ALREADY_LOADER](state, value) {
     state.checkAlreadyLoader = value
   },
+  [types.SET_AUTH_LOADER](state, value) {
+    state.authLoader = value
+  },
 }

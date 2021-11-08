@@ -246,7 +246,7 @@ export default {
       )
     }
 
-    if (initialValue) {
+    if (initialValue && initialValue !== this.modelValue) {
       this.$emit('update:modelValue', initialValue)
     }
   },

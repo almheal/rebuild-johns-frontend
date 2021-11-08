@@ -57,7 +57,7 @@
       <div class="shopping-cart__empty" v-if="!getItemsCount && isOpened">
         <img
           class="shopping-cart__img"
-          src="../../assets/img/emptyCart.jpg"
+          v-lazy="require(`../../assets/img/emptyCart.jpg`)"
           alt="empty-cart-img"
         />
         <div class="shopping-cart__text">{{ $t('app.cart.empty') }}</div>
