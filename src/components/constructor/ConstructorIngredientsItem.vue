@@ -190,13 +190,40 @@ export default {
   &__counter {
     @include absolute-top-right(6px, 6px);
     font-size: 12px;
+
+    @media (max-width: 1024px) {
+      right: initial;
+      left: 6px;
+    }
   }
 
   &__icon {
     @include absolute-bottom-default(4px, 4px);
+    z-index: 5;
     color: $dark-red-color;
     opacity: 0;
     transition: opacity 0.3s;
+
+    @media (max-width: 1024px) {
+      @include flex-center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: $white-color;
+      background-color: $dark-red-color;
+      opacity: 1;
+      bottom: initial;
+      left: initial;
+      top: -12px;
+      right: -12px;
+    }
+
+    @media (max-width: 544px) {
+      width: 42px;
+      height: 42px;
+      top: -6px;
+      right: -6px;
+    }
   }
 }
 </style>
