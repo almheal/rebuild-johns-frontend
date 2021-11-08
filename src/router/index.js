@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { TOKEN_NAME } from '@const'
 import { getLocalStorage } from '@utils'
+import store from '@/store'
 
 const routes = [
   {
@@ -49,6 +50,16 @@ router.beforeEach((to, from, next) => {
     next({ path: from.name ? from.path : '/' })
   } else {
     next()
+  }
+})
+
+router.afterEach((guard) => {
+  if (guard.query.testUser && !getLocalStorage(TOKEN_NAME)) {
+    store.dispatch('user/loginByTestUser')
+
+    const query = JSON.parse(JSON.stringify(guard.query))
+    delete query.testUser
+    router.replace({ query })
   }
 })
 

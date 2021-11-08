@@ -69,3 +69,8 @@ export const IMAGES_SIZES_MEDIA = [
   { value: '768', media: '(min-width: 641px)' },
   { value: '640', media: '(max-width: 641px)' },
 ]
+
+export const TEST_USER = {
+  phoneNumber: '+79149112061',
+  password: '123456',
+}

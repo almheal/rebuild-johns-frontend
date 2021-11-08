@@ -7,7 +7,7 @@
           :class="{ 'is-loading': imageLoader }"
           @click="openFile"
         >
-          <AppUserAvatar :img="copyUser.img" size="large" />
+          <AppUserAvatar :img="user.img" size="large" />
           <input
             type="file"
             class="profile-sidebar__file"
