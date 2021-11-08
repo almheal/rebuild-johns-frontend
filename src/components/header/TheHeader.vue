@@ -41,7 +41,7 @@
                 @clickButton="setComponentFormName(COMPONENT_FORM_NAMES.login)"
                 @selectLanguage="selectLanguageHandler"
                 @clickCross="toggleMenu"
-                @clickLogout="logoutHandler"
+                @clickLogout="logout"
               />
 
               <AppLanguage
@@ -188,13 +188,6 @@ export default {
       if (!this.menuIsOpen) {
         this.setComponentFormName('')
       }
-    },
-
-    logoutHandler() {
-      if (this.$route?.meta?.auth) {
-        this.$router.push('/')
-      }
-      this.logout()
     },
 
     scrollHandler(scrollPosition) {

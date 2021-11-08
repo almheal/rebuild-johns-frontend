@@ -8,16 +8,16 @@
         <AppCheckbox
           class="profile-notifications__checkbox"
           :label="$t('app.profile.notification.sms')"
-          :modelValue="sms"
-          @update:modelValue="$emit('update:sms', $event)"
+          :modelValue="user?.notifications?.sms"
+          @update:modelValue="toggleNotification($event, 'sms')"
         />
       </div>
       <div class="profile-notifications__item">
         <AppCheckbox
           class="profile-notifications__checkbox"
           :label="$t('app.profile.notification.about')"
-          :modelValue="company"
-          @update:modelValue="$emit('update:company', $event)"
+          :modelValue="user?.notifications?.company"
+          @update:modelValue="toggleNotification($event, 'company')"
         />
         <div class="profile-notifications__text">
           {{ $t('app.profile.notification.emailNewsletter') }}
@@ -37,14 +37,25 @@ export default {
     ProfileSection,
     AppCheckbox,
   },
+
+  emits: ['updateUser'],
+
   props: {
-    sms: {
-      type: Boolean,
-      default: false,
+    user: {
+      type: Object,
+      default: () => ({}),
     },
-    company: {
-      type: Boolean,
-      default: false,
+  },
+
+  methods: {
+    toggleNotification(value, key) {
+      this.$emit('updateUser', {
+        ...this.user,
+        notifications: {
+          ...this.user.notifications,
+          [key]: value,
+        },
+      })
     },
   },
 }

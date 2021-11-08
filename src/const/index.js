@@ -36,8 +36,14 @@ export const DEFAULT_PIZZA_OPTIONS = [
 export const MAX_LENGTH_ONE_INGREDIENT = 2
 export const MAX_LENGTH_INGREDIENTS = 10
 export const GENDERS = {
-  MALE: 'app.profile.gender.male',
-  FEMALE: 'app.profile.gender.female',
+  MALE: {
+    title: 'app.profile.gender.male',
+    param: 'male',
+  },
+  FEMALE: {
+    title: 'app.profile.gender.female',
+    param: 'female',
+  },
 }
 export const CARD_NUMBER_LENGTH = 16
 export const CVV_LENGTH = 3
