@@ -28,9 +28,11 @@ export default {
       locales: (state) => state.locale.locales,
       notifications: (state) => state.notification.notifications,
     }),
+
     ...mapGetters({
       userToken: 'user/getToken',
     }),
+
     layout() {
       return this.$route.meta.layout
     },
@@ -46,6 +48,7 @@ export default {
     ...mapMutations({
       setCategoriesLoader: 'category/SET_CATEGORIES_LOADER',
       setAuthLoader: 'user/SET_AUTH_LOADER',
+      setBodyWidth: 'SET_BODY_WIDTH',
     }),
 
     async authUser() {
@@ -55,6 +58,14 @@ export default {
         this.setAuthLoader(false)
       }
     },
+
+    changeBodyWidthListener() {
+      this.setBodyWidth(document.body.clientWidth)
+
+      window.addEventListener('resize', () => {
+        this.setBodyWidth(document.body.clientWidth)
+      })
+    },
   },
 
   mounted() {
@@ -63,6 +74,7 @@ export default {
       this.initialLocale({ languages: this.locales })
       this.isShow = true
     })
+    this.changeBodyWidthListener()
   },
 }
 </script>
