@@ -7,27 +7,15 @@
     >
       <template v-slot="props">
         <picture>
-          <source
-            :srcset="props.slide.defaultWebp?.url"
-            :media="props.slide.defaultWebp?.media"
-            type="image/webp"
-          />
-          <source
-            v-for="(url, key) in props.slide.webp"
-            :key="url"
-            :srcset="url"
-            :media="key"
-            type="image/webp"
-          />
-          <source
-            v-for="(url, key) in props.slide.jpg"
-            :key="url"
-            :srcset="url"
-            :media="key"
-            type="image/jpeg"
+          <img
+            class="home-slider__img"
+            v-if="props.index"
+            v-lazy="props.slide.defaultWebp?.url"
+            alt="slider-image"
           />
           <img
             class="home-slider__img"
+            v-else
             :src="props.slide.defaultWebp?.url"
             alt="slider-image"
           />
@@ -71,7 +59,14 @@ export default {
   &__img {
     max-width: 100%;
     max-height: 100%;
+    width: 100%;
+    height: 100%;
     border-radius: 10px;
+
+    @media (max-width: 1024px) {
+      width: auto;
+      height: auto;
+    }
 
     @media (max-width: 524px) {
       border-radius: 0;

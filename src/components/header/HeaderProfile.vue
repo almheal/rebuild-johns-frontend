@@ -1,6 +1,6 @@
 <template>
   <div class="header-profile">
-    <div class="row-center" @click="$router.push('/profile')">
+    <div class="row-center" @click="$emit('toProfile')">
       <div class="header-profile__column">
         <div class="header-profile__bonuses">10</div>
         <div class="header-profile__text">{{ $t('app.profile.bonuses') }}</div>
@@ -24,7 +24,7 @@ export default {
     AppUserAvatar,
     ExitIcon,
   },
-  emits: ['clickLogout'],
+  emits: ['clickLogout', 'toProfile'],
   props: {
     userAvatar: {
       type: String,
