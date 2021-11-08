@@ -1,7 +1,7 @@
 import * as userService from '@/services/user.service'
 import * as types from './mutations-types'
 import { setLocalStorage } from '@utils'
-import { TOKEN_NAME } from '@const'
+import { TOKEN_NAME, TEST_USER } from '@const'
 import router from '@/router'
 
 const updateUser = async ({ commit }, body) => {
@@ -61,6 +61,10 @@ const logout = async ({ commit }) => {
   }
 }
 
+const loginByTestUser = ({ dispatch }) => {
+  dispatch('login', TEST_USER)
+}
+
 export default {
   updateUser,
   login,
@@ -68,4 +72,5 @@ export default {
   auth,
   checkAlreadyUser,
   logout,
+  loginByTestUser,
 }

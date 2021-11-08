@@ -224,6 +224,8 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+  position: relative;
+  z-index: 50;
   height: 80px;
   background-color: $white-color;
 
