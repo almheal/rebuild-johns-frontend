@@ -31,7 +31,7 @@ export default {
       default: 0,
     },
     isCount: {
-      type: Boolean,
+      type: [Boolean, Number],
       default: true,
     },
   },

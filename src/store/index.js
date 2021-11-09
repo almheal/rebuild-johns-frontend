@@ -9,8 +9,12 @@ import promoCode from './modules/promoCode'
 import halves from './modules/halves'
 import order from './modules/order'
 import notification from './modules/notification'
+import mutations from './mutations'
+import state from './state'
 
 export default createStore({
+  state,
+  mutations,
   modules: {
     locale,
     user,
