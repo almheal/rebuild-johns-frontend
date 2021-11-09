@@ -6,7 +6,7 @@
         <div class="app-card__picture" v-if="img">
           <img
             class="app-card__img"
-            :src="require(`../../assets/img/${img}`)"
+            v-lazy="require(`../../assets/img/${img}`)"
             alt="card-img"
           />
         </div>
@@ -99,6 +99,21 @@ export default {
     font-size: 18px;
     color: $brown-color;
     margin-bottom: 8px;
+  }
+
+  &__picture {
+    width: 235px;
+    height: 185px;
+
+    @media (max-width: 993px) {
+      width: 316px;
+      height: 249px;
+    }
+
+    @media (max-width: 380px) {
+      width: 100%;
+      height: auto;
+    }
   }
 
   &__img {

@@ -5,7 +5,7 @@
         <OrderCart
           :cartItems="getItems"
           :count="getItemsCount"
-          :total="getTotal"
+          :total="total"
         />
         <OrderContacts
           v-model:name="order.name"
@@ -73,6 +73,7 @@ import {
   PAYMENT_METHODS,
   PHONE_LENGTH_WITH_PREFIX,
 } from '@const'
+import { calculateDiscount } from '@utils'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
@@ -131,6 +132,7 @@ export default {
   computed: {
     ...mapState({
       orderLoader: (state) => state.order.orderLoader,
+      promoCode: (state) => state.promoCode.promoCode,
     }),
 
     ...mapGetters({
@@ -144,6 +146,17 @@ export default {
         this.order.phoneNumber.length === PHONE_LENGTH_WITH_PREFIX &&
         this.order.addressDelivery.address
       )
+    },
+
+    total() {
+      const { discount, percent } = this.promoCode
+      return Object.keys(this.promoCode).length
+        ? calculateDiscount({
+            total: this.getTotal,
+            discount,
+            isPercent: percent,
+          })
+        : this.getTotal
     },
   },
   methods: {

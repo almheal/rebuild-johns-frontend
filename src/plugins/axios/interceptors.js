@@ -50,7 +50,7 @@ function setAuthorizationToken(request) {
 function removeLocalStorageToken(error) {
   const FORBIDDEN_STATUS = 403
   if (error.response.status === FORBIDDEN_STATUS) {
-    setLocalStorage({ key: TOKEN_NAME, data: '' })
+    store.dispatch('user/logout')
   }
 
   throw error

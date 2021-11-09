@@ -5,10 +5,12 @@
         <div class="profile__body">
           <div class="profile__column">
             <ProfileSidebar
-              :name="user.name"
-              :phoneNumber="user.phoneNumber"
-              :email="user.email"
-              @userChanged="changeUserHandler"
+              :user="user"
+              :imageLoader="imageLoader"
+              :authLoader="authLoader"
+              :userLoader="userLoader"
+              @updateUser="changeUserHandler"
+              @changeImage="changeUserAvatar"
             />
           </div>
           <div class="profile__content">
@@ -16,42 +18,38 @@
             <ProfileDeliveryAddresses
               :isForm="isAddressForm"
               :loading="addressLoader"
-              :deliveryAddresses="user.deliveryAddresses"
+              :user="user"
               @addAddress="isAddressForm = true"
               @cancel="isAddressForm = false"
-              @saveAddress="
-                addNewItem({
-                  value: $event,
-                  key: 'deliveryAddresses',
+              @updateUser="
+                updateUserHandler({
+                  user: $event,
                   loaderKey: 'addressLoader',
                   formKey: 'isAddressForm',
                 })
               "
-              @deleteAddress="
-                removeItem({ id: $event._id, key: 'deliveryAddresses' })
-              "
             />
             <ProfilePayments
-              :isForm="isPaymentCard"
+              :isForm="isPaymentCardForm"
               :loading="paymentCardLoader"
-              :paymentCards="user.paymentCards"
-              @toggleForm="isPaymentCard = !isPaymentCard"
-              @cancel="isPaymentCard = false"
-              @saveCard="
-                addNewItem({
-                  value: $event,
-                  key: 'paymentCards',
+              :user="user"
+              @toggleForm="isPaymentCardForm = !isPaymentCardForm"
+              @cancel="isPaymentCardForm = false"
+              @updateUser="
+                updateUserHandler({
+                  user: $event,
                   loaderKey: 'paymentCardLoader',
-                  formKey: 'isPaymentCard',
+                  formKey: 'isPaymentCardForm',
                 })
               "
-              @deleteCard="removeItem({ id: $event._id, key: 'paymentCards' })"
             />
             <ProfileNotifications
-              :sms="user.notifications?.sms"
-              :company="user.notifications?.company"
-              @update:sms="updateNotification('sms')"
-              @update:company="updateNotification('company')"
+              :user="user"
+              @updateUser="
+                updateUserHandler({
+                  user: $event,
+                })
+              "
             />
           </div>
         </div>
@@ -66,7 +64,7 @@ import ProfileHistoryOrders from '@components/profile/ProfileHistoryOrders'
 import ProfileDeliveryAddresses from '@components/profile/ProfileDeliveryAddresses'
 import ProfilePayments from '@components/profile/ProfilePayments'
 import ProfileNotifications from '@components/profile/ProfileNotifications'
-
+import * as imageService from '@/services/image.service'
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -84,13 +82,16 @@ export default {
       addressLoader: false,
       isAddressForm: false,
       paymentCardLoader: false,
-      isPaymentCard: false,
+      isPaymentCardForm: false,
+      imageLoader: false,
+      userLoader: false,
     }
   },
 
   computed: {
     ...mapState({
       user: (state) => state.user.user,
+      authLoader: (state) => state.user.authLoader,
     }),
   },
 
@@ -99,42 +100,37 @@ export default {
       updateUser: 'user/updateUser',
     }),
 
-    changeUserHandler({ property, value }) {
-      console.log(property, value)
+    changeUserHandler({ key, value }) {
+      this.updateUserHandler({
+        user: { ...this.user, [key]: value },
+        loaderKey: 'userLoader',
+      })
     },
 
-    async addNewItem({ value, loaderKey, key, formKey }) {
-      this[loaderKey] = true
+    async changeUserAvatar(formData) {
+      this.imageLoader = true
+      const imgUrl = await imageService.create(formData)
       await this.updateUser({
         ...this.user,
-        [key]: [...this.user[key], value],
+        img: imgUrl,
       })
-      this[loaderKey] = false
-      this[formKey] = false
+      this.imageLoader = false
     },
 
-    removeItem({ id, key }) {
-      const isConfirm = confirm(this.$t('app.utils.confirmDelete'))
-      if (!isConfirm) {
-        return
+    async updateUserHandler({ user, loaderKey, formKey }) {
+      if (loaderKey) {
+        this[loaderKey] = true
       }
 
-      const filteredArr = this.user[key].filter((item) => item._id !== id)
+      await this.updateUser(user)
 
-      this.updateUser({
-        ...this.user,
-        [key]: filteredArr,
-      })
-    },
+      if (loaderKey) {
+        this[loaderKey] = false
+      }
 
-    updateNotification(key) {
-      this.updateUser({
-        ...this.user,
-        notifications: {
-          ...this.user.notifications,
-          [key]: !this.user.notifications[key],
-        },
-      })
+      if (formKey) {
+        this[formKey] = false
+      }
     },
   },
 }

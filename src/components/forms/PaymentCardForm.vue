@@ -1,5 +1,5 @@
 <template>
-  <form class="payment-form" @submit.prevent="$emit('submitForm')">
+  <form class="payment-form">
     <div
       class="payment-form__button"
       :class="{ 'is-active': isForm }"
@@ -78,7 +78,14 @@ export default {
     AppPlusButton,
     AppField,
   },
-  emits: ['submitForm'],
+  emits: [
+    'submitForm',
+    'toggleForm',
+    'update:cardNumber',
+    'update:MY',
+    'update:holderName',
+    'update:cvv',
+  ],
   props: {
     isForm: {
       type: Boolean,

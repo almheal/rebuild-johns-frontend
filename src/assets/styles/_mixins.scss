@@ -76,6 +76,12 @@
   bottom: $bottom;
 }
 
+@mixin absolute-bottom-right($bottom: 0, $right: 0){
+  position: absolute;
+  right: $right;
+  bottom: $bottom;
+}
+
 @mixin fixed-full{
   position: fixed;
   left: 0;

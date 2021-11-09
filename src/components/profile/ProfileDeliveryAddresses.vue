@@ -14,7 +14,7 @@
 
       <ProfileList
         :items="addressesForTemplate"
-        @clickCross="$emit('deleteAddress', $event)"
+        @clickCross="deleteAddressHandler"
       />
     </template>
 
@@ -55,7 +55,7 @@ export default {
     ProfileButtonsForm,
     ProfileList,
   },
-  emits: ['saveAddress', 'cancel'],
+  emits: ['updateUser', 'cancel'],
   props: {
     loading: {
       type: Boolean,
@@ -65,9 +65,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    deliveryAddresses: {
-      type: Array,
-      default: () => [],
+    user: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data() {
@@ -87,7 +87,7 @@ export default {
 
   computed: {
     addressesForTemplate() {
-      return this.deliveryAddresses.map((item) => {
+      return this.user?.deliveryAddresses?.map((item) => {
         const apartment = item.apartment
           ? `${this.$t('app.utils.apt')}. ${item.apartment}`
           : ''
@@ -127,7 +127,26 @@ export default {
         return
       }
 
-      this.$emit('saveAddress', this.addressDelivery)
+      this.$emit('updateUser', {
+        ...this.user,
+        deliveryAddresses: [
+          ...this.user.deliveryAddresses,
+          this.addressDelivery,
+        ],
+      })
+    },
+
+    deleteAddressHandler({ _id }) {
+      const isConfirm = confirm(this.$t('app.utils.confirmDelete'))
+      if (!isConfirm) {
+        return
+      }
+
+      const deliveryAddresses = this.user.deliveryAddresses.filter(
+        (address) => address._id !== _id
+      )
+
+      this.$emit('updateUser', { ...this.user, deliveryAddresses })
     },
 
     validate() {

@@ -1,101 +1,108 @@
 <template>
   <div class="home">
+    <HomeCarousel />
     <div class="container">
       <div class="home__inner">
         <HomeCategories
           class="home__categories"
           :loading="categoriesLoader"
           :categories="categoriesWithProducts"
-          @clickCategory="categoryHandler"
+          @clickCategory="setCategoryRefId($event._id)"
         />
-        <div class="home__row row">
+        <div
+          class="home__row row"
+          :class="{ 'is-loading': productsLoader && !products.length }"
+        >
           <div class="home__body">
-            <section class="section" v-if="getPizzaCategory">
-              <div class="section__header">
-                <h4 class="section__title">{{ $t(getPizzaCategory.title) }}</h4>
-                <div class="row">
-                  <div
-                    class="section__icon"
-                    :class="{ 'is-active': ingredientsIdsFilter.length }"
-                    @click="isFilter = !isFilter"
-                  >
-                    <FilterIcon />
-                  </div>
-                  <div
-                    class="section__icon section__revert"
-                    v-if="ingredientsIdsFilter.length || tagsFilter.length"
-                    @click="resetFilter"
-                  >
-                    <RevertIcon />
+            <div
+              class="home__products"
+              :class="{ 'is-hidden': categoryScrollRefId }"
+            >
+              <section
+                class="section"
+                v-if="getPizzaCategory"
+                :ref="getPizzaCategory._id"
+              >
+                <div class="section__header">
+                  <h4 class="section__title">
+                    {{ $t(getPizzaCategory.title) }}
+                  </h4>
+                  <div class="row">
+                    <div
+                      class="section__icon"
+                      :class="{ 'is-active': ingredientsIdsFilter.length }"
+                      @click="isFilter = !isFilter"
+                    >
+                      <FilterIcon />
+                    </div>
+                    <div
+                      class="section__icon section__revert"
+                      v-if="ingredientsIdsFilter.length || tagsFilter.length"
+                      @click="resetFilter"
+                    >
+                      <RevertIcon />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <HomeTagsFilter
-                v-if="isFilter"
-                :list="filteredPizzasTagsAndFeatures"
-                :activeTags="tagsFilter"
-                @clickFilter="toggleFilterItem($event, 'tagsFilter')"
-              />
-              <HomeIngredientsFilter
-                v-if="isFilter"
-                :ingredients="ingredients"
-                :activeIngredientsIds="ingredientsIdsFilter"
-                :pizzasIngredientsIds="filteredPizzasIngredientsIds"
-                :loading="ingredientsLoader"
-                @clickIngredient="addIngredientsFilter"
-                @back="isFilter = false"
-              />
-              <div class="section__products">
-                <ProductList
-                  :products="filteredPizzas"
-                  :loading="productsLoader"
-                >
-                  <AppSpecialCard
-                    img="constructor-card.png"
-                    :title="$t('app.utils.createYourPizza')"
-                    :buttonText="$t('app.utils.createPizza')"
-                    :description="$t('app.utils.anyIngredients')"
-                    @clickButton="$router.push('/constructor')"
-                  />
-                  <AppSpecialCard
-                    img="halvesPizza.png"
-                    :title="$t('app.halves.card.title')"
-                    :buttonText="$t('app.halves.card.selectPizza')"
-                    :description="$t('app.halves.card.combineTwoFlavors')"
-                    @clickButton="$router.push('/halves')"
-                  />
-                </ProductList>
-              </div>
-            </section>
-            <section
-              class="section"
-              v-for="category in categoriesWithoutPizza"
-              :key="category._id"
-            >
-              <div class="section__header">
-                <h4 class="section__title">{{ $t(category.title) }}</h4>
-              </div>
-              <div class="section__products">
-                <ProductList
-                  :products="productsByCategories[category._id]"
-                  :loading="productsLoader"
+                <HomeTagsFilter
+                  v-if="isFilter"
+                  :list="filteredPizzasTagsAndFeatures"
+                  :activeTags="tagsFilter"
+                  @clickFilter="toggleFilterItem($event, 'tagsFilter')"
                 />
-              </div>
-            </section>
+                <HomeIngredientsFilter
+                  v-if="isFilter"
+                  :ingredients="ingredients"
+                  :activeIngredientsIds="ingredientsIdsFilter"
+                  :pizzasIngredientsIds="filteredPizzasIngredientsIds"
+                  :loading="ingredientsLoader"
+                  @clickIngredient="addIngredientsFilter"
+                  @back="isFilter = false"
+                />
+
+                <div class="section__products">
+                  <ProductList
+                    :products="filteredPizzas"
+                    :loading="productsLoader"
+                  >
+                    <AppSpecialCard
+                      img="constructor-card.png"
+                      :title="$t('app.utils.createYourPizza')"
+                      :buttonText="$t('app.utils.createPizza')"
+                      :description="$t('app.utils.anyIngredients')"
+                      @clickButton="$router.push('/constructor')"
+                    />
+                    <AppSpecialCard
+                      img="halvesPizza.png"
+                      :title="$t('app.halves.card.title')"
+                      :buttonText="$t('app.halves.card.selectPizza')"
+                      :description="$t('app.halves.card.combineTwoFlavors')"
+                      @clickButton="$router.push('/halves')"
+                    />
+                  </ProductList>
+                </div>
+              </section>
+              <section
+                class="section"
+                v-for="category in categoriesWithoutPizza"
+                :key="category._id"
+                :ref="category._id"
+              >
+                <div class="section__header">
+                  <h4 class="section__title">{{ $t(category.title) }}</h4>
+                </div>
+                <div class="section__products">
+                  <ProductList
+                    :products="productsByCategories[category._id]"
+                    :loading="productsLoader"
+                  />
+                </div>
+              </section>
+            </div>
           </div>
           <div class="home__column">
             <ShoppingCart class="home__cart" />
-            <AppPromoCode
-              class="home__promo-code"
-              :promoCode="promoCodeName"
-              :loading="promoCodeLoader"
-              :error="$t(errors.promoCodeName)"
-              :message="$t(messages.promoCodeName)"
-              :disabled="Boolean(Object.keys(promoCode).length)"
-              @submitPromoCode="submitPromoCodeHandler"
-              @removePromoCode="removePromoCodeHandler"
-              @update:promoCode="updatePromoCodeHandler"
-            />
+            <AppPromoCode class="home__promo-code" />
           </div>
         </div>
       </div>
@@ -106,6 +113,7 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import HomeCategories from '@components/home/HomeCategories'
+import HomeCarousel from '@components/home/HomeCarousel'
 import ShoppingCart from '@components/shoppingCart/ShoppingCart'
 import ProductList from '@components/product/ProductList'
 import FilterIcon from '@icons/FilterIcon'
@@ -122,15 +130,15 @@ const HomeTagsFilter = defineAsyncComponent(() =>
     /*webpackChunkName: "homeTagsFilter"*/ '@components/home/HomeTagsFilter'
   )
 )
+import { moveToElement } from '@utils'
+import { SCROLL_TO_CATEGORY_TIMEOUT } from '@const'
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
-import { promoCodeValidation } from '@utils/validations'
-import { failPromoCode } from '@utils/validationMessages'
-import { NOTIFICATION_TIMEOUT } from '@const'
 
 export default {
   name: 'Home',
   components: {
     HomeCategories,
+    HomeCarousel,
     ShoppingCart,
     ProductList,
     FilterIcon,
@@ -145,25 +153,34 @@ export default {
       ingredientsIdsFilter: [],
       tagsFilter: [],
       isFilter: false,
-      promoCodeName: '',
-      errors: {
-        promoCodeName: '',
-      },
-      messages: {
-        promoCodeName: '',
-      },
     }
   },
+
+  watch: {
+    categoryScrollRefId(id) {
+      if (!id) {
+        return
+      }
+
+      moveToElement(
+        this.$refs[id],
+        () => {
+          this.setCategoryRefId('')
+        },
+        SCROLL_TO_CATEGORY_TIMEOUT
+      )
+    },
+  },
+
   computed: {
     ...mapState({
       categories: (state) => state.category.categories,
       categoriesLoader: (state) => state.category.categoriesLoader,
+      categoryScrollRefId: (state) => state.category.scrollCategoryRefId,
       products: (state) => state.product.products,
       productsLoader: (state) => state.product.productsLoader,
       ingredients: (state) => state.ingredient.ingredients,
       ingredientsLoader: (state) => state.ingredient.ingredientsLoader,
-      promoCode: (state) => state.promoCode.promoCode,
-      promoCodeLoader: (state) => state.promoCode.promoCodeLoader,
     }),
 
     ...mapGetters({
@@ -270,57 +287,14 @@ export default {
     ...mapActions({
       fetchProducts: 'product/fetchProducts',
       fetchIngredients: 'ingredient/fetchIngredients',
-      fetchPromoCode: 'promoCode/fetchPromoCode',
-      resetPromoCode: 'promoCode/resetPromoCode',
       fetchCategories: 'category/fetchCategories',
     }),
 
     ...mapMutations({
       setIngredientsLoader: 'ingredient/SET_INGREDIENTS_LOADER',
-      setPromoCodeLoader: 'promoCode/SET_PROMO_CODE_LOADER',
       setCategoriesLoader: 'category/SET_CATEGORIES_LOADER',
+      setCategoryRefId: 'category/SET_SCROLL_CATEGORY_ID',
     }),
-
-    categoryHandler(category) {
-      console.log(category)
-    },
-
-    updatePromoCodeHandler(value) {
-      this.promoCodeName = value
-      this.errors.promoCodeName = ''
-    },
-
-    removePromoCodeHandler() {
-      this.promoCodeName = ''
-      this.resetPromoCode()
-    },
-
-    async submitPromoCodeHandler() {
-      const isValid = this.validatePromoCodeName()
-
-      if (!isValid) {
-        return
-      }
-
-      this.setPromoCodeLoader(true)
-      const isSuccess = await this.fetchPromoCode(this.promoCodeName)
-      this.setPromoCodeLoader(false)
-
-      if (!isSuccess) {
-        this.errors.promoCodeName = this.$t(failPromoCode)
-      } else {
-        this.messages.promoCodeName = 'app.utils.successfullyApplied'
-        setTimeout(() => {
-          this.messages.promoCodeName = ''
-        }, NOTIFICATION_TIMEOUT)
-      }
-    },
-
-    validatePromoCodeName() {
-      this.errors.promoCodeName = promoCodeValidation(this.promoCodeName)
-
-      return this.errors.promoCodeName ? false : true
-    },
 
     toggleFilterItem(value, property) {
       if (this[property].includes(value)) {
@@ -369,6 +343,10 @@ export default {
 .home {
   &__inner {
     padding: 40px 0;
+
+    @media (max-width: 769px) {
+      padding-top: 0;
+    }
   }
 
   &__categories {
@@ -379,9 +357,14 @@ export default {
 
   &__row {
     padding-top: 70px;
+    min-height: 500px;
 
     @media (max-width: 993px) {
       flex-direction: column;
+    }
+
+    @media (max-width: 769px) {
+      padding-top: 0;
     }
   }
 
@@ -392,6 +375,14 @@ export default {
     @media (max-width: 993px) {
       width: 100%;
       margin-right: 0;
+    }
+  }
+
+  &__products {
+    transition: opacity 0.3s;
+
+    &.is-hidden {
+      opacity: 0;
     }
   }
 

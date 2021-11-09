@@ -14,17 +14,29 @@
     <div class="product-additionals__row row-center">
       <div class="product-additionals__features" v-if="features.length">
         <div
-          class="product-additionals__feature"
+          class="product-additionals__icon"
           v-for="feature in features"
           :key="feature.title"
         >
-          <img class="product-additionals__icon" :src="feature.icon" />
+          <img v-lazy="feature.icon" alt="feature-img" />
+          <AppPoppup
+            class="product-additionals__poppup"
+            :list="[$t(feature.title)]"
+          />
         </div>
       </div>
 
       <div class="product-additionals__persons" v-if="persons">
         <div class="row-center">
-          <PersonsIcon class="product-persons__icon" />
+          <div class="product-additionals__icon">
+            <PersonsIcon />
+            <AppPoppup
+              class="product-additionals__poppup"
+              :list="[$t('app.numberPersons.title')]"
+              width="160"
+            />
+          </div>
+
           <span>{{ persons }}</span>
         </div>
       </div>
@@ -34,11 +46,13 @@
 
 <script>
 import PersonsIcon from '@icons/PersonsIcon'
+import AppPoppup from '@elements/AppPoppup'
 
 export default {
   name: 'ProductAdditionals',
   components: {
     PersonsIcon,
+    AppPoppup,
   },
   props: {
     tags: {
@@ -88,6 +102,13 @@ export default {
     }
   }
 
+  &__poppup {
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.3s, opacity 0.2s;
+    transition-delay: 0.3s, 0s;
+  }
+
   &__row {
     width: 100%;
     justify-content: flex-end;
@@ -98,12 +119,23 @@ export default {
   }
 
   &__icon {
+    position: relative;
     width: 16px;
     height: 16px;
+
+    &:hover {
+      .product-additionals__poppup {
+        opacity: 1;
+        visibility: visible;
+        transition: visibility 0s, opacity 0.2s;
+        transition-delay: 0s;
+      }
+    }
   }
 
   &__persons {
     margin-left: 10px;
+
     span {
       margin-left: 5px;
     }

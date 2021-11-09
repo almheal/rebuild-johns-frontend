@@ -2,6 +2,7 @@
   <button
     class="plus-button"
     :class="{ 'background-grey': backgroundColor === 'grey' }"
+    :type="buttonType"
   />
 </template>
 
@@ -12,6 +13,10 @@ export default {
     backgroundColor: {
       type: String,
       default: 'green',
+    },
+    buttonType: {
+      type: String,
+      default: 'button',
     },
   },
 }
