@@ -24,14 +24,23 @@
             <h5 class="product-card__title">{{ $t(product.title) }}</h5>
             <InfoIcon />
           </div>
-          <div class="product-card__description" v-if="product.description">
+          <div
+            class="product-card__description"
+            v-if="product.description"
+            data-test="description"
+          >
             {{ $t(product.description) }}
           </div>
         </div>
 
         <div class="product-card__content">
-          <div class="product-card__varieties" v-if="productVarieties.length">
+          <div
+            class="product-card__varieties"
+            v-if="productVarieties.length"
+            data-test="varieties"
+          >
             <AppProductVarious
+              data-test="product-varieties"
               :items="productVarieties"
               :toShow="(item) => $t(item.variety)"
               :modelValue="activeVariety"
@@ -39,15 +48,15 @@
             />
           </div>
 
-          <template v-if="activeVarietySizes.length">
-            <AppProductVarious
-              :items="activeVarietySizes"
-              :toShow="
-                (item) => `${item.size.title} ${$t(item.size?.unit || '')}`
-              "
-              v-model="activeSize"
-            />
-          </template>
+          <AppProductVarious
+            v-if="activeVarietySizes.length"
+            data-test="product-sizes"
+            :items="activeVarietySizes"
+            :toShow="
+              (item) => `${item.size.title} ${$t(item.size?.unit || '')}`
+            "
+            v-model="activeSize"
+          />
         </div>
       </div>
 
@@ -58,9 +67,10 @@
         <AppPrice :price="activeSize.price" />
       </div>
     </div>
+
     <ProductIngredients
       class="product-card__ingredients"
-      v-if="product.ingredients.length && isIngredients"
+      v-if="isIngredients"
       :ingredients="ingredients"
       @clickIngredient="toggleIngredient"
       @addIngredients="addIngredientsHandler"
@@ -127,6 +137,7 @@ export default {
     ...mapActions({
       addToCart: 'shoppingCart/addToCart',
     }),
+
     defaultVarietyAndSize(option) {
       this.activeVariety = option
       this.activeSize = option.sizes[0]
@@ -160,7 +171,11 @@ export default {
     },
 
     toggleIngredient(ingredient) {
-      ingredient.isRemoved = !ingredient.isRemoved
+      this.ingredients.forEach((item) => {
+        if (item._id === ingredient._id) {
+          item.isRemoved = !item.isRemoved
+        }
+      })
     },
   },
   mounted() {
