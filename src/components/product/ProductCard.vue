@@ -22,7 +22,11 @@
         <div class="product-card__content">
           <div class="product-card__name">
             <h5 class="product-card__title">{{ $t(product.title) }}</h5>
-            <InfoIcon />
+            <ProductNutritionalValue
+              v-if="activeSize.nutritionalValue"
+              :nutritionalValue="activeSize.nutritionalValue"
+              :persons="activeSize.persons"
+            />
           </div>
           <div
             class="product-card__description"
@@ -92,7 +96,7 @@ import ProductAdditionals from '@components/product/ProductAdditionals'
 import AppProductVarious from '@elements/AppProductVarious'
 import AppPrice from '@elements/AppPrice'
 import AppButton from '@elements/AppButton'
-import InfoIcon from '@icons/InfoIcon'
+import ProductNutritionalValue from '@components/product/ProductNutritionalValue'
 import { initialIngredients } from '@utils'
 import { mapActions } from 'vuex'
 
@@ -105,7 +109,7 @@ export default {
     AppProductVarious,
     AppPrice,
     AppButton,
-    InfoIcon,
+    ProductNutritionalValue,
   },
   props: {
     product: {

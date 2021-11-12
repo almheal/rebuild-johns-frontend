@@ -75,6 +75,7 @@ export default {
 .product-additionals {
   @include flex-justify-align(space-between, flex-end);
   padding-right: 24px;
+  height: 20px;
 
   &__tag {
     @include flex-align(center);
