@@ -283,4 +283,77 @@ describe('Product card', () => {
       ],
     })
   })
+
+  it('url in router push to constructor contain product id', async () => {
+    createComponent({
+      product: {
+        ...defaultProductMock,
+        ingredients: [ingredientMock],
+      },
+    })
+
+    const ingredientsButton = wrapper.findComponent(ProductIngredientsButton)
+    await ingredientsButton.vm.$emit('clickButton')
+    const productIngredients = wrapper.findComponent(ProductIngredients)
+    await productIngredients.vm.$emit('addIngredients')
+
+    expect(router.push).toHaveBeenCalledWith(
+      `/constructor?id=${defaultProductMock._id}`
+    )
+  })
+
+  it('url in router push to constructor contain removed ingredients', async () => {
+    createComponent({
+      product: {
+        ...defaultProductMock,
+        ingredients: [ingredientMock],
+      },
+    })
+
+    const ingredientsButton = wrapper.findComponent(ProductIngredientsButton)
+    await ingredientsButton.vm.$emit('clickButton')
+    const productIngredients = wrapper.findComponent(ProductIngredients)
+    await productIngredients.vm.$emit('clickIngredient', ingredientMock)
+    await productIngredients.vm.$emit('addIngredients')
+
+    expect(router.push).toHaveBeenCalledWith(
+      `/constructor?id=${defaultProductMock._id}&ingredients=${ingredientMock._id}`
+    )
+  })
+
+  it('product ingredients closed by click cancel', async () => {
+    createComponent({
+      product: {
+        ...defaultProductMock,
+        ingredients: [ingredientMock],
+      },
+    })
+
+    const ingredientsButton = wrapper.findComponent(ProductIngredientsButton)
+    await ingredientsButton.vm.$emit('clickButton')
+    let productIngredients = wrapper.findComponent(ProductIngredients)
+    await productIngredients.vm.$emit('cancel')
+    productIngredients = wrapper.findComponent(ProductIngredients)
+
+    expect(productIngredients.exists()).toBe(false)
+  })
+
+  it('product ingredients add to cart should be called', async () => {
+    createComponent({
+      product: {
+        ...defaultProductMock,
+        ingredients: [ingredientMock],
+      },
+    })
+
+    const ingredientsButton = wrapper.findComponent(ProductIngredientsButton)
+    await ingredientsButton.vm.$emit('clickButton')
+    const productIngredients = wrapper.findComponent(ProductIngredients)
+    await productIngredients.vm.$emit('addToCart')
+
+    expect(mockedActions.addToCart).toHaveBeenCalledWith(expect.any(Object), {
+      ...DEFAULT_PRODUCT_TO_CART,
+      ingredients: [{ ...ingredientMock, isDefault: true, isRemoved: false }],
+    })
+  })
 })
