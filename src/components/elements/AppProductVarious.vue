@@ -3,6 +3,7 @@
     <div
       class="product-various__item"
       v-for="(item, index) in items"
+      data-test="various-item"
       :class="{ 'is-active': toShow(item) === toShow(modelValue) }"
       :key="index"
       @click="$emit('update:modelValue', item)"
