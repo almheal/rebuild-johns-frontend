@@ -12,7 +12,7 @@
           <router-link
             class="header__logo"
             to="/"
-            :class="{ 'is-hidden': headerIsShow }"
+            :class="{ 'is-hidden': getRouteName === 'Home' && headerIsShow }"
           >
             <img
               class="header__img"
@@ -27,7 +27,7 @@
           />
           <div
             class="header__row row-center"
-            :class="{ 'is-hidden': headerIsShow }"
+            :class="{ 'is-open': menuIsOpen }"
           >
             <div class="row-center wrapper-relative">
               <HeaderMenu
@@ -73,7 +73,12 @@
                 />
               </div>
             </div>
-            <AppBurgerButton :isCross="menuIsOpen" @clickButton="toggleMenu" />
+            <AppBurgerButton
+              class="header__burger"
+              :class="{ 'is-hidden': headerIsShow && getRouteName === 'Home' }"
+              :isCross="menuIsOpen"
+              @clickButton="toggleMenu"
+            />
           </div>
         </div>
       </div>
@@ -265,7 +270,6 @@ export default {
     }
   }
 
-  &__row,
   &__logo {
     &.is-hidden {
       @media (max-width: 993px) {
@@ -274,9 +278,23 @@ export default {
     }
   }
 
+  &__row {
+    &.is-open {
+      margin: 0 0 0 auto;
+    }
+  }
+
   &__language {
     @media (max-width: 769px) {
       display: none;
+    }
+  }
+
+  &__burger {
+    @media (max-width: 769px) {
+      &.is-hidden {
+        display: none;
+      }
     }
   }
 
