@@ -7,6 +7,7 @@
   >
     <AppField
       class="login-form__input"
+      data-test="phone-field"
       maxLength="12"
       prefix="+7"
       countryFlag="ru"
@@ -22,6 +23,7 @@
     />
     <AppField
       class="login-form__input"
+      data-test="password-field"
       icon="eye"
       typeInput="password"
       :label="$t('app.login.password')"
@@ -44,6 +46,7 @@
     <template #actions>
       <button
         class="login-form__button"
+        data-test="register-button"
         type="button"
         @click="$emit('toRegistration')"
       >
