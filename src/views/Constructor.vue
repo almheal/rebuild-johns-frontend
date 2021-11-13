@@ -13,6 +13,7 @@
         >
           <div
             class="constructor__total"
+            data-test="header-total"
             :class="{
               'is-active': activeStepKey !== constructorStepNames.CONTENT,
             }"
@@ -21,10 +22,11 @@
             <AppPrice :price="total" />
           </div>
         </ConstructorHeader>
-        <div class="constructor__body" v-if="!isNextView">
+        <div class="constructor__body" v-if="!isNextView" data-test="body">
           <div class="constructor__wrapper">
             <h1
               class="constructor__title"
+              data-test="title"
               :class="{
                 'is-active': activeStepKey !== constructorStepNames.CONTENT,
               }"
@@ -37,6 +39,7 @@
             </h1>
             <h2
               class="constructor__subtitle"
+              data-test="subtitle"
               :class="{
                 'is-active': activeStepKey === constructorStepNames.INGREDIENTS,
               }"
@@ -60,12 +63,17 @@
                 @clickIngredient="calculateIngredientCounter($event)"
                 @resetIngredient="calculateIngredientCounter($event, true)"
               />
-              <div class="constructor__error" v-if="isMaxIngredientsError">
+              <div
+                class="constructor__error"
+                v-if="isMaxIngredientsError"
+                data-test="error"
+              >
                 {{ $t('app.constructor.maxIngredientsError') }}?
               </div>
             </template>
             <AppCircleLoader
               class="constructor__loader"
+              data-test="ingredients-loader"
               v-else
               color="green"
               size="medium"
@@ -78,7 +86,11 @@
               'width-100': getActiveStep !== constructorStepNames.PIZZA_BASE,
             }"
           >
-            <template v-if="!productLoader">
+            <div
+              class="constructor__info"
+              v-if="!productLoader"
+              data-test="info"
+            >
               <ConstructorProduct
                 class="constructor__product"
                 :class="{
@@ -111,11 +123,13 @@
               <div class="constructor__row">
                 <AppButton
                   class="constructor__button"
+                  data-test="button-cart"
                   @clickButton="addToCartHandler"
                   >{{ $t('app.utils.addToCart') }}</AppButton
                 >
                 <div class="constructor__action">
                   <AppButton
+                    data-test="button-next"
                     class="constructor__next"
                     @clickButton="changeStepHandler('next')"
                     >{{
@@ -135,9 +149,10 @@
                   <AppPrice :price="total" />
                 </div>
               </div>
-            </template>
+            </div>
             <AppCircleLoader
               class="constructor__loader"
+              data-test="product-loader"
               :class="{
                 'is-active': getActiveStep === constructorStepNames.PIZZA_BASE,
               }"

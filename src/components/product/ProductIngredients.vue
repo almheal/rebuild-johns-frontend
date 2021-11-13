@@ -9,6 +9,7 @@
         <ul class="product-ingredients__list">
           <li
             class="product-ingredients__item"
+            data-test="ingredient"
             v-for="ingredient in ingredients"
             :class="{
               'is-removed': ingredient.isRemoved,
@@ -29,6 +30,7 @@
 
         <div
           class="product-ingredients__add row-center"
+          data-test="add-ingredients"
           @click="$emit('addIngredients')"
         >
           <AppPlusButton class="product-ingredients__plus" />
@@ -39,7 +41,11 @@
       </div>
 
       <div class="product-ingredients__actions">
-        <button class="product-ingredients__cancel" @click="$emit('cancel')">
+        <button
+          class="product-ingredients__cancel"
+          data-test="cancel"
+          @click="$emit('cancel')"
+        >
           {{ $t('app.utils.cancel') }}
         </button>
         <AppButton @clickButton="$emit('addToCart')">{{
