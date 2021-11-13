@@ -100,13 +100,24 @@
               </section>
             </div>
           </div>
-          <div class="home__column">
-            <ShoppingCart class="home__cart" />
-            <AppPromoCode class="home__promo-code" />
+          <div class="wrapper">
+            <div class="home__column">
+              <ShoppingCart class="home__cart" />
+              <AppPromoCode class="home__promo-code" />
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <AppButton
+      class="button-cart"
+      background-color="red"
+      v-if="getTotal"
+      @clickButton="$router.push('/order')"
+    >
+      <CartIcon class="button-cart__icon" />
+      <span>{{ getTotal }} ₽</span>
+    </AppButton>
   </div>
 </template>
 
@@ -118,7 +129,9 @@ import ShoppingCart from '@components/shoppingCart/ShoppingCart'
 import ProductList from '@components/product/ProductList'
 import FilterIcon from '@icons/FilterIcon'
 import RevertIcon from '@icons/RevertIcon'
+import CartIcon from '@icons/CartIcon'
 import AppPromoCode from '@elements/AppPromoCode'
+import AppButton from '@elements/AppButton'
 import AppSpecialCard from '@elements/AppSpecialCard'
 const HomeIngredientsFilter = defineAsyncComponent(() =>
   import(
@@ -143,10 +156,12 @@ export default {
     ProductList,
     FilterIcon,
     RevertIcon,
+    CartIcon,
     AppPromoCode,
+    AppButton,
+    AppSpecialCard,
     HomeIngredientsFilter,
     HomeTagsFilter,
-    AppSpecialCard,
   },
   data() {
     return {
@@ -185,6 +200,7 @@ export default {
 
     ...mapGetters({
       getPizzaCategory: 'category/getPizzaCategory',
+      getTotal: 'shoppingCart/getTotal',
     }),
 
     filteredPizzasIngredientsIds() {
@@ -387,6 +403,11 @@ export default {
   }
 
   &__column {
+    position: sticky;
+    left: 0;
+    top: 120px;
+    z-index: 10;
+    margin-top: 40px;
     width: 272px;
 
     @media (max-width: 993px) {
@@ -403,9 +424,6 @@ export default {
       display: none;
     }
   }
-
-  &__promo-code {
-  }
 }
 
 .section {
@@ -413,6 +431,11 @@ export default {
 
   @media (max-width: 576px) {
     padding-bottom: 40px;
+  }
+
+  &__products {
+    position: relative;
+    z-index: 1;
   }
 
   &__header {
@@ -456,6 +479,35 @@ export default {
     &:hover {
       transform: rotate(90deg);
     }
+  }
+}
+
+.button-cart {
+  @include flex-align-center;
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  font-family: $roboto-font;
+  padding: 10px 20px;
+
+  @media (max-width: 993px) {
+    @include flex;
+  }
+
+  &::before {
+    background-color: $dark-red-color;
+  }
+
+  span {
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
   }
 }
 </style>
