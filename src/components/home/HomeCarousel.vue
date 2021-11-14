@@ -38,6 +38,7 @@ export default {
     sliderImageUrls,
     settings: {
       wrapAround: true,
+      touchDrag: true,
     },
     breakpoints: {
       1400: {
