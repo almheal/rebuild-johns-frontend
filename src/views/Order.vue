@@ -72,6 +72,7 @@ import {
   DELIVERY_TIMES,
   PAYMENT_METHODS,
   PHONE_LENGTH_WITH_PREFIX,
+  TEST_CART_PRODUCT,
 } from '@const'
 import { calculateDiscount } from '@utils'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
@@ -123,7 +124,11 @@ export default {
 
   watch: {
     getItems(items) {
-      if (!items.length && !this.orderIsCompleted) {
+      if (
+        !items.length &&
+        !this.orderIsCompleted &&
+        !this.$route.query.testCart
+      ) {
         this.$router.push('/')
       }
     },
@@ -159,11 +164,13 @@ export default {
         : this.getTotal
     },
   },
+
   methods: {
     ...mapActions({
       initCart: 'shoppingCart/initCart',
       clearCart: 'shoppingCart/clearCart',
       createOrder: 'order/createOrder',
+      addToCart: 'shoppingCart/addToCart',
     }),
 
     ...mapMutations({
@@ -203,8 +210,13 @@ export default {
       })
     },
   },
-  mounted() {
-    this.initCart()
+
+  async mounted() {
+    await this.initCart()
+    if (this.$route.query.testCart) {
+      this.addToCart(TEST_CART_PRODUCT)
+      this.$router.replace({ query: {} })
+    }
   },
 }
 </script>
