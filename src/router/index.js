@@ -49,20 +49,15 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = getLocalStorage(TOKEN_NAME)
-  if (to.meta.auth && !token) {
+
+  if (to.meta.auth && !token && !to.query.testUser) {
     next({ path: from.name ? from.path : '/' })
   } else {
     next()
   }
-})
 
-router.afterEach((guard) => {
-  if (guard.query.testUser && !getLocalStorage(TOKEN_NAME)) {
+  if (to.query.testUser && !getLocalStorage(TOKEN_NAME)) {
     store.dispatch('user/loginByTestUser')
-
-    const query = JSON.parse(JSON.stringify(guard.query))
-    delete query.testUser
-    router.replace({ query })
   }
 })
 

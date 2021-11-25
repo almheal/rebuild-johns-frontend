@@ -1,5 +1,10 @@
 <template>
-  <carousel class="carousel" :settings="settings" :breakpoints="breakpoints">
+  <carousel
+    class="carousel"
+    :settings="settings"
+    :breakpoints="breakpoints"
+    :touchDrag="touchDrag"
+  >
     <slide
       class="carousel__slide"
       v-for="(slide, index) in slides"
@@ -41,6 +46,10 @@ export default {
     breakpoints: {
       type: Object,
       default: () => ({}),
+    },
+    touchDrag: {
+      type: Boolean,
+      default: true,
     },
   },
 }

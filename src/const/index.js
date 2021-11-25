@@ -74,3 +74,52 @@ export const TEST_USER = {
   phoneNumber: '+79149112061',
   password: '123456',
 }
+
+export const TEST_CART_PRODUCT = {
+  _id: '61545420b45ffc71bcf64b34',
+  category: '615449f5b45ffc71bcf64a70',
+  size: {
+    price: '169',
+    nutritionalValue: {
+      proteins: '11',
+      fats: '7',
+      carbohydrates: '21',
+      energyValue: '190/800',
+      weight: '130',
+    },
+  },
+  variety: {
+    img: 'http://res.cloudinary.com/dimdjrct2/image/upload/v1632916511/yapzpmgrr2kd9qhpx1qg.jpg',
+    sizes: [
+      {
+        price: '169',
+        nutritionalValue: {
+          proteins: '11',
+          fats: '7',
+          carbohydrates: '21',
+          energyValue: '190/800',
+          weight: '130',
+        },
+      },
+    ],
+  },
+  options: [
+    {
+      img: 'http://res.cloudinary.com/dimdjrct2/image/upload/v1632916511/yapzpmgrr2kd9qhpx1qg.jpg',
+      sizes: [
+        {
+          price: '169',
+          nutritionalValue: {
+            proteins: '11',
+            fats: '7',
+            carbohydrates: '21',
+            energyValue: '190/800',
+            weight: '130',
+          },
+        },
+      ],
+    },
+  ],
+  ingredients: [],
+  title: 'app.products.snacks.items.chickenJohner.title',
+}

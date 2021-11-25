@@ -385,6 +385,8 @@ export default {
   }
 
   &__body {
+    position: relative;
+    z-index: 11;
     flex: 1 1 0;
     margin-right: 30px;
 
