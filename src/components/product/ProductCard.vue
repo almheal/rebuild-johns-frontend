@@ -23,7 +23,7 @@
           <div class="product-card__name">
             <h5 class="product-card__title">{{ $t(product.title) }}</h5>
             <ProductNutritionalValue
-              v-if="activeSize.nutritionalValue"
+              v-if="isNutritionalValue"
               :nutritionalValue="activeSize.nutritionalValue"
               :persons="activeSize.persons"
             />
@@ -136,6 +136,16 @@ export default {
     activeVarietySizes() {
       return this.activeVariety.sizes.filter((item) => item.size?.title)
     },
+
+    isNutritionalValue() {
+      if (!this.activeSize.nutritionalValue) {
+        return false
+      }
+
+      return Object.values(this.activeSize.nutritionalValue).some(
+        (value) => value
+      )
+    },
   },
   methods: {
     ...mapActions({
@@ -225,7 +235,7 @@ export default {
   }
 
   &__picture {
-    min-height: 230px;
+    min-height: 180px;
   }
 
   &__img {
