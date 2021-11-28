@@ -16,7 +16,8 @@
         </div>
         <div class="cart-item__content">
           <div class="cart-item__various" v-if="varietyTitle || sizeTitle">
-            {{ varietyTitle }}{{ sizeTitle ? `, ${sizeTitle}` : sizeTitle }}
+            {{ varietyTitle
+            }}{{ sizeTitle && varietyTitle ? `, ${sizeTitle}` : sizeTitle }}
           </div>
           <span
             class="cart-item__ingredient"
